@@ -1,0 +1,33 @@
+@import '../../../css/variable.less';
+
+#course-list {
+    border-bottom: 1px solid @BORDER_COLOR;
+    background-color: #fff;
+    li {
+        padding: 30/@REM 0;
+        margin: 0 30/@REM;
+        border-bottom: 1px solid @BORDER_COLOR;
+        &:last-child {
+            border-bottom: none;
+        } 
+    }
+    img {
+        float: left;
+        width: 190/@REM;
+        height: 145/@REM; 
+    } 
+    div {
+        margin-left: 210/@REM;
+        padding: 15/@REM 0;
+    }
+    strong {
+        font-size: 28/@REM;
+        color: @MAIN_COLOR;
+    }
+    p {
+        margin-top: 20/@REM;
+        color: @SECOND_COLOR;
+        font-size: 20/@REM;
+        line-height: 34/@REM;
+    }
+}

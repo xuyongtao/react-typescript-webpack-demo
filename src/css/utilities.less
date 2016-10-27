@@ -1,0 +1,75 @@
+@import "variable.less";
+@import "mixins.less";
+
+@media (max-width: @width-container-breakpoint - 1px) {
+  .hide-on-mobile {
+    display: none;
+  }
+}
+
+@media (min-width: @width-container-breakpoint) {
+  .show-on-mobile {
+    display: none;
+  }
+}
+
+.mt-30 {
+  margin-top: @width-gap-double;
+}
+
+.mt-15 {
+  margin-top: @width-gap;
+}
+
+.mt-0 {
+  margin-top: 0;
+}
+
+.scroll-view {
+  .scroll-view();
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.flex-left,
+.flex-center,
+.flex-right,
+.flex-top,
+.flex-middle,
+.flex-bottom {
+  @include flex-container();
+}
+
+.flex-left {
+  justify-content: flex-start;
+}
+
+.flex-center {
+  justify-content: center;
+}
+
+.flex-right {
+  justify-content: flex-end;
+}
+
+.flex-top {
+  align-items: flex-start;
+}
+
+.flex-middle {
+  align-items: center;
+}
+
+.flex-bottom {
+  align-items: flex-end;
+}

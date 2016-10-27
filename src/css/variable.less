@@ -1,0 +1,205 @@
+@REM              : 50rem;
+@BASE_FONT_SIZE   : 50px;
+@PAGE_MAX_WIDTH   : 640px;
+@PAGE_BASE_WIDTH  : 640px;
+
+@MAIN_CONTENT_COLOR : #3a3a3a;
+@MAIN_COLOR   : #5d5d5d;
+@SECOND_COLOR : #a2a2a2;
+
+//导航栏
+@NAV_BAR_HEIGHT : 100;
+
+//全局
+@GAP_WIDTH : 15;
+@BORDER_COLOR: #e0e0e0;
+
+@font-face {
+  font-family: 'iconfont';
+  src: url('//at.alicdn.com/t/font_1472464355_6750612.eot'); /* IE9*/
+  src: url('//at.alicdn.com/t/font_1472464355_6750612.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('//at.alicdn.com/t/font_1472464355_6750612.woff') format('woff'), /* chrome、firefox */
+  url('//at.alicdn.com/t/font_1472464355_6750612.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('//at.alicdn.com/t/font_1472464355_6750612.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+
+//以下是采用 https://github.com/xcatliu/mobi.css 这个第三方的样式库
+//
+// Colors
+//
+
+// Common colors
+// Add  !default so _custom.scss can override it
+@color-text: #333;
+@color-text-muted: #777;
+
+@color-background: #fff;
+@color-background-over: rgba(0, 0, 0, .05);
+@color-background-back: #f3f3f3;
+
+@color-border: #ddd;
+
+// `body` and `container`
+@color-text-body: @color-text;
+@color-background-body: @color-background-back;
+@color-background-container: @color-background;
+
+// Links
+// hsl is easy to modify
+@color-text-link: hsl(210, 100%, 50%);
+// Use rgba so it can nesting
+@color-background-active: rgba(0, 0, 0, .1);
+
+// Codes
+@color-background-code: @color-background-over;
+@color-background-pre: @color-background-over;
+
+// `blockquote`
+@color-text-blockquote: @color-text-muted;
+
+// `mark`
+@color-background-mark: #ff0;
+
+// Tables
+@color-background-table: @color-background;
+@color-background-th: @color-background-over;
+
+// Forms
+// For `input`s which is not a button
+@color-background-input: @color-background;
+// For focused input
+@color-border-input-focus: hsl(210, 100%, 60%);
+// For buttons
+@color-background-btn: @color-background-back;
+@color-text-btn-primary: @color-background;
+@color-background-btn-primary: hsl(120, 50%, 50%);
+@color-text-btn-danger: hsl(0, 100%, 40%);
+
+
+//
+// Spacing
+//
+
+@width-gap: 15px;
+@width-gap-double: 30px;
+@width-gap-half: 7px;
+
+@width-padding-input: 5px;
+@width-border: 1px;
+@width-padding-border-input: @width-padding-input + @width-border;
+
+
+//
+// layouts
+//
+
+@width-scrollbar: 17px;
+
+@padding-container: 0 @width-gap @width-gap;
+@padding-container-desktop: 0 @width-gap-double @width-gap;
+
+@min-width-container: 320px;
+@max-width-container: 768px - @width-gap-double;
+// So won't have scroll-x on device which width is 1025px
+@width-container-breakpoint: 1024px + @width-scrollbar;
+
+//
+// Typography
+//
+
+// 1rem = 10px
+@rem-base: 10px;
+
+@font-size: 1.8rem;
+
+// h4, h5, h6 is not very useful, so we set them to the same size of normal
+// font-size, but with @font-weight-bold
+@font-size-h1: 3.2rem;
+@font-size-h2: 2.6rem;
+@font-size-h3: 2.4rem;
+@font-size-h4: 2.2rem;
+@font-size-h5: 2rem;
+@font-size-h6: 1.8rem;
+
+@font-size-pre: 1.3rem;
+
+@font-size-small: 85%;
+@font-size-code: @font-size-small;
+@font-size-address: @font-size-small;
+@font-size-sub-sup: 75%;
+
+@line-height: 1.5;
+
+// line-height need to be set to pre, not code
+@line-height-pre: 1.2;
+
+@font-weight-bold: 600;
+
+@font-family:
+  // Safari for OS X and iOS (San Francisco)
+  -apple-system,
+  // Chrome for OS X (San Francisco)
+  BlinkMacSystemFont,
+  // Windows
+  'Segoe UI',
+  // Android
+  'Roboto',
+  // Linux
+  'Oxygen', // KDE
+  'Ubuntu',
+  'Cantarell', // GNOME
+  // Firefox OS [R.I.P.]
+  'Fira Sans',
+  // Older Android
+  'Droid Sans',
+  // Chinese font for OSX and iOS
+  'Hiragino Sans GB',
+  // Chinese font for Windows
+  'Microsoft Yahei', '微软雅黑',
+  // Basic web fallback
+  Arial, Helvetica, STHeiti, sans-serif,
+  // Emoji
+  'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+
+// TODO Chinese font-family for pre code
+// https://github.com/xcatliu/mobi.css/issues/8
+@font-family-monospace: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+@padding-code: 2px 3px;
+
+@border-left-blockquote: @width-padding-input solid @color-border;
+
+@border-top-hr: @width-border solid @color-border;
+
+// Set the default max-height to scroll-view
+@max-height-scroll-view: 300px;
+
+
+//
+// Tables
+//
+
+@padding-table-cell: @width-padding-input;
+@border-bottom-th-td: @width-border solid @color-border;
+
+
+//
+// Forms
+//
+
+// For inputs
+@border-radius-input: 3px;
+@padding-input: @width-padding-input 2 * @width-padding-input;
+@border-input: @width-border solid @color-border;
+// For file input
+@padding-file: @width-padding-border-input 0;
+
+// For checkbox and radio
+@margin-checkbox-radio: 0 @width-padding-input 0 0;
+// 5px padding + 1px border
+@width-padding-top-label: @width-padding-border-input;
+@width-padding-bottom-label: @width-padding-border-input;
+
+// Background image of down arrow
+@background-image-angle-down: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='20' viewBox='0 0 32 20'><path fill='#{@color-text}' d='M0 0h32L16 20z'/></svg>");

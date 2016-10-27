@@ -1,0 +1,54 @@
+@import '../../../css/variable.less';
+
+#intro-pannel {
+    background-color: #fff;
+    padding: 0 30/@REM;
+    border-bottom: 1px solid @BORDER_COLOR; 
+    li {
+        line-height: 90/@REM;
+        border-bottom: 1px solid @BORDER_COLOR;
+        font-size: 28/@REM;
+        span {
+            float: left;
+            color: @SECOND_COLOR;   
+        }
+        div {
+            margin-left: 170/@REM;
+            color: @MAIN_CONTENT_COLOR;
+        }
+        &:last-child {
+            border-bottom: none;
+        }
+    } 
+}
+
+#teaching-case {
+    margin-top: 15/@REM;
+    padding-bottom: 15/@REM;
+    background-color: #fff;
+    border-top: 1px solid @BORDER_COLOR;
+    border-bottom: 1px solid @BORDER_COLOR;
+    .title {
+        padding: 0 30/@REM;
+        line-height: 85/@REM;
+        color: @MAIN_CONTENT_COLOR;
+        border-bottom: 1px solid @BORDER_COLOR;
+    }
+    h2 {
+        font-size: 26/@REM;
+    }
+    li {
+        margin: 0 30/@REM 0 90/@REM;
+        .case-time {
+            margin-top: 20/@REM;
+            line-height: 60/@REM;
+            font-size: 26/@REM;
+            color: @MAIN_CONTENT_COLOR;
+        }
+        .case-content {
+            font-size: 24/@REM;
+            line-height: 45/@REM;
+            color: #7f7f7f;
+        }
+    }
+}
