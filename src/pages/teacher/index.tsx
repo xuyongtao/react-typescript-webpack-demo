@@ -4,24 +4,25 @@ import * as React from "react";
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
+import thunkMiddleware from 'redux-thunk';
 import { Router, Route, IndexRoute, browserHistory, Link, IndexLink } from 'react-router';
 
 import * as fetch from 'isomorphic-fetch';
 
 // reducers
-import app from '../../../reducers/teachers';
+import teacherReducers from '../../../reducers/teachers';
+// actions
+import {
+    fetchBasicInfoPosts
+} from '../../../actions/teachers'
 // pages
 import TeacherCourses from './courses/index';
 import TeacherIntro from './intro/index';
 import TeacherPhotos from './photos/index';
 
-interface UserBasic {
-    name: String,
-    avatar: String,
-    selfIntro: String
-}
+import { UserBasic } from '../../../common/teacher';
 
+const store = createStore(teacherReducers, {}, applyMiddleware(thunkMiddleware));
 
 class Application extends React.Component<any, any> {
     constructor(props: any, context: any) {
@@ -36,20 +37,36 @@ class Application extends React.Component<any, any> {
     componentDidMount() {
         let _this = this;
 
-        fetch('../../test/teacher-basic-info.json')
-            .then(function (response) {
-                if (response.status >= 400) {
-                    throw new Error("Bad response from server");
-                }
-                return response.json();
-            })
-            .then(function (data: UserBasic) {
+        store
+            .dispatch(fetchBasicInfoPosts('http://192.168.2.55:8080/test/teacher-basic-info.json', null))
+            .then(() => {
+                let state = (store.getState()) as {
+                    basicInfo: UserBasic
+                };
+                let userInfo = state.basicInfo;
+
                 _this.setState({
-                    avatar: data.avatar,
-                    name: data.name,
-                    selfIntro: data.selfIntro
+                    avatar: userInfo.avatar,
+                    name: userInfo.name,
+                    selfIntro: userInfo.selfIntro
                 })
-            });
+                console.log('fucking...', store.getState());
+            })
+
+        // fetch('../../test/teacher-basic-info.json')
+        //     .then(function (response) {
+        //         if (response.status >= 400) {
+        //             throw new Error("Bad response from server");
+        //         }
+        //         return response.json();
+        //     })
+        //     .then(function (data: UserBasic) {
+        //         _this.setState({
+        //             avatar: data.avatar,
+        //             name: data.name,
+        //             selfIntro: data.selfIntro
+        //         })
+        //     });
     }
 
     render() {
@@ -79,8 +96,6 @@ class Application extends React.Component<any, any> {
         )
     }
 }
-
-const store = createStore(app, {}, applyMiddleware(thunk));
 
 render((
     <Provider store={store}>
