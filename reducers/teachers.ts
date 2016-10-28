@@ -1,35 +1,38 @@
 import { combineReducers } from 'redux';
 import * as lodash from 'lodash';
 
-import { UserBasic } from '../common/teacher';
+import { TeacherPostBasic, TeacherBasic } from '../common/teacher';
 
 import {
     REQUEST_BASIC_INFO_POSTS,
     RECEIVE_BASIC_INFO_POSTS
 } from '../actions/teachers'
 
-function postsBasicInfo(state: any = {
+function postsBasicInfo(state = {
     isFetching: false,
+    tid: 0,
     avatar: '',
     name: '',
     selfIntro: ''
 }, action: {
     type: string,
-    data: UserBasic
+    respontData?: TeacherBasic,
+    requestData?: TeacherPostBasic
 }) {
     switch (action.type) {
         case REQUEST_BASIC_INFO_POSTS:
-            console.log('test......');
 
             return lodash.assign({}, state, {
-                isFetching: true
+                isFetching: true,
+                tid: action.requestData.tid
             })
         case RECEIVE_BASIC_INFO_POSTS:
+
             return lodash.assign({}, state, {
-                isFetching: false,
-                name: action.data.name,
-                avatar: action.data.avatar,
-                selfIntro: action.data.selfIntro
+                // isFetching: false,
+                name: action.respontData.name,
+                avatar: action.respontData.avatar,
+                selfIntro: action.respontData.selfIntro
             })
         default:
             return state;

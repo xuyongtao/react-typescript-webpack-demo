@@ -20,37 +20,57 @@ import TeacherCourses from './courses/index';
 import TeacherIntro from './intro/index';
 import TeacherPhotos from './photos/index';
 
-import { UserBasic } from '../../../common/teacher';
+import { TeacherBasic } from '../../../common/teacher';
 
 const store = createStore(teacherReducers, {}, applyMiddleware(thunkMiddleware));
+
+class Loading extends React.Component<any, any> {
+    render() {
+        return (
+            <div className="loading">加载中...</div>
+        )
+    }
+}
 
 class Application extends React.Component<any, any> {
     constructor(props: any, context: any) {
         super(props, context);
         this.state = {
+            tid: 0,
             avatar: '',
             name: '',
-            selfIntro: ''
+            selfIntro: '',
+            loading: false
         };
+
     }
 
     componentDidMount() {
         let _this = this;
 
+        _this.setState({
+            loading: true
+        })
+
         store
-            .dispatch(fetchBasicInfoPosts('http://192.168.2.55:8080/test/teacher-basic-info.json', null))
+            .dispatch(fetchBasicInfoPosts('http://192.168.2.55:8080/test/teacher-basic-info.json', {
+                tid: 12
+            }))
             .then(() => {
+
                 let state = (store.getState()) as {
-                    basicInfo: UserBasic
+                    basicInfo: TeacherBasic
                 };
-                let userInfo = state.basicInfo;
+                let teacherInfo = state.basicInfo;
+
 
                 _this.setState({
-                    avatar: userInfo.avatar,
-                    name: userInfo.name,
-                    selfIntro: userInfo.selfIntro
+                    tid: teacherInfo.tid,
+                    avatar: teacherInfo.avatar,
+                    name: teacherInfo.name,
+                    selfIntro: teacherInfo.selfIntro,
+                    loading: false
                 })
-                console.log('fucking...', store.getState());
             })
 
         // fetch('../../test/teacher-basic-info.json')
@@ -72,6 +92,7 @@ class Application extends React.Component<any, any> {
     render() {
         return (
             <div>
+                { this.state.loading ? <Loading/> : null}
                 <div className="nav-bar">
                     <span className="iconfont btn-back" onClick={ browserHistory.goBack } dangerouslySetInnerHTML={{ __html: '&#xe600;' }}></span>
                     <h1>老师详情</h1>

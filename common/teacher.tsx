@@ -1,5 +1,10 @@
-export interface UserBasic {
-    name: String,
-    avatar: String,
-    selfIntro: String
+export interface TeacherPostBasic {
+    tid: number
+}
+export interface TeacherBasic {
+    tid: number,
+    name: string,
+    avatar: string,
+    selfIntro: string,
+    isFetching: boolean
 }
