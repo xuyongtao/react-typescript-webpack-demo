@@ -7,39 +7,39 @@ import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { Router, Route, IndexRoute, browserHistory, Link, IndexLink } from 'react-router';
 
-import * as fetch from 'isomorphic-fetch';
-
 // reducers
 import teacherReducers from '../../../reducers/teachers';
 // actions
 import {
-    fetchBasicInfoPosts
+    fetchCoursesPost,
+    fetchBasicInfoPost
 } from '../../../actions/teachers'
 // pages
 import TeacherCourses from './courses/index';
 import TeacherIntro from './intro/index';
 import TeacherPhotos from './photos/index';
-
-import { TeacherBasic } from '../../../common/teacher';
+// components
+import Loading from '../../components/loading';
+import NavBar from '../../components/nav-bar';
+import BasicInfo from '../../components/teacher/basic-info';
+// interface
+import {
+    TeacherBasic,
+    CoursesResBasic,
+} from '../../../common/teacher';
 
 const store = createStore(teacherReducers, {}, applyMiddleware(thunkMiddleware));
-
-class Loading extends React.Component<any, any> {
-    render() {
-        return (
-            <div className="loading">加载中...</div>
-        )
-    }
-}
 
 class Application extends React.Component<any, any> {
     constructor(props: any, context: any) {
         super(props, context);
         this.state = {
-            tid: 0,
-            avatar: '',
-            name: '',
-            selfIntro: '',
+            teacher: {
+                tid: 0,
+                avatar: '',
+                name: '',
+                selfIntro: '',
+            },
             loading: false
         };
 
@@ -53,7 +53,7 @@ class Application extends React.Component<any, any> {
         })
 
         store
-            .dispatch(fetchBasicInfoPosts('http://192.168.2.55:8080/test/teacher-basic-info.json', {
+            .dispatch(fetchBasicInfoPost('http://192.168.2.55:8080/get-teacher-basic-info', {
                 tid: 12
             }))
             .then(() => {
@@ -65,46 +65,26 @@ class Application extends React.Component<any, any> {
 
 
                 _this.setState({
-                    tid: teacherInfo.tid,
-                    avatar: teacherInfo.avatar,
-                    name: teacherInfo.name,
-                    selfIntro: teacherInfo.selfIntro,
+                    teacher: {
+                        tid: teacherInfo.tid,
+                        avatar: teacherInfo.avatar,
+                        name: teacherInfo.name,
+                        selfIntro: teacherInfo.selfIntro,
+                    },
                     loading: false
                 })
             })
 
-        // fetch('../../test/teacher-basic-info.json')
-        //     .then(function (response) {
-        //         if (response.status >= 400) {
-        //             throw new Error("Bad response from server");
-        //         }
-        //         return response.json();
-        //     })
-        //     .then(function (data: UserBasic) {
-        //         _this.setState({
-        //             avatar: data.avatar,
-        //             name: data.name,
-        //             selfIntro: data.selfIntro
-        //         })
-        //     });
+
     }
 
     render() {
         return (
             <div>
-                { this.state.loading ? <Loading/> : null}
-                <div className="nav-bar">
-                    <span className="iconfont btn-back" onClick={ browserHistory.goBack } dangerouslySetInnerHTML={{ __html: '&#xe600;' }}></span>
-                    <h1>老师详情</h1>
-                </div>
+                { this.state.loading ? <Loading/> : null }
+                <NavBar pageTitle="老师详情"></NavBar>
+                <BasicInfo teacher={ this.state.teacher }></BasicInfo>
 
-                <div className="basic-info">
-                    <img src={ this.state.avatar } alt={ this.state.name }/>
-                    <div>
-                        <strong>{ this.state.name }</strong><i></i>
-                        <p>{ this.state.selfIntro }</p>
-                    </div>
-                </div>
                 <div className="pannels">
                     <ul className="tabs">
                         <li><IndexLink to="/" activeClassName="active">简介</IndexLink></li>
@@ -119,13 +99,13 @@ class Application extends React.Component<any, any> {
 }
 
 render((
-    <Provider store={store}>
-        <Router history={browserHistory}>
-            <Route path="/" component={Application}>
-                <IndexRoute component={TeacherIntro}/>
-                <Route path="intro" component={TeacherIntro}></Route>
-                <Route path="courses" component={TeacherCourses}></Route>
-                <Route path="photos" component={TeacherPhotos}></Route>
+    <Provider store={ store }>
+        <Router history={ browserHistory }>
+            <Route path="/" component={ Application }>
+                <IndexRoute component={ TeacherIntro }/>
+                <Route path="intro" component={ TeacherIntro }></Route>
+                <Route path="courses" component={ TeacherCourses }></Route>
+                <Route path="photos" component={ TeacherPhotos }></Route>
             </Route>
         </Router>
     </Provider>

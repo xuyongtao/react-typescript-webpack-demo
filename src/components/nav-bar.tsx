@@ -1,16 +1,23 @@
+import './nav-bar.less';
+
 import * as React from "react";
-import { Component } from "react";
 import { render } from "react-dom";
-import { Link, IndexLink, browserHistory } from "react-router";
+import { browserHistory } from 'react-router';
 
-export default class NavBar extends Component<any, any> {
+interface PageBasic {
+    pageTitle: string
+}
+
+export default class NavBar extends React.Component<any, any> {
+    constructor(props: PageBasic, context: any) {
+        super(props, context);
+    }
+
     render() {
-        const props = this.props;
-
         return (
             <div className="nav-bar">
-                <span className="iconfont btn-back" onClick={ browserHistory.goBack } dangerouslySetInnerHTML={{__html: '&#xe600;'}}></span>
-                <h1>{ props.pageTitle }</h1>
+                <span className="iconfont btn-back" onClick={ browserHistory.goBack } dangerouslySetInnerHTML={{ __html: '&#xe600;' }}></span>
+                <h1>{ this.props.pageTitle }</h1>
             </div>
         )
     }
