@@ -4,21 +4,14 @@ import { render } from "react-dom";
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 
-// reducers
-import teacherReducers from '../../../../reducers/teachers';
-// actions
-import {
-    fetchCoursesPost,
-    fetchBasicInfoPost
-} from '../../../../actions/teachers';
+// store
+import { getTeacherCourses } from "../../../../store/teacher";
 // interface
 import {
     TeacherBasic,
     CoursesResBasic,
     CourseBasic
 } from '../../../../common/teacher';
-
-const store = createStore(teacherReducers, {}, applyMiddleware(thunkMiddleware));
 
 class Course extends React.Component<any, any> {
     constructor(props: CourseBasic, context: any) {
@@ -68,23 +61,16 @@ export default class TeacherCourses extends React.Component<any, any> {
     componentDidMount() {
         let _this = this;
 
-        store
-            .dispatch(fetchCoursesPost('http://192.168.2.55:8080/get-teacher-courses', {
-                tid: 12,
-                page: 1
-            }))
-            .then(() => {
+        if (!_this.state.courses.length) {
+            getTeacherCourses()
+                .then(courseList => {
+                    let data: CoursesResBasic = courseList;
 
-                let state = (store.getState()) as {
-                    courseList: CoursesResBasic
-                };
-                let data = state.courseList;
-
-
-                _this.setState({
-                    courses: data.courses,
+                    _this.setState({
+                        courses: data.courses,
+                    })
                 })
-            })
+        }
     }
 
     render() {

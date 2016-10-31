@@ -26,3 +26,25 @@ export interface CourseBasic {
     cover: string,
     detail: string
 }
+
+export interface RecommendTeachersPostBasic {
+    page: number,
+}
+
+export interface RecommendTeachersResBasic {
+    page: number,
+    pageCount: number,
+    teachers: RecommendTeacherBasic[]
+}
+
+export interface RecommendTeacherBasic {
+    tid: number,
+    avatar?: string,
+    name: string,
+    selfIntro?: string,
+    courses: {
+        name: string,
+        type?: string,
+        floorPrice?: number,
+    }[]
+}

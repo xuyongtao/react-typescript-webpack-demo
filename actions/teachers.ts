@@ -7,7 +7,10 @@ import {
     CoursesResBasic,
     CourseBasic,
     TeacherPostBasic,
-    TeacherBasic
+    TeacherBasic,
+    RecommendTeachersPostBasic,
+    RecommendTeachersResBasic,
+    RecommendTeacherBasic
 } from '../common/teacher';
 
 
@@ -43,7 +46,6 @@ export function fetchBasicInfoPost(url: string, data: TeacherPostBasic) {
                 body: JSON.stringify({
                     tid: data.tid
                 }),
-                mode: 'cors',
             })
             .then(response => response.json())
             .then(data => {
@@ -81,11 +83,47 @@ export function fetchCoursesPost(url: string, data: CoursesPostBasic) {
                     tid: data.tid,
                     page: data.page
                 }),
-                mode: 'cors',
             })
             .then(response => response.json())
             .then(data => {
                 dispatch(receiveCoursesPost(data))
+            })
+    }
+}
+// end
+
+// 请求推荐的老师action
+export const REQUEST_RECOMMENT_TEACHER_POST = 'REQUEST_RECOMMENT_TEACHER_POST';
+function requestRecommendTeachersPost(data: RecommendTeachersPostBasic) {
+    return {
+        type: REQUEST_RECOMMENT_TEACHER_POST,
+        requestData: data,
+    }
+}
+
+export const RECEIVE_RECOMMENT_TEACHER_POST = 'RECEIVE_RECOMMENT_TEACHER_POST';
+function receiveRecommendTeachersPost(data: RecommendTeachersResBasic) {
+    return {
+        type: RECEIVE_RECOMMENT_TEACHER_POST,
+        respontData: data
+    }
+}
+
+export function fetchRecommendTeachers(url: string, data: RecommendTeachersPostBasic) {
+    return function (dispatch: Dispatch<any>) {
+        dispatch(requestRecommendTeachersPost(data));
+
+        return fetch(url,
+            {
+                method: 'post',
+                body: JSON.stringify({
+                    page: data.page
+                }),
+                // mode: 'cors',                
+            })
+            .then(response => response.json())
+            .then(data => {
+                dispatch(receiveRecommendTeachersPost(data))
             })
     }
 }

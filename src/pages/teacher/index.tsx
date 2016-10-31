@@ -7,13 +7,9 @@ import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { Router, Route, IndexRoute, browserHistory, Link, IndexLink } from 'react-router';
 
-// reducers
-import teacherReducers from '../../../reducers/teachers';
-// actions
-import {
-    fetchCoursesPost,
-    fetchBasicInfoPost
-} from '../../../actions/teachers'
+// store
+import { store, getTeacherBasicInfo } from "../../../store/teacher";
+
 // pages
 import TeacherCourses from './courses/index';
 import TeacherIntro from './intro/index';
@@ -27,8 +23,6 @@ import {
     TeacherBasic,
     CoursesResBasic,
 } from '../../../common/teacher';
-
-const store = createStore(teacherReducers, {}, applyMiddleware(thunkMiddleware));
 
 class Application extends React.Component<any, any> {
     constructor(props: any, context: any) {
@@ -52,17 +46,9 @@ class Application extends React.Component<any, any> {
             loading: true
         })
 
-        store
-            .dispatch(fetchBasicInfoPost('http://192.168.2.55:8080/get-teacher-basic-info', {
-                tid: 12
-            }))
-            .then(() => {
-
-                let state = (store.getState()) as {
-                    basicInfo: TeacherBasic
-                };
-                let teacherInfo = state.basicInfo;
-
+        getTeacherBasicInfo()
+            .then(basicInfo => {
+                let teacherInfo: TeacherBasic = basicInfo;
 
                 _this.setState({
                     teacher: {
