@@ -14,31 +14,80 @@ export default class RecommendTeachers extends React.Component<any, any> {
         super(props, context);
 
         this.state = {
-            teachers: []
+            loadingMore: false,
+            teachers: [],
+            page: {
+                index: 0,
+                total: 1
+            }
         }
 
     }
 
-    componentDidMount() {
-        let _this = this;
+    loadMore() {
+        this.setState({
+            loadingMore: true,
+        })
 
-        getRecommendTeachers()
+        getRecommendTeachers(this.state.page.index + 1)
             .then(data => {
-                _this.setState({
-                    teachers: data.teachers
+                if (data.teachers && data.teachers.length) {
+                    this.setState({
+                        teachers: this.state.teachers.concat(data.teachers),
+                        page: {
+                            index: data.page,
+                            total: data.totalPage,
+                        }
+                    })
+                }
+
+                this.setState({
+                    loadingMore: false
+                })
+            }, () => {
+                this.setState({
+                    loadingMore: false
                 })
             })
+
+    }
+
+    componentDidMount() {
+        var _this = this;
+
+        this.setState({
+            loadingMore: true,
+        })
+
+        getRecommendTeachers(1)
+            .then(data => {
+                _this.setState({
+                    loadingMore: false,
+                    teachers: data.teachers,
+                    page: {
+                        index: data.page,
+                        total: data.totalPage,
+                    }
+                })
+            }, () => {
+                _this.setState({
+                    loadingMore: false,
+                })
+            })
+
     }
 
     render() {
-        console.log("推荐老师老师");
         return (
-            <div id="recommend-list">
-                { this.state.teachers.map((teacher: RecommendTeacherBasic, index: number) => {
-                    return (
-                        <ProfileCard { ...teacher } key={ teacher.tid} />
-                    )
-                }) }
+            <div id="recommend-pannel">
+                <div className="list">
+                    { this.state.teachers.map((teacher: RecommendTeacherBasic, index: number) => {
+                        return (
+                            <ProfileCard { ...teacher } key={ teacher.tid} />
+                        )
+                    }) }
+                </div>
+                { this.state.page.index == this.state.page.total ? <div className="end-line">贤师都被你一览无余了</div> : (this.state.loadingMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.loadMore.bind(this) }>点击加载更多</div>) }
             </div>
         )
     }

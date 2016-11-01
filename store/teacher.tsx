@@ -1,19 +1,14 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 
+import { localPublicPath } from '../common/config';
 
 // interface
 import {
-    TeacherBasic,
+    TeacherResBasic,
     CoursesResBasic,
     RecommendTeachersResBasic,
 } from '../common/teacher';
-
-interface stateBasic {
-    basicInfo: TeacherBasic,
-    courseList: CoursesResBasic,
-    recommendTeachers: RecommendTeachersResBasic,
-}
 
 // reducers
 import teacherReducers from '../reducers/teachers';
@@ -24,13 +19,18 @@ import {
     fetchRecommendTeachers,
 } from '../actions/teachers';
 
-console.log('built store...');
+interface stateBasic {
+    basicInfo: TeacherResBasic,
+    courseList: CoursesResBasic,
+    recommendTeachers: RecommendTeachersResBasic,
+}
+
 
 export const store = createStore(teacherReducers, {}, applyMiddleware(thunkMiddleware));
 
-export function getTeacherBasicInfo(): PromiseLike<TeacherBasic> {
+export function getTeacherBasicInfo(): PromiseLike<TeacherResBasic> {
     return store
-        .dispatch(fetchBasicInfoPost('http://192.168.2.55:8080/api/get-teacher-basic-info', {
+        .dispatch(fetchBasicInfoPost(localPublicPath + 'api/get-teacher-basic-info', {
             tid: 12
         }))
         .then(() => (store.getState() as stateBasic).basicInfo)
@@ -38,19 +38,15 @@ export function getTeacherBasicInfo(): PromiseLike<TeacherBasic> {
 
 export function getTeacherCourses(): PromiseLike<CoursesResBasic> {
     return store
-        .dispatch(fetchCoursesPost('http://192.168.2.55:8080/api/get-teacher-courses', {
+        .dispatch(fetchCoursesPost(localPublicPath + 'api/get-teacher-courses', {
             tid: 12,
             page: 1
         }))
         .then(() => (store.getState() as stateBasic).courseList)
 }
 
-export function getRecommendTeachers(): PromiseLike<RecommendTeachersResBasic> {
-    console.log('running getRecommendTeachers');
-
+export function getRecommendTeachers(page: number): PromiseLike<RecommendTeachersResBasic> {
     return store
-        .dispatch(fetchRecommendTeachers('http://192.168.2.55:8080/api/get-recommend-teachers', {
-            page: 1
-        }))
+        .dispatch(fetchRecommendTeachers(localPublicPath + 'api/get-recommend-teachers', { page }))
         .then(() => (store.getState() as stateBasic).recommendTeachers)
 }

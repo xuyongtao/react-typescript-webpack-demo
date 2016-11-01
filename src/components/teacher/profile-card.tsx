@@ -12,9 +12,14 @@ interface ProfileBasic {
     avatar?: string,
     name: string,
     selfIntro?: string,
+    certified: boolean,
+    starCount: number,
+    viewedCount: number,
+    teachingAge: number,
 }
 
 interface CourseBasic {
+    cid: number,
     name: string,
     type?: string,
     floorPrice?: number,
@@ -47,7 +52,9 @@ class CourseList extends React.Component<any, any> {
         return (
             <div className="course-list">
                 { this.props.courses.map((course: CourseBasic, index: number) => {
-                    <Course { ...course } />
+                    return (
+                        <Course key={ course.cid } { ...course } />
+                    )
                 }) }
             </div>
         )
@@ -75,13 +82,20 @@ export default class ProfileCard extends React.Component<any, any> {
         return (
             <div className="profile-card">
                 <div className="profile">
-                    <img src={ this.props.avatar } alt={ this.props.name }/>
-                    <div>
-                        <strong>{ this.props.name }</strong><i></i>
-                        <p>{ this.props.selfIntro }</p>
+                    <img className="avatar" src={ this.props.avatar } alt={ this.props.name }/>
+                    <div className="detail">
+                        <div>
+                            <strong>{ this.props.name }</strong>
+                            { this.props.teachingAge ? <span className="label-teaching-age">{ this.props.teachingAge }年教龄</span> : null }
+                            { this.props.certified ? <span className="label-certified">机构认证</span> : null }
+                        </div>
+                        <p className="intro">{ this.props.selfIntro }</p>
+                        <div className="counts">
+                            <span><i className="iconfont iconstar"></i>{ this.props.starCount }</span>
+                            <span><i className="iconfont iconviewed"></i>{ this.props.viewedCount }</span>
+                        </div>
                     </div>
                 </div>
-
                 { this.props.courses && this.props.courses.length ? <CourseList courses={ this.props.courses } /> : null }
 
             </div>

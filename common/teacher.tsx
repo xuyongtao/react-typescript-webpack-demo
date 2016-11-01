@@ -1,7 +1,7 @@
 export interface TeacherPostBasic {
     tid: number
 }
-export interface TeacherBasic {
+export interface TeacherResBasic {
     tid: number,
     name: string,
     avatar: string,
@@ -33,8 +33,9 @@ export interface RecommendTeachersPostBasic {
 
 export interface RecommendTeachersResBasic {
     page: number,
-    pageCount: number,
-    teachers: RecommendTeacherBasic[]
+    totalPage: number,
+    teachers: RecommendTeacherBasic[],
+    isFetching?: boolean,
 }
 
 export interface RecommendTeacherBasic {
@@ -42,6 +43,10 @@ export interface RecommendTeacherBasic {
     avatar?: string,
     name: string,
     selfIntro?: string,
+    starCount: number,
+    viewedCount: number,
+    teachingAge: number,
+    certified: boolean,
     courses: {
         name: string,
         type?: string,

@@ -1,0 +1,86 @@
+@import '../../css/variable.less';
+
+@avatarSize: 150/@REM; 
+@cardPaddingSize: 30/@REM;
+
+
+.profile-card {
+    padding: @cardPaddingSize;
+    margin-bottom: @cardPaddingSize/2; 
+    border: solid #e0e0e0;
+    border-width: 1px 0;    
+    background-color: #fff;
+    .profile {
+        .label-teaching-age,
+        .label-certified {
+            float: right;
+            margin-left: 10/@REM;
+            margin-top: 14/@REM;
+            padding: 6/@REM 10/@REM;
+            font-size: 20/@REM;
+            line-height: 20/@REM;
+            border: 1px solid;
+            border-radius: 2/@REM;
+        }
+        .label-teaching-age {
+            color: #dc814a;
+            border-color: #dc814a;
+        }
+        .label-certified {
+            color: #3fb4f1;
+            border-color: #3fb4f1;
+        }
+        img.avatar {
+            float: left;
+            width: @avatarSize;
+            height: @avatarSize;
+            border: 1px solid #e0e0e0;
+            border-radius: 10/@REM;
+        }
+        div.detail {
+            margin-left: @avatarSize + @cardPaddingSize;
+            font-size: 22/@REM;  
+            line-height: @cardPaddingSize*2;          
+            p.intro {
+                line-height: 32/@REM;
+                color: #a2a2a2;
+            }            
+            strong {
+                display: inline-block;
+                vertical-align: top;
+                color: #3a3a3a;
+                font-size: 30/@REM;
+            }
+        }
+        div.counts {
+            text-align: right;
+            color: #a2a2a2;
+            i {
+                margin-left: 30/@REM;
+                margin-right: 10/@REM;
+                font-size: 24/@REM;
+            }    
+        }
+    }
+    .course-list {
+        font-size: 24/@REM;
+        line-height: 45/@REM;
+        span.type {
+            background-color: #f5613e;
+            color: #fff;
+            font-size: 20/@REM;
+            line-height: 20/@REM;
+            padding: 10/@REM 20/@REM;
+            border-radius: 2px;
+        }
+        span.other {
+            float: right;
+            strong {
+                color: #f5613e;    
+            }
+        }
+    }
+    .course {
+        margin-top: 24/@REM;
+    }
+}

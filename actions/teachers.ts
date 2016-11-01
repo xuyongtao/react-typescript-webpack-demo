@@ -7,7 +7,7 @@ import {
     CoursesResBasic,
     CourseBasic,
     TeacherPostBasic,
-    TeacherBasic,
+    TeacherResBasic,
     RecommendTeachersPostBasic,
     RecommendTeachersResBasic,
     RecommendTeacherBasic
@@ -24,7 +24,7 @@ function requestBasicInfoPost(data: TeacherPostBasic) {
 }
 
 export const RECEIVE_BASIC_INFO_POST = 'RECEIVE_BASIC_INFO_POST';
-function receiveBasicInfoPost(data: TeacherBasic) {
+function receiveBasicInfoPost(data: TeacherResBasic) {
     return {
         type: RECEIVE_BASIC_INFO_POST,
         respontData: {
@@ -93,18 +93,18 @@ export function fetchCoursesPost(url: string, data: CoursesPostBasic) {
 // end
 
 // 请求推荐的老师action
-export const REQUEST_RECOMMENT_TEACHER_POST = 'REQUEST_RECOMMENT_TEACHER_POST';
+export const REQUEST_RECOMMENT_TEACHERS_POST = 'REQUEST_RECOMMENT_TEACHERS_POST';
 function requestRecommendTeachersPost(data: RecommendTeachersPostBasic) {
     return {
-        type: REQUEST_RECOMMENT_TEACHER_POST,
+        type: REQUEST_RECOMMENT_TEACHERS_POST,
         requestData: data,
     }
 }
 
-export const RECEIVE_RECOMMENT_TEACHER_POST = 'RECEIVE_RECOMMENT_TEACHER_POST';
+export const RECEIVE_RECOMMENT_TEACHERS_POST = 'RECEIVE_RECOMMENT_TEACHERS_POST';
 function receiveRecommendTeachersPost(data: RecommendTeachersResBasic) {
     return {
-        type: RECEIVE_RECOMMENT_TEACHER_POST,
+        type: RECEIVE_RECOMMENT_TEACHERS_POST,
         respontData: data
     }
 }
@@ -119,10 +119,16 @@ export function fetchRecommendTeachers(url: string, data: RecommendTeachersPostB
                 body: JSON.stringify({
                     page: data.page
                 }),
-                // mode: 'cors',                
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
             })
-            .then(response => response.json())
+            .then(response => {
+                return response.json();
+            })
             .then(data => {
+
                 dispatch(receiveRecommendTeachersPost(data))
             })
     }

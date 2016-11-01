@@ -3,7 +3,7 @@ import * as lodash from 'lodash';
 
 import {
     TeacherPostBasic,
-    TeacherBasic,
+    TeacherResBasic,
     CoursesPostBasic,
     CoursesResBasic,
     RecommendTeachersPostBasic,
@@ -15,8 +15,8 @@ import {
     RECEIVE_COURSES_POST,
     REQUEST_BASIC_INFO_POST,
     RECEIVE_BASIC_INFO_POST,
-    REQUEST_RECOMMENT_TEACHER_POST,
-    RECEIVE_RECOMMENT_TEACHER_POST,
+    REQUEST_RECOMMENT_TEACHERS_POST,
+    RECEIVE_RECOMMENT_TEACHERS_POST,
 } from '../actions/teachers'
 
 function postBasicInfo(state = {
@@ -27,7 +27,7 @@ function postBasicInfo(state = {
     selfIntro: ''
 }, action: {
     type: string,
-    respontData?: TeacherBasic,
+    respontData?: TeacherResBasic,
     requestData?: TeacherPostBasic
 }) {
     switch (action.type) {
@@ -89,18 +89,18 @@ function postRecommendTeachers(state = {
     requestData?: RecommendTeachersPostBasic
 }) {
     switch (action.type) {
-        case REQUEST_RECOMMENT_TEACHER_POST:
+        case REQUEST_RECOMMENT_TEACHERS_POST:
 
             return lodash.assign({}, state, {
-                sFetching: true,
+                isFetching: true,
                 page: action.requestData.page,
             })
-        case RECEIVE_RECOMMENT_TEACHER_POST:
+        case RECEIVE_RECOMMENT_TEACHERS_POST:
 
             return lodash.assign({}, state, {
                 isFetching: false,
                 page: action.respontData.page,
-                pageCount: action.respontData.pageCount,
+                totalPage: action.respontData.totalPage,
                 teachers: action.respontData.teachers
             })
         default:
