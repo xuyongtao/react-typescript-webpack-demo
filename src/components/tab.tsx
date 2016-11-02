@@ -7,28 +7,25 @@ import { Router, Route, IndexRoute, browserHistory, Link, IndexLink } from 'reac
 export default class Tab extends React.Component<any, any> {
     constructor(props: any, context: any) {
         super(props, context);
+
     }
 
-    static defaultProps = {
-        isIndex: false,
-    };
-
     static PropTypes = {
-        isIndex: React.PropTypes.bool.isRequired,
         name: React.PropTypes.string.isRequired,
-        to: React.PropTypes.string.isRequired,
-        tabs: React.PropTypes.object.isRequired,
+        isActived: React.PropTypes.bool.isRequired,
+        index: React.PropTypes.number.isRequired,
+        clickHandler: React.PropTypes.func,
+    }
+
+    switchHandler(index: number) {
+        this.props.clickHandler(index);
     }
 
     render() {
-        if (!this.props.isIndex) {
-            return (
-                <li style={ this.props.tabStyle }><Link to={ this.props.to } activeClassName="active">{ this.props.name }</Link></li>
-            )
-        } else {
-            return (
-                <li style={ this.props.tabStyle }><IndexLink to="/" activeClassName="active">{ this.props.name }</IndexLink></li>
-            )
-        }
+        return (
+            <li className={ this.props.isActived ? 'active' : ''} onClick={ this.switchHandler.bind(this, this.props.index) } >{ this.props.name }</li>
+        )
     }
+
+
 }

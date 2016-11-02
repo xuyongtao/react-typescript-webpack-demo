@@ -53,3 +53,30 @@ export interface RecommendTeacherBasic {
         floorPrice?: number,
     }[]
 }
+
+export interface HotTeachersPostBasic {
+    page: number,
+}
+
+export interface HotTeachersResBasic {
+    page: number,
+    totalPage: number,
+    teachers: HotTeacherBasic[],
+    isFetching?: boolean,
+}
+
+export interface HotTeacherBasic {
+    tid: number,
+    avatar?: string,
+    name: string,
+    selfIntro?: string,
+    starCount: number,
+    viewedCount: number,
+    teachingAge: number,
+    certified: boolean,
+    courses: {
+        name: string,
+        type?: string,
+        floorPrice?: number,
+    }[]
+}

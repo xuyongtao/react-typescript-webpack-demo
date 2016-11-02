@@ -4,6 +4,7 @@ import * as React from "react";
 import { render } from "react-dom";
 
 import Tab from './tab';
+import { numberMap } from '../../common/config';
 
 interface TabBasic {
     isIndex: boolean,
@@ -17,21 +18,23 @@ export default class TabsBar extends React.Component<any, any> {
         super(props, context);
     }
 
-    render() {
-        let tabStyle = {
-            width: 100 / (this.props.tabs.length) + '%'
-        };
+    static PropTypes = {
+        tabs: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+        currentTab: React.PropTypes.number.isRequired,
+        clickHandler: React.PropTypes.func,
+    }
 
+    render() {
+        console.log('currentTab: ', this.props.currentTab);
         return (
             <div className="pannels">
-                <ul className="tabs">
+                <ul className={ "tabs tabs-" + numberMap[this.props.tabs.length]}>
                     { this.props.tabs.map((tab: TabBasic, index: number) => {
                         return (
-                            <Tab key={ tab.to } tabStyle={ tabStyle } { ...tab }/>
+                            <Tab key={ index } name={ tab.name } index={ index } isActived={ this.props.currentTab === index } clickHandler={ this.props.clickHandler }/>
                         )
                     }) }
                 </ul>
-                { this.props.children }
             </div>
         )
     }

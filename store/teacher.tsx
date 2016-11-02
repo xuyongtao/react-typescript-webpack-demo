@@ -45,7 +45,7 @@ export function getTeacherCourses(): PromiseLike<CoursesResBasic> {
         .then(() => (store.getState() as stateBasic).courseList)
 }
 
-export function getRecommendTeachers(page: number): PromiseLike<RecommendTeachersResBasic> {
+export function getRecommendTeachers(page?: number): PromiseLike<RecommendTeachersResBasic> {
     return store
         .dispatch(fetchRecommendTeachers(localPublicPath + 'api/get-recommend-teachers', { page }))
         .then(() => (store.getState() as stateBasic).recommendTeachers)

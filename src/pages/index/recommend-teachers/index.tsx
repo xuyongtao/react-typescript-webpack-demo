@@ -1,4 +1,3 @@
-import "./index.less";
 import * as React from "react";
 import { render } from "react-dom";
 
@@ -96,7 +95,7 @@ export default class RecommendTeachers extends React.Component<any, any> {
                     </div>
                     { this.state.page.index == this.state.page.total ? <div className="end-line">贤师都被你一览无余了</div> : (this.state.loadingMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.loadMore.bind(this) }>点击加载更多</div>) }
                 </div>
-            </div> 
+            </div>
         )
     }
 }
