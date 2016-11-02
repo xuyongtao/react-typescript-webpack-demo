@@ -3,10 +3,10 @@ import './basic-info.less';
 import * as React from "react";
 import { render } from "react-dom";
 
-import { TeacherBasic } from '../../../common/teacher';
+import { TeacherResBasic } from '../../../common/teacher';
 
 export default class BasicInfo extends React.Component<any, any> {
-    constructor(props: TeacherBasic, context: any) {
+    constructor(props: TeacherResBasic, context: any) {
         super(props, context);
     }
 

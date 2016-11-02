@@ -8,7 +8,7 @@ import thunkMiddleware from 'redux-thunk';
 import { getTeacherCourses } from "../../../../store/teacher";
 // interface
 import {
-    TeacherBasic,
+    TeacherResBasic,
     CoursesResBasic,
     CourseBasic
 } from '../../../../common/teacher';

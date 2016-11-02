@@ -1,15 +1,19 @@
 @import '../../css/variable.less';
 
-@avatarSize: 150/@REM; 
-@cardPaddingSize: 30/@REM;
-
+@AVATAR_SIZE : 150/@REM; 
+@CARD_PADDING_SIZE : 30/@REM;
+@LABEL_TEACHING_AGE_COLOR : #dc814a;
+@LABEL_CERTIFIED_COLOR : #3fb4f1; 
+@WARN_COLOR : #f5613e;
 
 .profile-card {
-    padding: @cardPaddingSize;
-    margin-bottom: @cardPaddingSize/2; 
-    border: solid #e0e0e0;
+    display: block;
+    padding: @CARD_PADDING_SIZE;
+    margin-bottom: @CARD_PADDING_SIZE/2; 
+    border: solid @BORDER_COLOR;
     border-width: 1px 0;    
     background-color: #fff;
+    color: @MAIN_COLOR;
     .profile {
         .label-teaching-age,
         .label-certified {
@@ -23,38 +27,38 @@
             border-radius: 2/@REM;
         }
         .label-teaching-age {
-            color: #dc814a;
-            border-color: #dc814a;
+            color: @LABEL_TEACHING_AGE_COLOR;
+            border-color: @LABEL_TEACHING_AGE_COLOR;
         }
         .label-certified {
-            color: #3fb4f1;
-            border-color: #3fb4f1;
+            color: @LABEL_CERTIFIED_COLOR;
+            border-color: @LABEL_CERTIFIED_COLOR;
         }
         img.avatar {
             float: left;
-            width: @avatarSize;
-            height: @avatarSize;
-            border: 1px solid #e0e0e0;
+            width: @AVATAR_SIZE;
+            height: @AVATAR_SIZE;
+            border: 1px solid @BORDER_COLOR;
             border-radius: 10/@REM;
         }
         div.detail {
-            margin-left: @avatarSize + @cardPaddingSize;
+            margin-left: @AVATAR_SIZE + @CARD_PADDING_SIZE;
             font-size: 22/@REM;  
-            line-height: @cardPaddingSize*2;          
+            line-height: @CARD_PADDING_SIZE*2;          
             p.intro {
                 line-height: 32/@REM;
-                color: #a2a2a2;
+                color: @SECOND_COLOR;
             }            
             strong {
                 display: inline-block;
                 vertical-align: top;
-                color: #3a3a3a;
+                color: @MAIN_CONTENT_COLOR;
                 font-size: 30/@REM;
             }
         }
         div.counts {
             text-align: right;
-            color: #a2a2a2;
+            color: @SECOND_COLOR;
             i {
                 margin-left: 30/@REM;
                 margin-right: 10/@REM;
@@ -66,7 +70,7 @@
         font-size: 24/@REM;
         line-height: 45/@REM;
         span.type {
-            background-color: #f5613e;
+            background-color: @WARN_COLOR;
             color: #fff;
             font-size: 20/@REM;
             line-height: 20/@REM;
@@ -76,7 +80,7 @@
         span.other {
             float: right;
             strong {
-                color: #f5613e;    
+                color: @WARN_COLOR;    
             }
         }
     }

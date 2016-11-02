@@ -20,7 +20,7 @@ import NavBar from '../../components/nav-bar';
 import BasicInfo from '../../components/teacher/basic-info';
 // interface
 import {
-    TeacherBasic,
+    TeacherResBasic,
     CoursesResBasic,
 } from '../../../common/teacher';
 
@@ -48,7 +48,7 @@ class Application extends React.Component<any, any> {
 
         getTeacherBasicInfo()
             .then(basicInfo => {
-                let teacherInfo: TeacherBasic = basicInfo;
+                let teacherInfo: TeacherResBasic = basicInfo;
 
                 _this.setState({
                     teacher: {

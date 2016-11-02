@@ -2,9 +2,9 @@ import './profile-card.less';
 
 import * as React from "react";
 import { render } from "react-dom";
+import { Link } from "react-router";
 
 import { defaultAvatar } from "../../../common/config";
-
 // interface
 import { RecommendTeacherBasic } from "../../../common/teacher";
 
@@ -17,7 +17,6 @@ interface ProfileBasic {
     viewedCount: number,
     teachingAge: number,
 }
-
 interface CourseBasic {
     cid: number,
     name: string,
@@ -80,7 +79,7 @@ export default class ProfileCard extends React.Component<any, any> {
 
     render() {
         return (
-            <div className="profile-card">
+            <Link className="profile-card" to={ '/teacher/' + this.props.tid + '/intro' }>
                 <div className="profile">
                     <img className="avatar" src={ this.props.avatar } alt={ this.props.name }/>
                     <div className="detail">
@@ -97,8 +96,7 @@ export default class ProfileCard extends React.Component<any, any> {
                     </div>
                 </div>
                 { this.props.courses && this.props.courses.length ? <CourseList courses={ this.props.courses } /> : null }
-
-            </div>
+            </Link>
         )
     }
 }
