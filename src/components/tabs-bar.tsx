@@ -25,7 +25,6 @@ export default class TabsBar extends React.Component<any, any> {
     }
 
     render() {
-        console.log('currentTab: ', this.props.currentTab);
         return (
             <div className="pannels">
                 <ul className={ "tabs tabs-" + numberMap[this.props.tabs.length]}>

@@ -10,12 +10,13 @@
             background-color: #fff; 
         }
         li {
+            position: relative;
             display: inline-block;
             width: 50%;
             line-height: @TAB_HEIGHT;
             text-align: center;
             font-size: @TAB_FONT_SIZE;
-            position: relative;
+            cursor: pointer;
             &.active {
                 &:after {
                     position: absolute;

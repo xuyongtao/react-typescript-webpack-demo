@@ -6,7 +6,7 @@ import { Link } from "react-router";
 
 import { defaultAvatar } from "../../../common/config";
 // interface
-import { RecommendTeacherBasic } from "../../../common/teacher";
+import { HotTeacherBasic } from "../../../common/teacher";
 
 interface ProfileBasic {
     avatar?: string,
@@ -61,7 +61,7 @@ class CourseList extends React.Component<any, any> {
 }
 
 export default class ProfileCard extends React.Component<any, any> {
-    constructor(props: RecommendTeacherBasic, context: any) {
+    constructor(props: HotTeacherBasic, context: any) {
         super(props, context);
     }
 
@@ -79,7 +79,7 @@ export default class ProfileCard extends React.Component<any, any> {
 
     render() {
         return (
-            <Link className="profile-card" to={ '/teacher/' + this.props.tid + '/intro' }>
+            <Link className="profile-card" to={ '/teacher/' + this.props.tid }>
                 <div className="profile">
                     <img className="avatar" src={ this.props.avatar } alt={ this.props.name }/>
                     <div className="detail">

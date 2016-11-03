@@ -8,6 +8,8 @@ import {
     CoursesResBasic,
     RecommendTeachersPostBasic,
     RecommendTeachersResBasic,
+    HotTeachersPostBasic,
+    HotTeachersResBasic,
 } from '../common/teacher';
 
 import {
@@ -17,6 +19,8 @@ import {
     RECEIVE_BASIC_INFO_POST,
     REQUEST_RECOMMENT_TEACHERS_POST,
     RECEIVE_RECOMMENT_TEACHERS_POST,
+    REQUEST_HOT_TEACHERS_POST,
+    RECEIVE_HOT_TEACHERS_POST,
 } from '../actions/teachers'
 
 function postBasicInfo(state = {
@@ -108,10 +112,39 @@ function postRecommendTeachers(state = {
     }
 }
 
+function postHotTeachers(state = {
+    isFetching: false,
+    page: 0
+}, action: {
+    type: string,
+    respontData?: HotTeachersResBasic,
+    requestData?: HotTeachersPostBasic
+}) {
+    switch (action.type) {
+        case REQUEST_HOT_TEACHERS_POST:
+
+            return lodash.assign({}, state, {
+                isFetching: true,
+                page: action.requestData.page,
+            })
+        case RECEIVE_HOT_TEACHERS_POST:
+
+            return lodash.assign({}, state, {
+                isFetching: false,
+                page: action.respontData.page,
+                totalPage: action.respontData.totalPage,
+                teachers: action.respontData.teachers
+            })
+        default:
+            return state;
+    }
+}
+
 const teacherReducers = combineReducers({
     basicInfo: postBasicInfo,
     courseList: postCourses,
-    recommendTeachers: postRecommendTeachers
+    recommendTeachers: postRecommendTeachers,
+    hotTeachers: postHotTeachers,
 })
 
 export default teacherReducers; 

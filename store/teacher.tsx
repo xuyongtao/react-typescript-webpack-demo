@@ -1,13 +1,14 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 
-import { localPublicPath } from '../common/config';
+import { publicPath } from '../common/config';
 
 // interface
 import {
     TeacherResBasic,
     CoursesResBasic,
     RecommendTeachersResBasic,
+    HotTeachersResBasic
 } from '../common/teacher';
 
 // reducers
@@ -17,12 +18,14 @@ import {
     fetchCoursesPost,
     fetchBasicInfoPost,
     fetchRecommendTeachers,
+    fetchHotTeachers,
 } from '../actions/teachers';
 
 interface stateBasic {
     basicInfo: TeacherResBasic,
     courseList: CoursesResBasic,
     recommendTeachers: RecommendTeachersResBasic,
+    hotTeachers: HotTeachersResBasic
 }
 
 
@@ -30,7 +33,7 @@ export const store = createStore(teacherReducers, {}, applyMiddleware(thunkMiddl
 
 export function getTeacherBasicInfo(): PromiseLike<TeacherResBasic> {
     return store
-        .dispatch(fetchBasicInfoPost(localPublicPath + 'api/get-teacher-basic-info', {
+        .dispatch(fetchBasicInfoPost(publicPath + 'api/get-teacher-basic-info', {
             tid: 12
         }))
         .then(() => (store.getState() as stateBasic).basicInfo)
@@ -38,15 +41,21 @@ export function getTeacherBasicInfo(): PromiseLike<TeacherResBasic> {
 
 export function getTeacherCourses(): PromiseLike<CoursesResBasic> {
     return store
-        .dispatch(fetchCoursesPost(localPublicPath + 'api/get-teacher-courses', {
+        .dispatch(fetchCoursesPost(publicPath + 'api/get-teacher-courses', {
             tid: 12,
             page: 1
         }))
         .then(() => (store.getState() as stateBasic).courseList)
 }
 
-export function getRecommendTeachers(page?: number): PromiseLike<RecommendTeachersResBasic> {
+export function getRecommendTeachers(page = 1): PromiseLike<RecommendTeachersResBasic> {
     return store
-        .dispatch(fetchRecommendTeachers(localPublicPath + 'api/get-recommend-teachers', { page }))
+        .dispatch(fetchRecommendTeachers(publicPath + 'api/get-recommend-teachers', { page }))
         .then(() => (store.getState() as stateBasic).recommendTeachers)
+}
+
+export function getHotTeachers(page = 1): PromiseLike<HotTeachersResBasic> {
+    return store
+        .dispatch(fetchHotTeachers(publicPath + 'api/get-hot-teachers', { page }))
+        .then(() => (store.getState() as stateBasic).hotTeachers)
 }
