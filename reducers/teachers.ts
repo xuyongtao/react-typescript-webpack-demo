@@ -47,7 +47,9 @@ function postBasicInfo(state = {
                 isFetching: false,
                 name: action.respontData.name,
                 avatar: action.respontData.avatar,
-                selfIntro: action.respontData.selfIntro
+                selfIntro: action.respontData.selfIntro,
+                teachingAge: action.respontData.teachingAge,
+                certified: action.respontData.certified,
             })
         default:
             return state;
@@ -76,7 +78,7 @@ function postCourses(state = {
             return lodash.assign({}, state, {
                 isFetching: false,
                 page: action.respontData.page,
-                pageCount: action.respontData.pageCount,
+                totalPage: action.respontData.totalPage,
                 courses: action.respontData.courses
             })
         default:

@@ -38,13 +38,16 @@ class CourseList extends React.Component<any, any> {
 
     render() {
         return (
-            <ul id="course-list">
-                { this.props.courses.map((course: CourseBasic, index: number) => {
-                    return (
-                        <Course key={ course.cid } {...course} />
-                    )
-                }) }
-            </ul>
+            <div hidden={ this.props.hidden }>
+                <ul id="course-list">
+                    { this.props.courses.map((course: CourseBasic, index: number) => {
+                        return (
+                            <Course key={ course.cid } {...course} />
+                        )
+                    }) }
+                </ul>
+                { this.props.currentPage == this.props.totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (this.props.loadingMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.props.loadMore }>点击加载更多</div>) }
+            </div>
         )
     }
 
@@ -54,20 +57,37 @@ export default class TeacherCourses extends React.Component<any, any> {
     constructor(props: any, context: any) {
         super(props, context);
         this.state = {
-            courses: []
+            loadingMore: false,
+            courses: [],
+            currentPage: 0,
+            totalPage: 0,
         }
     }
 
-    componentDidMount() {
-        let _this = this;
+    loadMore() {
+        console.log('loading more...');
+    }
 
-        if (!_this.state.courses.length) {
-            getTeacherCourses()
+    componentDidMount() {
+
+        if (!this.state.courses.length) {
+            this.setState({
+                loadingMore: true,
+            })
+
+            getTeacherCourses(this.props.tid)
                 .then(courseList => {
                     let data: CoursesResBasic = courseList;
 
-                    _this.setState({
+                    this.setState({
+                        loadingMore: false,
                         courses: data.courses,
+                        currentPage: data.page,
+                        totalPage: data.totalPage,
+                    })
+                }, () => {
+                    this.setState({
+                        loadingMore: false,
                     })
                 })
         }
@@ -75,8 +95,16 @@ export default class TeacherCourses extends React.Component<any, any> {
 
     render() {
         console.log('构建课程列表');
+        let props = {
+            hidden: this.props.hidden,
+            courses: this.state.courses,
+            currentPage: this.state.currentPage,
+            totalPage: this.state.totalPage,
+            loadMore: this.loadMore.bind(this),
+        }
+
         return (
-            <CourseList courses={ this.state.courses } />
+            <CourseList { ...props } />
         )
     }
 }

@@ -6,7 +6,8 @@ export interface TeacherResBasic {
     name: string,
     avatar: string,
     selfIntro: string,
-    isFetching?: boolean
+    teachingAge: number,
+    certified: boolean,
 }
 
 export interface CoursesPostBasic {
@@ -16,7 +17,7 @@ export interface CoursesPostBasic {
 
 export interface CoursesResBasic {
     page: number,
-    pageCount: number,
+    totalPage: number,
     courses: CourseBasic[]
 }
 

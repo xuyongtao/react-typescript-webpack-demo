@@ -1,12 +1,14 @@
 @import '../../../css/variable.less';
 
 #course-list {
+    margin-bottom: @GAP_WIDTH;
     border-bottom: 1px solid @BORDER_COLOR;
     background-color: #fff;
     li {
         padding: 30/@REM 0;
         margin: 0 30/@REM;
         border-bottom: 1px solid @BORDER_COLOR;
+        overflow: hidden;
         &:last-child {
             border-bottom: none;
         } 
@@ -18,14 +20,15 @@
     } 
     div {
         margin-left: 210/@REM;
-        padding: 15/@REM 0;
+        font-size: 0;
+        padding-top: 15/@REM;
     }
     strong {
         font-size: 28/@REM;
         color: @MAIN_COLOR;
     }
     p {
-        margin-top: 20/@REM;
+        margin-top: 15/@REM;
         color: @SECOND_COLOR;
         font-size: 20/@REM;
         line-height: 34/@REM;

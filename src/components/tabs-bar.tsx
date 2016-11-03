@@ -26,15 +26,13 @@ export default class TabsBar extends React.Component<any, any> {
 
     render() {
         return (
-            <div className="pannels">
-                <ul className={ "tabs tabs-" + numberMap[this.props.tabs.length]}>
-                    { this.props.tabs.map((tab: TabBasic, index: number) => {
-                        return (
-                            <Tab key={ index } name={ tab.name } index={ index } isActived={ this.props.currentTab === index } clickHandler={ this.props.clickHandler }/>
-                        )
-                    }) }
-                </ul>
-            </div>
+            <ul className={ "tabs tabs-" + numberMap[this.props.tabs.length]}>
+                { this.props.tabs.map((tab: TabBasic, index: number) => {
+                    return (
+                        <Tab key={ index } name={ tab.name } index={ index } isActived={ this.props.currentTab === index } clickHandler={ this.props.clickHandler }/>
+                    )
+                }) }
+            </ul>
         )
     }
 }

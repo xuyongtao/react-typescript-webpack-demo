@@ -1,48 +1,46 @@
 @import '../css/variable.less';
 
-.pannels {
-    .tabs {
+.tabs {
+    padding: 0 30/@REM;
+    background-color: #fff;
+    border-bottom: 1px solid @BORDER_COLOR;
+    ul {
         padding: 0 30/@REM;
-        background-color: #fff;
-        border-bottom: 1px solid @BORDER_COLOR;
-        ul {
-            padding: 0 30/@REM;
-            background-color: #fff; 
-        }
-        li {
-            position: relative;
-            display: inline-block;
-            width: 50%;
-            line-height: @TAB_HEIGHT;
-            text-align: center;
-            font-size: @TAB_FONT_SIZE;
-            cursor: pointer;
-            &.active {
-                &:after {
-                    position: absolute;
-                    left: 0;
-                    bottom: 0;
-                    content: '';
-                    display: inline-block;
-                    width: 100%;
-                    border: 2/@REM solid @TAB_ACTIVE_BODER_COLOR;
-                }    
-            }
+        background-color: #fff; 
+    }
+    li {
+        position: relative;
+        display: inline-block;
+        width: 50%;
+        line-height: @TAB_HEIGHT;
+        text-align: center;
+        font-size: @TAB_FONT_SIZE;
+        cursor: pointer;
+        &.active {
+            &:after {
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                content: '';
+                display: inline-block;
+                width: 100%;
+                border: 2/@REM solid @TAB_ACTIVE_BODER_COLOR;
+            }    
         }
     }
-    .tabs-two {
-        li {
-            width: 100%/2;
-        }
+}
+.tabs-two {
+    li {
+        width: 100%/2;
     }
-    .tabs-three {
-        li {
-            width: 100%/3;
-        }
+}
+.tabs-three {
+    li {
+        width: 100%/3;
     }
-    .tabs-four {
-        li {
-            width: 100%/4;
-        }
+}
+.tabs-four {
+    li {
+        width: 100%/4;
     }
 }

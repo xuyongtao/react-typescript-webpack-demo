@@ -31,19 +31,19 @@ interface stateBasic {
 
 export const store = createStore(teacherReducers, {}, applyMiddleware(thunkMiddleware));
 
-export function getTeacherBasicInfo(): PromiseLike<TeacherResBasic> {
+export function getTeacherBasicInfo(tid: number): PromiseLike<TeacherResBasic> {
     return store
         .dispatch(fetchBasicInfoPost(publicPath + 'api/get-teacher-basic-info', {
-            tid: 12
+            tid
         }))
         .then(() => (store.getState() as stateBasic).basicInfo)
 }
 
-export function getTeacherCourses(): PromiseLike<CoursesResBasic> {
+export function getTeacherCourses(tid: number, page = 1): PromiseLike<CoursesResBasic> {
     return store
         .dispatch(fetchCoursesPost(publicPath + 'api/get-teacher-courses', {
-            tid: 12,
-            page: 1
+            tid,
+            page
         }))
         .then(() => (store.getState() as stateBasic).courseList)
 }

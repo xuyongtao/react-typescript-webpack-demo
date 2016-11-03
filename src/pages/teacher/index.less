@@ -1,44 +1,5 @@
 @import '../../css/variable.less';
 
-.pannels {
-    margin: @GAP_WIDTH/@REM 0;
-    border-top: 1px solid @BORDER_COLOR;
-    color: @MAIN_COLOR;
-    
-    .tabs {
-        padding: 0 30/@REM;
-        background-color: #fff;
-        border-bottom: 1px solid @BORDER_COLOR;
-        ul {
-            padding: 0 30/@REM;
-            background-color: #fff; 
-        }
-        li {
-            display: inline-block;
-            width: 33.3%;
-            line-height: 85/@REM;
-            text-align: center;
-            font-size: 28/@REM;
-        }
-        a {
-            position: relative;
-            display: inline-block;
-            width: 100%;
-            height: 100%;
-            color: @MAIN_COLOR;
-            &.active {
-                &:after {
-                    position: absolute;
-                    left: 0;
-                    bottom: 0;
-                    content: '';
-                    display: inline-block;
-                    width: 100%;
-                    border: 2/@REM solid #f56132;
-                }    
-            }
-        }
-    }
-    
-
+.tabs {
+    margin-top: @GAP_WIDTH;
 }

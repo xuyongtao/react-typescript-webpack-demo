@@ -3,6 +3,7 @@ import './profile-card.less';
 import * as React from "react";
 import { render } from "react-dom";
 import { Link } from "react-router";
+import UserLabel from "../user-label";
 
 import { defaultAvatar } from "../../../common/config";
 // interface
@@ -85,8 +86,8 @@ export default class ProfileCard extends React.Component<any, any> {
                     <div className="detail">
                         <div>
                             <strong>{ this.props.name }</strong>
-                            { this.props.teachingAge ? <span className="label-teaching-age">{ this.props.teachingAge }年教龄</span> : null }
-                            { this.props.certified ? <span className="label-certified">机构认证</span> : null }
+                            { this.props.teachingAge ? <UserLabel classname="label-teaching-age" label={ this.props.teachingAge + '年教龄' } /> : null }
+                            { this.props.certified ? <UserLabel classname="label-certified" label="机构认证" /> : null }
                         </div>
                         <p className="intro">{ this.props.selfIntro }</p>
                         <div className="counts">

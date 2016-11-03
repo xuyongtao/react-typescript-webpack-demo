@@ -9,15 +9,39 @@ interface teacherBasicInfo {
     avatar: string
 }
 
+class TeachingCase extends React.Component<any, any> {
+    constructor(props: any, context: any) {
+        super(props, context);
+    }
+
+    render() {
+        return (
+            <li>
+                <div className="case-time"><time>{ this.props.startTime }</time> - <time>{ this.props.endTime }</time></div>
+                <div className="case-content">{ this.props.cont }</div>
+            </li>
+        )
+    }
+}
+
 export default class TeacherIntro extends React.Component<any, any> {
+    constructor(props: any, context: any) {
+        super(props, context);
+
+
+    }
+
     componentDidMount() {
+
+
 
     }
 
     render() {
+
         console.log('构建自我介绍');
         return (
-            <div>
+            <div hidden={ this.props.hidden }>
                 <div id="intro-pannel">
                     <ul>
                         <li>

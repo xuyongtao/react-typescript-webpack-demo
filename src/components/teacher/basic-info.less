@@ -9,18 +9,27 @@
         width: 150/@REM;
         height: 150/@REM;
     }
-    div {
+    div.detail {
         margin-left: 170/@REM;
+        margin-top: 15/@REM;
         height: 150/@REM;
-    }
-    strong {
-        font-size: 30/@REM;
-        color: @MAIN_COLOR;
-    }
-    p {
-        margin-top: 20/@REM;
-        color: @SECOND_COLOR;
-        font-size: 22/@REM;
-        line-height: 34/@REM;
+        font-size: 22/@REM;  
+        strong {
+            display: inline-block;
+            vertical-align: top;
+            font-size: 30/@REM;
+            color: @MAIN_COLOR;
+        }
+        p {
+            margin-top: 20/@REM;
+            color: @SECOND_COLOR;
+            font-size: 22/@REM;
+            line-height: 34/@REM;
+        }
+        .label-teaching-age,
+        .label-certified {
+            float: right;
+            margin-left: 10/@REM;
+        }
     }
 }

@@ -32,7 +32,9 @@ function receiveBasicInfoPost(data: TeacherResBasic) {
             tid: data.tid,
             name: data.name,
             avatar: data.avatar,
-            selfIntro: data.selfIntro
+            selfIntro: data.selfIntro,
+            teachingAge: data.teachingAge,
+            certified: data.certified,
         }
     }
 }
@@ -47,6 +49,10 @@ export function fetchBasicInfoPost(url: string, data: TeacherPostBasic) {
                 body: JSON.stringify({
                     tid: data.tid
                 }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
             })
             .then(response => response.json())
             .then(data => {
@@ -84,6 +90,10 @@ export function fetchCoursesPost(url: string, data: CoursesPostBasic) {
                     tid: data.tid,
                     page: data.page
                 }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
             })
             .then(response => response.json())
             .then(data => {
