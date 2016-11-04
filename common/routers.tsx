@@ -1,27 +1,28 @@
 const indexRouter = {
     isIndex: true,
     name: '推荐老师',
-    to: 'recommend',
+    to: '/',
 }
 
 const hotRouter = {
     name: '热门老师',
-    to: 'hot',
+    to: '/hot',
 }
 
 const teacherIntro = {
+    isIndex: true,
     name: '简介',
-    to: 'teacherIntro',
+    to: '/',
 }
 
 const teacherCourses = {
     name: '课程',
-    to: 'teacherCourses',
+    to: '/courses',
 }
 
 const teacherPhotos = {
     name: '相册',
-    to: 'teacherPhotos'
+    to: '/photos'
 }
 
 export const indexRouters = [indexRouter, hotRouter];

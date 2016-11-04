@@ -12,19 +12,20 @@ export default class Tab extends React.Component<any, any> {
 
     static PropTypes = {
         name: React.PropTypes.string.isRequired,
-        isActived: React.PropTypes.bool.isRequired,
-        index: React.PropTypes.number.isRequired,
-        clickHandler: React.PropTypes.func,
-    }
-
-    switchHandler(index: number) {
-        this.props.clickHandler(index);
+        to: React.PropTypes.string.isRequired,
+        isIndex: React.PropTypes.bool.isRequired,
     }
 
     render() {
-        return (
-            <li className={ this.props.isActived ? 'active' : ''} onClick={ this.switchHandler.bind(this, this.props.index) } >{ this.props.name }</li>
-        )
+        if (this.props.isIndex) {
+            return (
+                <IndexLink activeClassName="active" to={ this.props.to }>{ this.props.name }</IndexLink>
+            )
+        } else {
+            return (
+                <Link activeClassName="active" to={ this.props.to } >{ this.props.name }</Link>
+            )
+        }
     }
 
 

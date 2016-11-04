@@ -4,17 +4,18 @@
     padding: 0 30/@REM;
     background-color: #fff;
     border-bottom: 1px solid @BORDER_COLOR;
-    ul {
+    /*ul {
         padding: 0 30/@REM;
         background-color: #fff; 
-    }
-    li {
+    }*/
+    a {
         position: relative;
         display: inline-block;
         width: 50%;
         line-height: @TAB_HEIGHT;
         text-align: center;
         font-size: @TAB_FONT_SIZE;
+        color: @MAIN_COLOR;
         cursor: pointer;
         &.active {
             &:after {
@@ -30,17 +31,17 @@
     }
 }
 .tabs-two {
-    li {
+    a {
         width: 100%/2;
     }
 }
 .tabs-three {
-    li {
+    a {
         width: 100%/3;
     }
 }
 .tabs-four {
-    li {
+    a {
         width: 100%/4;
     }
 }

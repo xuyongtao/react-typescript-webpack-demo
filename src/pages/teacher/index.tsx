@@ -2,15 +2,11 @@ import "./index.less";
 
 import * as React from "react";
 import { render } from "react-dom";
+import * as Lodash from "lodash";
 
 import NavBar from "../../components/nav-bar";
 import TabsBar from "../../components/tabs-bar";
 import BasicInfo from "../../components/teacher/basic-info";
-import TeacherIntro from "./intro/index";
-import TeacherCourses from "./courses/index";
-import TeacherPhotos from "./photos/index";
-
-import { teacherRouters } from "../../../common/routers";
 
 export default class TeacherIndex extends React.Component<any, any> {
     constructor(props: any, context: any) {
@@ -37,10 +33,21 @@ export default class TeacherIndex extends React.Component<any, any> {
 
     render() {
         let tid: number = this.props.params.tid;
+
         let tabsBarProps = {
-            tabs: teacherRouters,
-            currentTab: this.state.currentTab,
-            clickHandler: this.switchHandler.bind(this),
+            tabs: [
+                {
+                    name: "简介",
+                    to: `/teacher/${tid}/`,
+                    isIndex: true
+                }, {
+                    name: "课程",
+                    to: `/teacher/${tid}/courses`
+                }, {
+                    name: "相册",
+                    to: `/teacher/${tid}/photos`
+                }
+            ],
         }
 
         return (
@@ -48,9 +55,7 @@ export default class TeacherIndex extends React.Component<any, any> {
                 <NavBar pageTitle="老师主页" />
                 <BasicInfo tid={ tid } />
                 <TabsBar { ...tabsBarProps } />
-                <TeacherIntro tid={ tid } hidden={ this.state.currentTab !== 0 } />
-                <TeacherCourses tid={ tid } hidden={ this.state.currentTab !== 1 } />
-                <TeacherPhotos tid={ tid } hidden={ this.state.currentTab !== 2 } />
+                { this.props.children }
             </div>
         )
     }

@@ -18,16 +18,6 @@ import { indexRouters } from "../../../common/routers";
 export default class AppIndx extends React.Component<any, any> {
     constructor(props: any, context: any) {
         super(props, context);
-
-        this.state = {
-            currentTab: 0,
-        }
-    }
-
-    switchHandler(tabIndex: number) {
-        this.setState({
-            currentTab: tabIndex,
-        })
     }
 
     componentDidMount() {
@@ -37,9 +27,8 @@ export default class AppIndx extends React.Component<any, any> {
     render() {
         return (
             <div>
-                <TabsBar tabs={ indexRouters } currentTab={ this.state.currentTab } clickHandler={ this.switchHandler.bind(this) } />
-                <RecommendTeachersPannel hidden={ this.state.currentTab !== 0 } />
-                <HotTeachersPannel hidden={ this.state.currentTab !== 1} />
+                <TabsBar tabs={ indexRouters } />
+                { this.props.children }
             </div>
         )
     }

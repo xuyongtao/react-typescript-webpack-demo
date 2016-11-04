@@ -28,12 +28,9 @@ export default class TeacherIntro extends React.Component<any, any> {
     constructor(props: any, context: any) {
         super(props, context);
 
-
     }
 
     componentDidMount() {
-
-
 
     }
 

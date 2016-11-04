@@ -20,19 +20,24 @@ export default class TabsBar extends React.Component<any, any> {
 
     static PropTypes = {
         tabs: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
-        currentTab: React.PropTypes.number.isRequired,
-        clickHandler: React.PropTypes.func,
     }
 
     render() {
         return (
-            <ul className={ "tabs tabs-" + numberMap[this.props.tabs.length]}>
+            <div className={ "tabs tabs-" + numberMap[this.props.tabs.length]}>
                 { this.props.tabs.map((tab: TabBasic, index: number) => {
+                    let tabProps = {
+                        key: index,
+                        name: tab.name,
+                        to: tab.to,
+                        isIndex: tab.isIndex || false,
+                    };
+
                     return (
-                        <Tab key={ index } name={ tab.name } index={ index } isActived={ this.props.currentTab === index } clickHandler={ this.props.clickHandler }/>
+                        <Tab { ...tabProps } />
                     )
                 }) }
-            </ul>
+            </div>
         )
     }
 }
