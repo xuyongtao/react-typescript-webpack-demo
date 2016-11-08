@@ -5,6 +5,7 @@
     "jquery": "registry:dt/jquery#1.10.0+20160704162008",
     "node-fetch": "registry:dt/node-fetch#0.0.0+20160711094047",
     "react-router": "registry:dt/react-router#2.0.0+20160813233016",
+    "react-swipeable-views": "registry:dt/react-swipeable-views#0.0.0+20160314195531",
     "require": "registry:dt/require#2.1.20+20160919185614",
     "swiper": "registry:dt/swiper#2.0.0+20160906134205",
     "zepto": "registry:dt/zepto#1.0.0+20160316155526"
