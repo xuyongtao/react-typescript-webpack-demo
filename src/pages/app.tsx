@@ -5,7 +5,7 @@ import { render } from "react-dom";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
-import { Router, Route, IndexRoute, browserHistory, Link, IndexLink, Redirect } from "react-router";
+import { Router, Route, IndexRoute, browserHistory, Link, IndexLink, Redirect, } from "react-router";
 
 import { store, getTeacherBasicInfo } from "../../store/teacher";
 
@@ -16,25 +16,8 @@ import TeacherIndex from "./teacher/index";
 import TeacherIntro from "./teacher/intro/index";
 import TeacherCourses from "./teacher/courses/index";
 import TeacherPhotos from "./teacher/photos/index";
-
-class Application extends React.Component<any, any> {
-    constructor(props: any, context: any) {
-        super(props, context);
-
-    }
-
-    componentDidMount() {
-
-    }
-
-    render() {
-        return (
-            <div>
-                { this.props.children }
-            </div>
-        )
-    }
-}
+import CourseDetail from "./common/course-detail/index";
+import NotFound from "./common/404/index";
 
 render((
     <Provider store={ store }>
@@ -49,6 +32,9 @@ render((
                 <Route path="courses" component={ TeacherCourses } />
                 <Route path="photos" component={ TeacherPhotos } />
             </Route>
+
+            <Route path="/course/:cid" component={ CourseDetail }></Route>
+            <Route path="*" component={ NotFound }></Route>
         </Router>
     </Provider>
 ), document.getElementById("app"))

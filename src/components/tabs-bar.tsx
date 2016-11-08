@@ -24,7 +24,7 @@ export default class TabsBar extends React.Component<any, any> {
 
     render() {
         return (
-            <div className={ "tabs tabs-" + numberMap[this.props.tabs.length]}>
+            <div className={ `tabs tabs-${numberMap[this.props.tabs.length]}` }>
                 { this.props.tabs.map((tab: TabBasic, index: number) => {
                     let tabProps = {
                         key: index,

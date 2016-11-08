@@ -1,8 +1,10 @@
 import "./index.less";
+
 import * as React from "react";
 import { render } from "react-dom";
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
+import { Link } from "react-router";
 
 // store
 import { getTeacherCourses } from "../../../../store/teacher";
@@ -21,11 +23,13 @@ class Course extends React.Component<any, any> {
     render() {
         return (
             <li>
-                <img src={ this.props.cover } alt={ this.props.title }/>
-                <div>
-                    <strong>{ this.props.title }</strong>
-                    <p>{ this.props.detail }</p>
-                </div>
+                <Link to={ `/course/${this.props.cid}` }>
+                    <img src={ this.props.cover } alt={ this.props.title }/>
+                    <div>
+                        <strong>{ this.props.title }</strong>
+                        <p>{ this.props.detail }</p>
+                    </div>
+                </Link>
             </li>
         )
     }
@@ -60,7 +64,7 @@ export default class TeacherCourses extends React.Component<any, any> {
             loadingMore: false,
             courses: [],
             currentPage: 0,
-            totalPage: 0,
+            totalPage: 1,
         }
     }
 

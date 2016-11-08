@@ -1,0 +1,54 @@
+@import '../../../css/variable.less';
+
+@WARN_COLOR : #f5613e;
+
+.course-info,
+.course-prices {
+    margin-bottom: @GAP_WIDTH;
+    background-color: #fff;
+    font-size: 22/@REM;
+    color: @MAIN_COLOR;
+    h2 {
+        padding: 0 30/@REM;
+        line-height: 85/@REM;
+        color: @MAIN_CONTENT_COLOR;
+        border-bottom: 1px solid @BORDER_COLOR;
+        font-size: 26/@REM; 
+        &::before {
+            content: "";
+            display: inline-block;
+            position: relative;
+            margin-right: 30/@REM;
+            width: 4/@REM;
+            height: 30/@REM;
+            vertical-align: text-top;
+            background-color: @WARN_COLOR;
+        }  
+    }
+}
+.course-info {
+    div {
+        padding: 30/@REM;
+        text-indent: 44/@REM;
+        line-height: 40/@REM;   
+    }
+}
+.course-prices {
+    ul {
+        display: -webkit-flex;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    li {
+        flex-grow: 1;
+        padding: 30/@REM 20/@REM;
+        text-align: center;
+        border-bottom: 1px solid @BORDER_COLOR;
+        &:nth-child(2n) {
+            border-left: 1px solid @BORDER_COLOR;
+        }
+    }
+    strong {
+        color: @WARN_COLOR;
+    }
+}

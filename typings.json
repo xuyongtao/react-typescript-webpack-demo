@@ -6,6 +6,7 @@
     "node-fetch": "registry:dt/node-fetch#0.0.0+20160711094047",
     "react-router": "registry:dt/react-router#2.0.0+20160813233016",
     "require": "registry:dt/require#2.1.20+20160919185614",
+    "swiper": "registry:dt/swiper#2.0.0+20160906134205",
     "zepto": "registry:dt/zepto#1.0.0+20160316155526"
   },
   "dependencies": {
