@@ -1,0 +1,86 @@
+@import '../../css/variable.less';
+
+@SEARCH_BAR_SUGGESTIONS_BG_COLOR: #f9f9f9;
+@HIGHLIGHTED: #f3f3f3;
+
+.nav-search-bar {
+    height: @NAV_BAR_HEIGHT;
+    line-height: @NAV_BAR_HEIGHT;
+    color: @MAIN_COLOR;
+    background-color: #fff;
+    .btn-back,
+    .index-entrance {
+        position: absolute;
+        width: 90/@REM;
+        font-size: 30/@REM;
+        cursor: pointer; 
+        text-align: center;
+    }
+    .btn-back {
+        left: 0;        
+    }
+    .index-entrance {
+        right: 0;
+        font-size: 20/@REM;
+        a {
+            color: @MAIN_CONTENT_COLOR;            
+        }
+    }
+}
+
+.search-bar-field {
+    position: relative;
+    .icon {
+        position: absolute;
+        top: 30/@REM;
+        width: 40/@REM;
+        height: 40/@REM;
+        font-family: "iconfont";
+        font-size: 40/@REM;
+        line-height: 40/@REM;
+        text-align: center;
+        color: @SECOND_COLOR;
+        &.search-bar-clear {
+            left: 440/@REM;
+            font-size: 30/@REM;
+            &:before {
+                content: "\e61a";
+            }
+        }
+        &.search-bar-submit {
+            left: 490/@REM;
+            line-height: 45/@REM;
+            &:before {
+                content: "\e661";
+            }
+        }
+    }
+}
+
+.search-bar-input {
+    display: inline-block;
+    margin-top: 17.5/@REM;
+    margin-left: 96/@REM;
+    padding: 10/@REM 30/@REM;
+    width: 450/@REM;
+    height: 65/@REM;
+    line-height: 40/@REM;
+    border: 1px solid #d4d4d4;
+    border-radius: 5/@REM;
+    font-size: 24/@REM;
+    vertical-align: top;
+}
+
+.search-bar-suggestions {
+    background-color: @SEARCH_BAR_SUGGESTIONS_BG_COLOR;
+    font-size: 24/@REM;
+    line-height: 80/@REM;
+    color: @MAIN_COLOR;
+    li {
+        padding: 0 30/@REM;
+        border-bottom: 1px solid @BORDER_COLOR;
+        &.highlighted {
+            background-color: @HIGHLIGHTED;
+        }
+    }
+}

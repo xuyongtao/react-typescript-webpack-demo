@@ -17,9 +17,25 @@ import { getHotTeachers } from "../../../store/teacher";
 // common
 import { indexRouters } from "../../../common/routers";
 
-export default class AppIndx extends React.Component<any, any> {
-    constructor(props: any, context: any) {
+interface AppIndxState {
+    keyword?: string;
+}
+
+export default class AppIndx extends React.Component<any, AppIndxState> {
+    constructor(props: any, context: AppIndxState) {
         super(props, context);
+
+        this.state = {
+            keyword: "",
+        }
+    }
+
+    inputHandler() {
+        const inputNode: any = this.refs["input"]
+
+        this.setState({
+            keyword: inputNode.value.trim()
+        })
     }
 
     componentDidMount() {
@@ -39,12 +55,13 @@ export default class AppIndx extends React.Component<any, any> {
                     <img src={ require("../../img/banner.png") } alt="找老师上全民教育" className="banner"/>
                 </div>
                 <div id="search-bar">
-                    <input type="text" placeholder="请输入想学的科目"/>
+                    <input ref="input" onInput={ this.inputHandler.bind(this) } type="text" placeholder="请输入想学的科目" />
+                    <Link className="btn-search iconfont" to={ `/search?keyword=${this.state.keyword}` }></Link>
                 </div>
                 <div id="entrances">
                     { catEntrances.map((entrance, index) => {
                         return (
-                            <Link key={ index } to="/"><i className={ `icon icon-${entrance.className}` }></i> { entrance.name }</Link>
+                            <Link key={ index } to={ `/search/${entrance.cid}` }><i className={ `icon icon-${entrance.className}` }></i> { entrance.name }</Link>
                         )
                     }) }
                 </div>

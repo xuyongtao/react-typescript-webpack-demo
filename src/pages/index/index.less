@@ -3,7 +3,6 @@
 #search-bar {
     position: relative;
     top: -40/@REM;
-    opacity: 0.9;
     input {
         display: block;
         margin: 0 auto;
@@ -11,10 +10,27 @@
         width: 90%;
         height: 80/@REM;
         line-height: 60/@REM;
-        border: none;
+        border: 1px solid #e7e7e7;
         border-radius: 5/@REM;
         box-shadow: 1px 2px 2px #e7e7e7;
         font-size: 24/@REM;
+        opacity: 0.9;        
+    }
+    .btn-search {
+        position: absolute;
+        top: 0;
+        right: 5%;
+        width: 80/@REM;
+        height: 80/@REM;
+        font-size: 50/@REM;
+        background-color: @WARN_COLOR;
+        color: #fff;
+        text-align: center;
+        line-height: 80/@REM;
+        border-radius: 0 5/@REM 5/@REM 0;
+        &:before {
+            content: "\e660";
+        }
     }
 }
 
