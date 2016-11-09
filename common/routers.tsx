@@ -1,11 +1,11 @@
 const indexRouter = {
     isIndex: true,
-    name: '推荐老师',
+    name: '推荐',
     to: '/',
 }
 
 const hotRouter = {
-    name: '热门老师',
+    name: '热门',
     to: '/hot',
 }
 

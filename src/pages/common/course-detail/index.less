@@ -1,6 +1,8 @@
 @import '../../../css/variable.less';
 
-@WARN_COLOR : #f5613e;
+#course-detail-page {
+    margin-bottom: 115/@REM;
+}
 
 .course-info,
 .course-prices {
@@ -25,6 +27,12 @@
             background-color: @WARN_COLOR;
         }  
     }
+}
+.course-cover {
+    img {
+        display: block;
+        width: 100%;
+    }  
 }
 .course-info {
     div {
@@ -51,4 +59,22 @@
     strong {
         color: @WARN_COLOR;
     }
+}
+.btn-phone {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    max-width: @PAGE_MAX_WIDTH;
+    padding: @GAP_WIDTH;
+    line-height: 85/@REM;
+    background-color: #fff;
+    span {
+        display: block;
+        color: #fff;
+        background-color: @WARN_COLOR;
+        font-size: 26/@REM;
+        border-radius: 5px;
+        text-align: center;
+        cursor: pointer;
+    } 
 }

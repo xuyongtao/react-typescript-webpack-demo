@@ -1,6 +1,101 @@
 @import '../../css/variable.less';
 
-#recommend-pannel,#hot-pannel {
+#search-bar {
+    position: relative;
+    top: -40/@REM;
+    opacity: 0.9;
+    input {
+        display: block;
+        margin: 0 auto;
+        padding: 10/@REM 30/@REM;
+        width: 90%;
+        height: 80/@REM;
+        line-height: 60/@REM;
+        border: none;
+        border-radius: 5/@REM;
+        box-shadow: 1px 2px 2px #e7e7e7;
+        font-size: 24/@REM;
+    }
+}
+
+#banner {
+    position: relative;
+    header {    
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+    .logo {
+        margin-left: 20/@REM;
+        margin-top: 20/@REM;
+        width: 170/@REM;
+        height: 60/@REM;
+    }
+    .banner {
+        display: block;
+        width: 100%;
+    }
+}
+
+#entrances {
+    margin-top: -80/@REM;
+    padding-top: 80/@REM;
+    background-color: #fff;
+    a {
+        display: inline-block;
+        margin-bottom: 40/@REM;
+        width: 20%;
+        text-align: center;
+        font-size: 24/@REM;
+        color: @MAIN_COLOR;
+        i {
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 10/@REM;
+            width: 60/@REM;
+            height: 60/@REM;
+            &.icon {
+                background-position: center;
+                background-size: contain;
+                background-repeat: no-repeat; 
+            }
+            &.icon-art {
+                background-image: url("../../img/icon/icon-art.png");
+            }
+            &.icon-sport {
+                background-image: url("../../img/icon/icon-sport.png");
+            }
+            &.icon-life {
+                background-image: url("../../img/icon/icon-life.png");
+            }
+            &.icon-abroad {
+                background-image: url("../../img/icon/icon-abroad.png");
+            }
+            &.icon-child {
+                background-image: url("../../img/icon/icon-child.png");
+            }
+            &.icon-middle-school {
+                background-image: url("../../img/icon/icon-middle-school.png");
+            }
+            &.icon-hight-school {
+                background-image: url("../../img/icon/icon-hight-school.png");
+            }
+            &.icon-college {
+                background-image: url("../../img/icon/icon-college.png");
+            }
+            &.icon-language {
+                background-image: url("../../img/icon/icon-language.png");
+            }
+            &.icon-other {
+                background-image: url("../../img/icon/icon-other.png");
+            }
+        }
+    }
+}
+
+#recommend-pannel,
+#hot-pannel {
     .list {
         margin-top: -1px;
     }

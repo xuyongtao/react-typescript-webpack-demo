@@ -14,6 +14,7 @@ import {
     HotTeachersResBasic,
 } from '../common/teacher';
 
+// TODO: 以下未对请求出现错误做处理
 
 // 请求老师基本信息action
 export const REQUEST_BASIC_INFO_POST = 'REQUEST_BASIC_INFO_POST';

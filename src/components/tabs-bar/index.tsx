@@ -1,10 +1,10 @@
-import './tabs-bar.less';
+import './index.less';
 
 import * as React from "react";
 import { render } from "react-dom";
 
 import Tab from './tab';
-import { numberMap } from '../../common/config';
+import { numberMap } from '../../../common/config';
 
 interface TabBasic {
     isIndex: boolean,
