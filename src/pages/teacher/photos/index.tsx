@@ -43,7 +43,8 @@ class PhotosSwiper extends React.Component<PhotosSwiperProps, PhotosSwiperStates
         let node = findDOMNode(this.refs['swiper']);
 
         return {
-            W: node.clientWidth > this.props.maxSwiperWidth ? this.props.maxSwiperWidth : node.clientWidth,
+            // W: node.clientWidth > this.props.maxSwiperWidth ? this.props.maxSwiperWidth : node.clientWidth,
+            W: node.clientWidth,
             H: node.clientHeight,
         }
     }

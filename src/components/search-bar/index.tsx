@@ -117,7 +117,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         initValue: React.PropTypes.string,
     };
     static defaultProps = {
-        autoFocus: true,
+        autoFocus: false,
         delay: 200
     };
     initialState: SearchBarState;
@@ -232,9 +232,14 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
             <div className="search-bar-wrapper">
                 <div className={classNames(
                     "search-bar-field",
+                    { "fixed": this.state.suggestions.length > 0 },
                     { "is-focused": this.state.isFocused },
                     { "has-suggestions": this.state.suggestions.length > 0 }
                 ) }>
+                    <span className="iconfont btn-back" onClick={ browserHistory.goBack } dangerouslySetInnerHTML={{ __html: '&#xe600;' }}></span>
+                    <span className="index-entrance">
+                        <Link to="/">首页</Link>
+                    </span>
                     <input
                         className="search-bar-input"
                         name={this.props.inputName}
@@ -329,10 +334,6 @@ export default class NavBarWithSearch extends React.Component<NavBarWithSearchPr
     render() {
         return (
             <div className="nav-search-bar">
-                <span className="iconfont btn-back" onClick={ browserHistory.goBack } dangerouslySetInnerHTML={{ __html: '&#xe600;' }}></span>
-                <span className="index-entrance">
-                    <Link to="/">首页</Link>
-                </span>
                 <SearchBar
                     placeholder="请输入想学的科目"
                     onChange={this.onChange}

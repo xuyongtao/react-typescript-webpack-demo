@@ -42,13 +42,9 @@
     }
 }
 .course-prices {
-    ul {
-        display: -webkit-flex;
-        display: flex;
-        flex-wrap: wrap;
-    }
     li {
-        flex-grow: 1;
+        display: inline-block;
+        width: 50%;
         padding: 30/@REM 20/@REM;
         text-align: center;
         border-bottom: 1px solid @BORDER_COLOR;
@@ -64,7 +60,6 @@
     position: fixed;
     bottom: 0;
     width: 100%;
-    max-width: @PAGE_MAX_WIDTH;
     padding: @GAP_WIDTH;
     line-height: 85/@REM;
     background-color: #fff;
