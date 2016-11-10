@@ -341,26 +341,5 @@ export default class NavBarWithSearch extends React.Component<NavBarWithSearchPr
             </div>
         );
     }
-
-
-
-    // <div className="nav-bar-with-search">
-    //     <input type="text" placeholder="请输入想学的科目" value={ this.props.keyword }/>
-    //     <span className="btn-clean"></span>
-    //     <span className="btn-search"></span>
-    //     <Link to="/">首页</Link>
-    // </div>
-    //     render() {
-    //         let SuggestionsProps = {
-    //             highlightedItem: 0,
-    //             searchTerm: "初",
-    //             onSelection: (suggestion: string) => { console.log(suggestion, "onSelection...") },
-    //             suggestions: ["初一物理", "初二物理"]
-    //         }
-
-    //         return (
-    //             <Suggestions { ...SuggestionsProps }></Suggestions>
-    //         )
-    //     }
 }
 

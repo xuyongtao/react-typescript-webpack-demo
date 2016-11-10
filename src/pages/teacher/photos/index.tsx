@@ -15,10 +15,10 @@ import * as Lodash from "lodash";
 
 interface PhotosSwiperProps {
     hidden: boolean,
-    maxSwiperWidth: number,
+    maxSwiperWidth?: number,
     pics: string[],
     index: number,
-    closeHandler: Function,
+    closeHandler(): void,
 }
 interface PhotosSwiperStates {
     swiperWidth: number,
@@ -26,7 +26,9 @@ interface PhotosSwiperStates {
 }
 
 class PhotosSwiper extends React.Component<PhotosSwiperProps, PhotosSwiperStates> {
-    // state: SwiperPhotosStates;
+    static defaultProps = {
+        maxSwiperWidth: 640,
+    }
 
     constructor(props: PhotosSwiperProps, context: PhotosSwiperStates) {
         super(props, context);
@@ -131,7 +133,6 @@ export default class TeacherPhotos extends React.Component<TeacherPhotosProps, T
     render() {
         let swiperProps = {
             hidden: this.state.hiddenSwiper,
-            maxSwiperWidth: 640,
             pics: this.state.pics,
             index: this.state.swiperIndex,
             closeHandler: this.hidePhotosSwiper.bind(this),

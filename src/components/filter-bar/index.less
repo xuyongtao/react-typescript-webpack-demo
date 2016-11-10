@@ -1,0 +1,60 @@
+@import '../../css/variable.less';
+
+.filter-bar {
+    background-color: #fff;
+
+    .filter-pannel {
+        .filter-action-btns {
+            line-height: 100/@REM;
+            font-size: 28/@REM;
+            color: @MAIN_CONTENT_COLOR;  
+            text-align: center;  
+        }   
+        .filter-action-reset-btn, 
+        .filter-action-confirm-btn {
+            display: inline-block;
+            width: 50%;
+            cursor: pointer;
+            vertical-align: top;
+        }
+        .filter-action-reset-btn {
+            border-top: 1px solid @BORDER_COLOR;             
+        }
+        .filter-action-confirm-btn {
+            background-color: @WARN_COLOR;
+            color: #fff;
+        }
+    }
+
+    .filter-condition {
+        padding: 0 30/@REM;        
+        line-height: 65/@REM;    
+        .filter-condition-type {
+            font-size: 22/@REM;
+            color: @MAIN_COLOR;
+            font-weight: normal;
+        }
+        .filter-condition-option {
+            display: inline-block;
+            padding: 0 20/@REM;
+            margin: 0 10/@REM 10/@REM 0;
+            font-size: 22/@REM;
+            color: @MAIN_CONTENT_COLOR;
+            border: 1px solid @BORDER_COLOR;
+            border-radius: 5px;
+            vertical-align: top;
+            cursor: pointer;
+        }
+        .filter-condition-option-choosed {
+            border-color: @WARN_COLOR;
+            background-color: @WARN_COLOR;
+            color: #fff;
+        }
+    }
+
+    
+}
+
+
+
+

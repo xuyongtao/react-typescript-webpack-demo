@@ -2,6 +2,7 @@ import * as React from "react";
 import { render } from "react-dom";
 
 import NavBarWithSearch from "../../components/search-bar/index";
+import FilterBar from "../../components/filter-bar/index";
 
 interface SearchProps {
     params: any,
@@ -33,6 +34,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         return (
             <div>
                 <NavBarWithSearch { ...navBarProps } />
+                <FilterBar />
             </div>
         )
     }
