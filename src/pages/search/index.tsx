@@ -6,6 +6,7 @@ import { render } from "react-dom";
 import NavBarWithSearch from "../../components/search-bar/index";
 import FilterBar from "../../components/filter-bar/index";
 import SyntheticalFilter from "../../components/synthetical-filter-pannel/index";
+import CatsFilter from "../../components/cats-filter/index";
 import ProfileCard from "../../components/teacher/profile-card";
 import { RecommendTeacherBasic } from '../../../common/teacher';
 import { getRecommendTeachers } from "../../../store/teacher";
@@ -159,6 +160,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
                 <NavBarWithSearch { ...navBarProps } />
                 <FilterBar { ...filterBarProps } />
                 { this.state.showSyntheticalFilter ? <SyntheticalFilter { ...filterProps } /> : null }
+                <CatsFilter />
                 <NameList { ...nameListProps } />
             </div>
         )

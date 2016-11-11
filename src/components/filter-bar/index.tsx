@@ -86,8 +86,6 @@ export default class FilterBar extends React.Component<FilterBarProps, FilterBar
                     active: true
                 }) }>筛选</span></div>
             </div>
-
         )
-        // { this.state.showFilter ? <SyntheticalFilter { ...filterProps } /> : null }
     }
 }
