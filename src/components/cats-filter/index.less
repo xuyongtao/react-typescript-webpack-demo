@@ -1,0 +1,67 @@
+@import '../../css/variable.less';
+
+.cats-filter {
+    position: absolute;
+    height: 550/@REM;
+    background-color: #fff;
+    overflow: hidden;
+    box-shadow: 0 2px 2px #e7e7e7;
+    .cats-filter-left {
+        float: left;
+        width: 25%;
+        height: 100%;
+        background-color: #f5f5f5;
+        line-height: 100/@REM;
+        font-size: 24/@REM;
+        color: @MAIN_CONTENT_COLOR;
+        text-align: center;
+        overflow-y: scroll;
+        li.active {
+            background-color: #fff;
+        }
+    }
+    .cats-filter-right {
+        float: right;        
+        width: 70%;
+        height: 100%;
+        overflow-y: scroll;
+        .cats-filter-label-level2 {
+            position: relative;
+            padding-left: 30/@REM; 
+            font-size: 22/@REM;
+            color: @MAIN_COLOR;   
+            &:before {
+                position: absolute;
+                top: 0;
+                left: 10/@REM;
+                width: 0;
+                height: 100%;
+                content: "";
+                border-left: 2px solid @WARN_COLOR;
+            }
+        }
+        .cats-filter-label-level3 {
+            position: relative;
+            display: inline-block;
+            margin: 10/@REM;
+            width: 120/@REM;
+            line-height: 75/@REM;
+            font-size: 24/@REM;
+            color: @MAIN_CONTENT_COLOR;
+            padding: 0 10/@REM;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            vertical-align: top;
+            text-align: center;
+            border: 1px solid @BORDER_COLOR;
+            &.active {
+                background-color: @WARN_COLOR;
+                color: #fff;
+                border-color: @WARN_COLOR;
+            }
+        } 
+    }
+    
+}
+

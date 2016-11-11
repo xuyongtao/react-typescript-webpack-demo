@@ -21,6 +21,6 @@ var
     resizeFontSize();
 
     function resizeFontSize() {
-        DOC_ROOT_STYLE.fontSize = Math.min((document.documentElement.clientWidth) / PAGE_MAX_WIDTH * BASE_FONT_SIZE, BASE_FONT_SIZE) + 'px';
+        DOC_ROOT_STYLE.fontSize = (Math.min((document.documentElement.clientWidth) / PAGE_MAX_WIDTH * BASE_FONT_SIZE, BASE_FONT_SIZE)).toFixed(0) + 'px';
     }
 } ();
