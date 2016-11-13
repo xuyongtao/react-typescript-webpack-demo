@@ -425,7 +425,7 @@ const cats = {
         cats: {
             129: {
                 label: "运动",
-                cat: {
+                cats: {
                     130: {
                         label: "游泳",
                     },

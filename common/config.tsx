@@ -5,16 +5,6 @@ export const publicPath = "http://192.168.2.55:8080/";
 export const numberMap = ["zero", "one", "two", "three", "four"];
 
 export const catEntrances = [
-    // icon-abroad.png
-    // icon-art.png
-    // icon-child.png
-    // icon-college.png
-    // icon-language.png
-    // icon-life.png
-    // icon-middle-school.png
-    // icon-other.png
-    // icon-sport.png
-
     {
         name: "艺术",
         className: "art",
@@ -22,38 +12,98 @@ export const catEntrances = [
     }, {
         name: "体育",
         className: "sport",
-        cid: 2,
+        cid: 128,
     }, {
         name: "生活",
         className: "life",
-        cid: 3,
+        cid: 185,
     }, {
         name: "出国",
         className: "abroad",
-        cid: 4,
+        cid: 214,
     }, {
         name: "幼小",
         className: "child",
-        cid: 5,
+        cid: 242,
     }, {
         name: "初中",
         className: "middle-school",
-        cid: 6,
+        cid: 334,
     }, {
         name: "高中",
         className: "hight-school",
-        cid: 7,
+        cid: 531,
     }, {
         name: "大学",
         className: "college",
-        cid: 8,
+        cid: 456,
     }, {
         name: "语言",
         className: "language",
-        cid: 9,
+        cid: 499,
     }, {
         name: "其他",
         className: "other",
-        cid: 10
+        cid: 520
     }
 ];
+
+export const syntheticalFilterConditions = [
+    {
+        type: "授课方式",
+        tid: 1,
+        options: [{
+            name: "不限",
+            oid: 1,
+        }, {
+                name: "在线教学",
+                oid: 2,
+            }, {
+                name: "老师上门",
+                oid: 3,
+            }, {
+                name: "学生上门",
+                oid: 4,
+            }, {
+                name: "协商地点",
+                oid: 5,
+            }]
+    }, {
+        type: "教龄",
+        tid: 2,
+        options: [{
+            name: "不限",
+            oid: 1,
+        }, {
+                name: "1年",
+                oid: 2,
+            }, {
+                name: "2年",
+                oid: 3,
+            }, {
+                name: "3年",
+                oid: 4,
+            }, {
+                name: "4年",
+                oid: 5,
+            }]
+    }, {
+        type: "身份",
+        tid: 3,
+        options: [{
+            name: "不限",
+            oid: 1,
+        }, {
+                name: "老师",
+                oid: 2,
+            }, {
+                name: "在校生",
+                oid: 3,
+            }, {
+                name: "机构",
+                oid: 4,
+            }, {
+                name: "其他",
+                oid: 5,
+            }]
+    }];

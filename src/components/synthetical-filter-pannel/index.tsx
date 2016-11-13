@@ -15,9 +15,10 @@ interface FilterConditionProps {
     tid: any;
     options: FilterConditionOption[];
     onChoose(option: FilterConditionOption): void;
+    initOption: number;
 }
 interface FilterConditionState {
-    choosedIndex: number;
+    choosedOid: number;
 }
 
 class FilterCondition extends React.Component<FilterConditionProps, FilterConditionState> {
@@ -26,21 +27,27 @@ class FilterCondition extends React.Component<FilterConditionProps, FilterCondit
         tid: React.PropTypes.number,
         options: React.PropTypes.array,
         onChoose: React.PropTypes.func,
+        initOption: React.PropTypes.number,
     }
     initState: FilterConditionState;
 
     constructor(props: FilterConditionProps, context: FilterConditionState) {
         super(props, context);
-        this.state = this.initState = {
-            choosedIndex: 0,
+        this.initState = {
+            choosedOid: 1,
+        }
+        this.state = {
+            choosedOid: this.props.initOption || this.initState.choosedOid,
         }
     }
 
-    onChoose(index: number) {
+    onChoose(oid: number) {
         this.setState({
-            choosedIndex: index,
+            choosedOid: oid,
         })
-        this.props.onChoose(this.props.options[index]);
+        this.props.onChoose(Lodash.find(this.props.options, (o) => {
+            return o.oid === oid;
+        }));
     }
 
     onReset() {
@@ -48,7 +55,7 @@ class FilterCondition extends React.Component<FilterConditionProps, FilterCondit
     }
 
     onConfirm() {
-        return this.state.choosedIndex;
+        return this.state.choosedOid;
     }
 
     render() {
@@ -60,8 +67,8 @@ class FilterCondition extends React.Component<FilterConditionProps, FilterCondit
                         return (
                             <span key={ index } className={classNames({
                                 "synthetical-filter-condition-option": true,
-                                "synthetical-filter-condition-option-choosed": this.state.choosedIndex === index
-                            }) } onClick={ this.onChoose.bind(this, index) }>{ option.name }</span>
+                                "synthetical-filter-condition-option-choosed": this.state.choosedOid === option.oid
+                            }) } onClick={ this.onChoose.bind(this, option.oid) }>{ option.name }</span>
                         )
                     }) }
                 </div>
@@ -81,12 +88,17 @@ interface SyntheticalFilterProps {
     }[];
     initConditions?: number[];
     onClose(): void;
+    currentFilterOptions: number[];
+    onConfirmSyntheticalFilterOptions?(options: number[]): void;
 }
 
 export default class SyntheticalFilter extends React.Component<SyntheticalFilterProps, any> {
     static propTypes = {
         conditions: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
         initConditions: React.PropTypes.array,
+        onClose: React.PropTypes.func,
+        currentFilterOptions: React.PropTypes.array,
+        onConfirmSyntheticalFilterOptions: React.PropTypes.func,
     }
     static defaultProps = {
 
@@ -104,15 +116,14 @@ export default class SyntheticalFilter extends React.Component<SyntheticalFilter
     }
     // 确定功能
     onConfirm() {
-        const choosedIds: number[] = [];
+        const optionIds: number[] = [];
 
         Lodash.each(this.refs, (ref: FilterCondition) => {
-            choosedIds.push(ref.onConfirm());
+            optionIds.push(ref.onConfirm());
         })
-        console.log("choosedIds: ", choosedIds);
+        console.log("综合筛选条件ids：", optionIds);
 
-        this.onClose();
-        return choosedIds;
+        this.props.onConfirmSyntheticalFilterOptions(optionIds);
     }
     // 选中功能
     onChoose(option: FilterConditionOption) {
@@ -127,8 +138,13 @@ export default class SyntheticalFilter extends React.Component<SyntheticalFilter
         return (
             <div className="synthetical-filter-pannel">
                 { this.props.conditions.map((condition, index) => {
+                    let props = {
+                        onChoose: this.onChoose,
+                        initOption: this.props.currentFilterOptions[index],
+                    }
+
                     return (
-                        <FilterCondition ref={ `condition${index}` } key={ index } { ...condition } onChoose={ this.onChoose } />
+                        <FilterCondition key={ index } ref={ `condition${index}` } { ...props } { ...condition } />
                     )
                 }) }
                 <div className="synthetical-filter-action-btns">

@@ -3,6 +3,7 @@
 .cats-filter {
     position: absolute;
     height: 550/@REM;
+    /*height: 100%;*/
     background-color: #fff;
     overflow: hidden;
     box-shadow: 0 2px 2px #e7e7e7;
@@ -16,7 +17,12 @@
         color: @MAIN_CONTENT_COLOR;
         text-align: center;
         overflow-y: scroll;
+        overflow-x: hidden;
+        li {
+            border-right: 1px solid @BORDER_COLOR;
+        }
         li.active {
+            margin-right: -1px;
             background-color: #fff;
         }
     }
@@ -55,6 +61,7 @@
             vertical-align: top;
             text-align: center;
             border: 1px solid @BORDER_COLOR;
+            border-radius: 2px;
             &.active {
                 background-color: @WARN_COLOR;
                 color: #fff;

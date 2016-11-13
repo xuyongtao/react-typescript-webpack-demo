@@ -28,7 +28,7 @@ render((
                 <Route path="hot" component={ HotTeachers } />
             </Route>
 
-            <Route path="/search(/:cid1(-:cid2(-:cid3)))(?keyword=*)" component={ Search } />
+            <Route path="/search(/:cids)(?keyword=*)" component={ Search } />
 
             <Route path="/teacher/:tid" component={ TeacherIndex } >
                 <IndexRoute component={ TeacherIntro } />

@@ -14,44 +14,64 @@
         height: 80/@REM;
         line-height: 80/@REM;
         cursor: pointer;
-        span {
-            position: relative;
-            display: inline-block;
-            padding-right: 10/@REM;
-            &:after {
-                position: absolute;
-                right: -16/@REM;
-                font-family: "iconfont";
-                font-size: 12/@REM;
-                content: "\e7eb"
+        vertical-align: top;
+        &:first-child {
+            span {
+                padding-right: 20/@REM;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                &:after {
+                    right: 0;
+                }
             }
-            &.up:after {
-                content: "\e7f1"
-            }
-        }
-        
-        &:after {
-            position: absolute;
-            top: 25%;
-            right: 0;
-            content: "";
-            height: 50%;
-            width: 0;
-            border-right: 1px solid @BORDER_COLOR;
-        }
-        &:last-child {
-            &:after {
+            &:before {
                 border-right: 0;
             }
+        }
+
+        &:last-child {
             span {
                 &:after {
                     content: "\e666";
                     font-size: 20/@REM;
                 }
-                &.active {
-                    color: @WARN_COLOR;
+            }
+        }
+        &:first-child,
+        &:last-child {
+            span {
+                padding-right: 10/@REM;                
+                &:after {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    font-family: "iconfont";
+                    font-size: 12/@REM;
+                    content: "\e7eb"
+                }
+                &.up:after {
+                    content: "\e7f1"
                 }
             }
+        }
+        span {
+            position: relative;
+            display: inline-block;
+            width: 80%;
+            &.active {
+                color: @WARN_COLOR;
+            }
+        }
+        
+        &:before {
+            position: absolute;
+            top: 25%;
+            left: 0;
+            content: "";
+            height: 50%;
+            width: 0;
+            border-right: 1px solid @BORDER_COLOR;
         }
     }
 }

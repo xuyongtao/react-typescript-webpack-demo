@@ -16,7 +16,7 @@ export default class NavBar extends React.Component<any, any> {
     render() {
         return (
             <div className="nav-bar">
-                <span className="iconfont btn-back" onClick={ browserHistory.goBack } dangerouslySetInnerHTML={{ __html: '&#xe600;' }}></span>
+                <span className="iconfont btn-back" onClick={ browserHistory.goBack }>{ String.fromCharCode(parseInt("e600", 16)) }</span>
                 <h1>{ this.props.pageTitle }</h1>
             </div>
         )
