@@ -1,0 +1,36 @@
+@import '../../css/variable.less';
+
+li.course {
+    padding: 30/@REM 0;
+    margin: 0 30/@REM;
+    border-bottom: 1px solid @BORDER_COLOR;
+    overflow: hidden;
+    &:last-child {
+        border-bottom: none;
+    } 
+    a {
+        display: block;
+        overflow: hidden;
+    }
+
+    img {
+        float: left;
+        width: 190/@REM;
+        height: 145/@REM; 
+    } 
+    div {
+        margin-left: 210/@REM;
+        font-size: 0;
+        padding-top: 15/@REM;
+    }
+    strong {
+        font-size: 28/@REM;
+        color: @MAIN_COLOR;
+    }
+    p {
+        margin-top: 15/@REM;
+        color: @SECOND_COLOR;
+        font-size: 20/@REM;
+        line-height: 34/@REM;
+    }
+}

@@ -9,7 +9,7 @@ import Loading from "../../../components/loading/index";
 import { getRecommendTeachers } from "../../../../store/teacher";
 import { RecommendTeacherBasic } from '../../../../common/teacher';
 
-export default class RecommendTeachersPannel extends React.Component<any, any> {
+export default class RecommendPannel extends React.Component<any, any> {
     constructor(props: any, context: any) {
         super(props, context);
 

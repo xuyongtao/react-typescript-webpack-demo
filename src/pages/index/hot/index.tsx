@@ -9,7 +9,7 @@ import Loading from "../../../components/loading/index";
 import { getHotTeachers } from "../../../../store/teacher";
 import { HotTeacherBasic } from '../../../../common/teacher';
 
-export default class HotTeachersPannel extends React.Component<any, any> {
+export default class HotPannel extends React.Component<any, any> {
     constructor(props: any, context: any) {
         super(props, context);
 

@@ -2,7 +2,9 @@ export const defaultAvatar = require("../src/img/default-avatar.png");
 
 export const publicPath = "http://192.168.2.55:8080/";
 
-export const numberMap = ["zero", "one", "two", "three", "four"];
+export const numberMap = ["zero", "one", "two", "three", "four", "five"];
+
+export enum Role { teacher = 3, studio }
 
 export const catEntrances = [
     {

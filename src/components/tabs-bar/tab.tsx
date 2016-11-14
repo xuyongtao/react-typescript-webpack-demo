@@ -10,7 +10,7 @@ export default class Tab extends React.Component<any, any> {
 
     }
 
-    static PropTypes = {
+    static propTypes = {
         name: React.PropTypes.string.isRequired,
         to: React.PropTypes.string.isRequired,
         isIndex: React.PropTypes.bool.isRequired,

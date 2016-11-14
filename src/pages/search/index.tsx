@@ -47,7 +47,7 @@ interface NameListProps {
     teachers: RecommendTeacherBasic[];
 }
 class NameList extends React.Component<NameListProps, any> {
-    static propsTypes = {
+    static propTypes = {
         teachers: React.PropTypes.array.isRequired,
     }
 

@@ -6,7 +6,8 @@ import * as Lodash from "lodash";
 
 import NavBar from "../../components/nav-bar";
 import TabsBar from "../../components/tabs-bar";
-import BasicInfo from "../../components/teacher/basic-info";
+import BasicInfo from "../../components/basic-info";
+import { Role } from "../../../common/config";
 
 export default class TeacherIndex extends React.Component<any, any> {
     constructor(props: any, context: any) {
@@ -50,10 +51,18 @@ export default class TeacherIndex extends React.Component<any, any> {
             ],
         }
 
+        let teacherProps = {
+            id: 2,
+            role: Role.studio,
+            avatar: "",
+            name: "老师1",
+            selfIntro: "老师1简介老师1简介老师1简介老师1简介老师1简介老师1简介老师1简介",
+        }
+
         return (
             <div>
                 <NavBar pageTitle="老师主页" />
-                <BasicInfo tid={ tid } />
+                <BasicInfo { ...teacherProps } />
                 <TabsBar { ...tabsBarProps } />
                 { this.props.children }
             </div>
