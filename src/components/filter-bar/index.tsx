@@ -49,7 +49,7 @@ export default class FilterBar extends React.Component<FilterBarProps, FilterBar
     }
     static propTypes = {
         showCatsFilter: React.PropTypes.bool,
-        currentCat: React.PropTypes.object,
+        currentCat: React.PropTypes.array,
         onShowCatsFilter: React.PropTypes.func,
         onShowSyntheticalFilter: React.PropTypes.func,
         onCloseAllFilter: React.PropTypes.func,

@@ -1,10 +1,10 @@
-export const defaultAvatar = require("../src/img/default-avatar.png");
+export const defaultAvatar = require("../../img/default-avatar.png");
 
 export const publicPath = "http://192.168.2.55:8080/";
 
 export const numberMap = ["zero", "one", "two", "three", "four", "five"];
 
-export enum Role { teacher = 3, studio }
+export enum Role { teacher = 3, studio };// 这里对应的是数据库的role表
 
 export const catEntrances = [
     {
@@ -109,3 +109,33 @@ export const syntheticalFilterConditions = [
                 oid: 5,
             }]
     }];
+
+const indexRouter = {
+    isIndex: true,
+    name: '推荐',
+    to: '/',
+}
+
+const hotRouter = {
+    name: '热门',
+    to: '/hot',
+}
+
+const teacherIntro = {
+    isIndex: true,
+    name: '简介',
+    to: '/',
+}
+
+const teacherCourses = {
+    name: '课程',
+    to: '/courses',
+}
+
+const teacherPhotos = {
+    name: '相册',
+    to: '/photos'
+}
+
+export const indexRouters = [indexRouter, hotRouter];
+export const teacherRouters = [teacherIntro, teacherCourses, teacherPhotos];

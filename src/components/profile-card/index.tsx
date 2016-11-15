@@ -1,13 +1,13 @@
-import './profile-card.less';
+import './index.less';
 
 import * as React from "react";
 import { render } from "react-dom";
 import { Link } from "react-router";
 import UserLabel from "../user-label";
 
-import { defaultAvatar } from "../../../common/config";
+import { defaultAvatar, Role } from "../../js/common/config";
 // interface
-import { HotTeacherBasic } from "../../../common/teacher";
+import { RecommendBasic } from "../../js/interface/common";
 
 interface ProfileBasic {
     avatar?: string,
@@ -26,6 +26,12 @@ interface CourseBasic {
 }
 
 class Course extends React.Component<any, any> {
+    static propTypes = {
+        cid: React.PropTypes.number.isRequired,
+        name: React.PropTypes.string.isRequired,
+        type: React.PropTypes.string,
+        floorPrice: React.PropTypes.number,
+    }
     constructor(props: CourseBasic, context: any) {
         super(props, context);
     }
@@ -43,15 +49,21 @@ class Course extends React.Component<any, any> {
     }
 }
 
-class CourseList extends React.Component<any, any> {
-    constructor(props: any, context: any) {
+interface CourseListProps {
+    courses?: CourseBasic[],
+}
+class CourseList extends React.Component<CourseListProps, any> {
+    static propTypes = {
+        courses: React.PropTypes.array,
+    }
+    constructor(props: CourseListProps, context: any) {
         super(props, context);
     }
 
     render() {
         return (
             <div className="course-list">
-                { this.props.courses.map((course: CourseBasic, index: number) => {
+                { this.props.courses.map((course, index) => {
                     return (
                         <Course key={ course.cid } { ...course } />
                     )
@@ -61,26 +73,33 @@ class CourseList extends React.Component<any, any> {
     }
 }
 
-export default class ProfileCard extends React.Component<any, any> {
-    constructor(props: HotTeacherBasic, context: any) {
-        super(props, context);
-    }
+interface ProfileCardProps extends RecommendBasic {
 
+}
+export default class ProfileCard extends React.Component<ProfileCardProps, any> {
     static defaultProps = {
         avatar: defaultAvatar,
-    };
+    }
 
     static PropTypes = {
-        tid: React.PropTypes.number.isRequired,
+        id: React.PropTypes.number.isRequired,
+        role: React.PropTypes.number.isRequired,
         avatar: React.PropTypes.string,
         name: React.PropTypes.string.isRequired,
         selfIntro: React.PropTypes.string,
+        starCount: React.PropTypes.number,
+        viewedCount: React.PropTypes.number,
+        teachingAge: React.PropTypes.number,
+        certified: React.PropTypes.bool,
         courses: React.PropTypes.arrayOf(React.PropTypes.object)
+    }
+    constructor(props: ProfileCardProps, context: any) {
+        super(props, context);
     }
 
     render() {
         return (
-            <Link className="profile-card" to={ '/teacher/' + this.props.tid }>
+            <Link className="profile-card" to={ `${this.props.role === Role.teacher ? "/teacher/" : "/studio/"}` + this.props.id }>
                 <div className="profile">
                     <img className="avatar" src={ this.props.avatar } alt={ this.props.name }/>
                     <div className="detail">

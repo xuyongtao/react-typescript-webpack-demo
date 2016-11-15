@@ -3,7 +3,7 @@ import "./index.less";
 import * as React from "react";
 import { render } from "react-dom";
 
-import { CourseBasic } from "../../../common/teacher";
+import { CourseBasic } from "../../js/interface/teacher";
 import Course from "../course/index";
 
 

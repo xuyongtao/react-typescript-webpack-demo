@@ -6,9 +6,8 @@ import { Link } from "react-router";
 
 import UserLabel from "../user-label";
 
-import { TeacherResBasic } from "../../../common/teacher";
-import { getTeacherBasicInfo } from "../../../store/teacher";
-import { Role } from "../../../common/config";
+import { TeacherResBasic } from "../../js/interface/teacher";
+import { defaultAvatar, Role } from "../../js/common/config";
 
 interface BasicInfoProps {
     id: number;

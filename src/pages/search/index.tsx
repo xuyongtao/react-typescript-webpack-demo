@@ -8,11 +8,11 @@ import FilterBar from "../../components/filter-bar/index";
 import SyntheticalFilter from "../../components/synthetical-filter-pannel/index";
 import CatsFilter from "../../components/cats-filter/index";
 import FilterMask from "../../components/filter-mask/index";
-import ProfileCard from "../../components/teacher/profile-card";
+import ProfileCard from "../../components/profile-card/index";
 
-import { RecommendTeacherBasic } from '../../../common/teacher';
-import { getRecommendTeachers } from "../../../store/teacher";
-import { syntheticalFilterConditions } from "../../../common/config";
+import { RecommendBasic } from '../../js/interface/common';
+import { getRecommendList } from "../../js/store/index";
+import { syntheticalFilterConditions } from "../../js/common/config";
 
 interface CatBasic {
     label: string;
@@ -41,10 +41,10 @@ interface CatDataBasic {
         }
     }
 }
-const catsData: CatDataBasic = require("../../../common/cats.js");
+const catsData: CatDataBasic = require("../../js/common/cats.js");
 
 interface NameListProps {
-    teachers: RecommendTeacherBasic[];
+    teachers: RecommendBasic[];
 }
 class NameList extends React.Component<NameListProps, any> {
     static propTypes = {
@@ -60,7 +60,7 @@ class NameList extends React.Component<NameListProps, any> {
             <div className="name-list">
                 { this.props.teachers.map((teacher, index) => {
                     return (
-                        <ProfileCard { ...teacher } key={ teacher.tid} />
+                        <ProfileCard { ...teacher } key={ index } />
                     )
                 }) }
             </div>
@@ -81,7 +81,7 @@ interface SearchProps {
     history: any,
 }
 interface SearchState {
-    teachers?: RecommendTeacherBasic[];
+    teachers?: RecommendBasic[];
     showSyntheticalFilter?: boolean;
     showCatsFilter?: boolean;
     currentCat?: CatBasic[];
@@ -230,10 +230,10 @@ export default class Search extends React.Component<SearchProps, SearchState> {
 
         this.setState({ currentCat });
 
-        getRecommendTeachers()
+        getRecommendList()
             .then(data => {
                 this.setState({
-                    teachers: data.teachers,
+                    teachers: data.list,
                 })
             })
         console.log(this.props.location.query);

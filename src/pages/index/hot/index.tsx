@@ -3,20 +3,27 @@ import './index.less';
 import * as React from "react";
 import { render } from "react-dom";
 
-import ProfileCard from "../../../components/teacher/profile-card";
 import Loading from "../../../components/loading/index";
+import ProfileCard from "../../../components/profile-card/index";
 
-import { getHotTeachers } from "../../../../store/teacher";
-import { HotTeacherBasic } from '../../../../common/teacher';
+import { getRecommendList } from "../../../js/store/index";
+import { RecommendBasic } from '../../../js/interface/common';
 
-export default class HotPannel extends React.Component<any, any> {
+interface HotPannelState {
+    loading?: boolean;
+    loadingMore?: boolean;
+    list?: RecommendBasic[];
+    currentPage?: number;
+    totalPage?: number;
+}
+export default class HotPannel extends React.Component<any, HotPannelState> {
     constructor(props: any, context: any) {
         super(props, context);
 
         this.state = {
             loading: false,
             loadingMore: false,
-            teachers: [],
+            list: [],
             currentPage: 0,
             totalPage: 1,
         }
@@ -28,11 +35,11 @@ export default class HotPannel extends React.Component<any, any> {
             loadingMore: true,
         })
 
-        getHotTeachers(this.state.currentPage + 1)
+        getRecommendList(this.state.currentPage + 1)
             .then(data => {
-                if (data.teachers && data.teachers.length) {
+                if (data.list && data.list.length) {
                     this.setState({
-                        teachers: this.state.teachers.concat(data.teachers),
+                        list: this.state.list.concat(data.list),
                         currentPage: data.page,
                         totalPage: data.totalPage,
                     })
@@ -54,11 +61,11 @@ export default class HotPannel extends React.Component<any, any> {
             loading: true,
         })
 
-        getHotTeachers()
+        getRecommendList()
             .then(data => {
                 this.setState({
                     loading: false,
-                    teachers: data.teachers,
+                    list: data.list,
                     totalPage: data.totalPage,
                     currentPage: data.page,
                 })
@@ -70,23 +77,22 @@ export default class HotPannel extends React.Component<any, any> {
     }
 
     render() {
-        console.log('render hot teachers');
-
-        return (
-            <div id="hot-pannel">
-                { this.state.loading ?
-                    <Loading /> :
-                    <div className="list">
-                        { this.state.teachers.map((teacher: HotTeacherBasic, index: number) => {
-                            return (
-                                <ProfileCard { ...teacher } key={ teacher.tid} />
-                            )
-                        }) }
-                        { this.state.currentPage == this.state.totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (this.state.loadingMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.loadMore.bind(this) }>点击加载更多</div>) }
-                    </div>
-                }
-            </div>
-        )
+        if (this.state.loading) {
+            return (
+                <Loading />
+            )
+        } else {
+            return (
+                <div className="hot-list">
+                    { this.state.list.map((teacher, index) => {
+                        return (
+                            <ProfileCard { ...teacher } key={ index } />
+                        )
+                    }) }
+                    { this.state.currentPage == this.state.totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (this.state.loadingMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.loadMore.bind(this) }>点击加载更多</div>) }
+                </div>
+            )
+        }
     }
 }
 

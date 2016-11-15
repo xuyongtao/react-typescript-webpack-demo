@@ -6,7 +6,7 @@ import { render } from "react-dom";
 import NavBar from "../../components/nav-bar";
 import TabsBar from "../../components/tabs-bar";
 import BasicInfo from "../../components/basic-info";
-import { Role } from "../../../common/config";
+import { Role } from "../../js/common/config";
 
 export default class StudioIndex extends React.Component<any, any> {
     constructor(props: any, context: any) {

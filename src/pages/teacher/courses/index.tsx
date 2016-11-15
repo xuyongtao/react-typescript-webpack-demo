@@ -8,9 +8,9 @@ import { Link } from "react-router";
 
 import CourseList from "../../../components/course-list/index";
 // store
-import { getTeacherCourses } from "../../../../store/teacher";
+import { getTeacherCourses } from "../../../js/store/index";
 // interface
-import { CoursesResBasic } from "../../../../common/teacher";
+import { CoursesResBasic } from "../../../js/interface/teacher";
 
 export default class TeacherCourses extends React.Component<any, any> {
     constructor(props: any, context: any) {

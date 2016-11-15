@@ -3,7 +3,7 @@ import "./index.less";
 import * as React from "react";
 import { render } from "react-dom";
 import BasicInfo from "../../../components/basic-info/index";
-import { Role } from "../../../../common/config";
+import { Role } from "../../../js/common/config";
 
 export default class Teachers extends React.Component<any, any> {
     constructor() {

@@ -7,29 +7,49 @@ import * as Lodash from "lodash";
 import NavBar from "../../components/nav-bar";
 import TabsBar from "../../components/tabs-bar";
 import BasicInfo from "../../components/basic-info";
-import { Role } from "../../../common/config";
+import { Role } from "../../js/common/config";
+
+import { getBasicInfo } from "../../js/store/index";
+import { ReceiveBasicInfoPost } from "../../js/interface/common";
+
+interface TeacherIndexProps {
+    params: {
+        tid: number;
+    }
+}
 
 export default class TeacherIndex extends React.Component<any, any> {
     constructor(props: any, context: any) {
         super(props, context);
 
         this.state = {
-            currentTab: 0
+            teacher: {
+                id: 0,
+                role: Role.teacher,
+                name: "",
+                avatar: "",
+                selfIntro: "",
+                teachingAge: 1,
+                certified: false,
+            }
         }
-
-
-    }
-
-    switchHandler(tabIndex: number) {
-        this.setState({
-            currentTab: tabIndex,
-        })
-
-
     }
 
     componentDidMount() {
-        console.log(this.props.params);
+        getBasicInfo(this.props.params.tid, Role.teacher)
+            .then(res => {
+                this.setState({
+                    teacher: {
+                        id: res.id,
+                        role: Role.teacher,
+                        name: res.name,
+                        avatar: res.avatar,
+                        selfIntro: res.selfIntro,
+                        teachingAge: res.teachingAge,
+                        certified: res.certified,
+                    }
+                })
+            })
     }
 
     render() {
@@ -51,18 +71,10 @@ export default class TeacherIndex extends React.Component<any, any> {
             ],
         }
 
-        let teacherProps = {
-            id: 2,
-            role: Role.studio,
-            avatar: "",
-            name: "老师1",
-            selfIntro: "老师1简介老师1简介老师1简介老师1简介老师1简介老师1简介老师1简介",
-        }
-
         return (
             <div>
                 <NavBar pageTitle="老师主页" />
-                <BasicInfo { ...teacherProps } />
+                <BasicInfo { ...this.state.teacher } />
                 <TabsBar { ...tabsBarProps } />
                 { this.props.children }
             </div>

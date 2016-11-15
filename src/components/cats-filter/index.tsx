@@ -25,7 +25,7 @@ interface CatBasic {
         }
     }
 }
-const catsData: CatBasic = require("../../../common/cats.js");
+const catsData: CatBasic = require("../../js/common/cats.js");
 
 interface CatOptionProp {
     id: number;

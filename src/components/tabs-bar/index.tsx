@@ -4,7 +4,7 @@ import * as React from "react";
 import { render } from "react-dom";
 
 import Tab from './tab';
-import { numberMap } from '../../../common/config';
+import { numberMap } from '../../js/common/config';
 
 interface TabBasic {
     isIndex: boolean,

@@ -26,10 +26,6 @@ interface PhotosSwiperStates {
 }
 
 class PhotosSwiper extends React.Component<PhotosSwiperProps, PhotosSwiperStates> {
-    static defaultProps = {
-        maxSwiperWidth: 640,
-    }
-
     constructor(props: PhotosSwiperProps, context: PhotosSwiperStates) {
         super(props, context);
 
@@ -43,7 +39,6 @@ class PhotosSwiper extends React.Component<PhotosSwiperProps, PhotosSwiperStates
         let node = findDOMNode(this.refs['swiper']);
 
         return {
-            // W: node.clientWidth > this.props.maxSwiperWidth ? this.props.maxSwiperWidth : node.clientWidth,
             W: node.clientWidth,
             H: node.clientHeight,
         }
@@ -74,6 +69,10 @@ class PhotosSwiper extends React.Component<PhotosSwiperProps, PhotosSwiperStates
         let swipeableViewsProps = {
             resistance: true,
             index: this.props.index,
+            slideStyle: {
+                paddingLeft: "2.5%",
+                paddingRight: "2.5%",
+            }
         };
 
         return (
@@ -92,7 +91,9 @@ class PhotosSwiper extends React.Component<PhotosSwiperProps, PhotosSwiperStates
 }
 
 interface TeacherPhotosProps {
-    params: any,
+    params: {
+        [key: string]: any
+    },
 }
 interface TeacherPhotosStates {
     hiddenSwiper?: boolean;
@@ -105,9 +106,9 @@ export default class TeacherPhotos extends React.Component<TeacherPhotosProps, T
         super(props, context);
 
         this.state = {
-            hiddenSwiper: false,
+            hiddenSwiper: true,
             pics: [],
-            swiperIndex: 1,
+            swiperIndex: 0,
         };
     }
 
@@ -142,8 +143,8 @@ export default class TeacherPhotos extends React.Component<TeacherPhotosProps, T
             height: 200,
         };
         let pics = {
-            left: Lodash.reject(this.state.pics, (pic, index) => { return index / 2 === 0 }),
-            right: Lodash.reject(this.state.pics, (pic, index) => { return index / 2 === 1 }),
+            left: this.state.pics.slice(0, Math.floor(this.state.pics.length / 2)),
+            right: this.state.pics.slice(Math.floor(this.state.pics.length / 2), this.state.pics.length),
         };
 
         return (
@@ -153,9 +154,9 @@ export default class TeacherPhotos extends React.Component<TeacherPhotosProps, T
                 <div className="gallery-wall-left">
                     { pics.left.map((pic, index) => {
                         return (
-                            <div key={ index * 2 + 1 } className="gallery-wall-item" onClick={ this.showPhotosSwiper.bind(this, index * 2 + 1) }>
+                            <div key={ index } className="gallery-wall-item" onClick={ this.showPhotosSwiper.bind(this, index) }>
                                 <LazyLoad { ...lazyloadProps }>
-                                    <img src={ require(pic) } alt={ `图片${index * 2}` }/>
+                                    <img src={ require(pic) } alt={ `图片${index}` }/>
                                 </LazyLoad>
                             </div>
                         )
@@ -164,9 +165,9 @@ export default class TeacherPhotos extends React.Component<TeacherPhotosProps, T
                 <div className="gallery-wall-right">
                     { pics.right.map((pic, index) => {
                         return (
-                            <div key={ index * 2 } className="gallery-wall-item" onClick={ this.showPhotosSwiper.bind(this, index * 2) }>
+                            <div key={ index } className="gallery-wall-item" onClick={ this.showPhotosSwiper.bind(this, index + Math.floor(this.state.pics.length / 2)) }>
                                 <LazyLoad { ...lazyloadProps }>
-                                    <img src={ require(pic) } alt={ `图片${index * 2 + 1}` }/>
+                                    <img src={ require(pic) } alt={ `图片${index + Math.floor(this.state.pics.length / 2)}` }/>
                                 </LazyLoad>
                             </div>
                         )

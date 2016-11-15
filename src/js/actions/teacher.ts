@@ -12,56 +12,9 @@ import {
     RecommendTeachersResBasic,
     HotTeachersPostBasic,
     HotTeachersResBasic,
-} from '../common/teacher';
+} from '../interface/teacher';
 
 // TODO: 以下未对请求出现错误做处理
-
-// 请求老师基本信息action
-export const REQUEST_BASIC_INFO_POST = 'REQUEST_BASIC_INFO_POST';
-function requestBasicInfoPost(data: TeacherPostBasic) {
-    return {
-        type: REQUEST_BASIC_INFO_POST,
-        requestData: data
-    }
-}
-
-export const RECEIVE_BASIC_INFO_POST = 'RECEIVE_BASIC_INFO_POST';
-function receiveBasicInfoPost(data: TeacherResBasic) {
-    return {
-        type: RECEIVE_BASIC_INFO_POST,
-        respontData: {
-            tid: data.tid,
-            name: data.name,
-            avatar: data.avatar,
-            selfIntro: data.selfIntro,
-            teachingAge: data.teachingAge,
-            certified: data.certified,
-        }
-    }
-}
-
-export function fetchBasicInfoPost(url: string, data: TeacherPostBasic) {
-    return function (dispatch: Dispatch<any>) {
-        dispatch(requestBasicInfoPost(data));
-
-        return fetch(url,
-            {
-                method: 'post',
-                body: JSON.stringify({
-                    tid: data.tid
-                }),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                dispatch(receiveBasicInfoPost(data))
-            })
-    }
-}
-// end
 
 // 请求老师课程列表信息action
 export const REQUEST_COURSES_POST = 'REQUEST_COURSES_POST';

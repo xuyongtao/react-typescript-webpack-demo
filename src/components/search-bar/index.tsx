@@ -236,7 +236,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
                     { "is-focused": this.state.isFocused },
                     { "has-suggestions": this.state.suggestions.length > 0 }
                 ) }>
-                    <span className="iconfont btn-back" onClick={ browserHistory.goBack } dangerouslySetInnerHTML={{ __html: '&#xe600;' }}></span>
+                    <span className="iconfont btn-back" onClick={ browserHistory.goBack } >{ String.fromCharCode(parseInt("e600", 16)) }</span>
                     <span className="index-entrance">
                         <Link to="/">首页</Link>
                     </span>
@@ -325,6 +325,8 @@ export default class NavBarWithSearch extends React.Component<NavBarWithSearchPr
     onSearch(input: string) {
         if (!input) return;
         console.info(`Searching "${input}"`);
+        // 发送请求，获取老师信息
+
     }
 
     componentDidMount() {
@@ -336,9 +338,9 @@ export default class NavBarWithSearch extends React.Component<NavBarWithSearchPr
             <div className="nav-search-bar">
                 <SearchBar
                     placeholder="请输入想学的科目"
-                    onChange={this.onChange}
-                    onSearch={this.onSearch}
-                    initValue={this.props.keyword} />
+                    onChange={ this.onChange }
+                    onSearch={ this.onSearch }
+                    initValue={ this.props.keyword} />
             </div>
         );
     }

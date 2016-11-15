@@ -7,7 +7,7 @@ import { Link } from "react-router";
 import Course from "../../../components/course/index";
 import BasicInfo from "../../../components/basic-info/index";
 import IntroPanel from "../intro/index";
-import { Role } from "../../../../common/config";
+import { Role } from "../../../js/common/config";
 
 interface IntroProps {
     params: {
