@@ -10,7 +10,7 @@ import CatsFilter from "../../components/cats-filter/index";
 import FilterMask from "../../components/filter-mask/index";
 import ProfileCard from "../../components/profile-card/index";
 
-import { RecommendBasic } from '../../js/interface/common';
+import { RecommendListBasic } from '../../js/interface/common';
 import { getRecommendList } from "../../js/store/index";
 import { syntheticalFilterConditions } from "../../js/common/config";
 
@@ -44,7 +44,7 @@ interface CatDataBasic {
 const catsData: CatDataBasic = require("../../js/common/cats.js");
 
 interface NameListProps {
-    teachers: RecommendBasic[];
+    teachers: RecommendListBasic[];
 }
 class NameList extends React.Component<NameListProps, any> {
     static propTypes = {
@@ -81,7 +81,7 @@ interface SearchProps {
     history: any,
 }
 interface SearchState {
-    teachers?: RecommendBasic[];
+    teachers?: RecommendListBasic[];
     showSyntheticalFilter?: boolean;
     showCatsFilter?: boolean;
     currentCat?: CatBasic[];

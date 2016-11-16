@@ -311,13 +311,14 @@ export default class NavBarWithSearch extends React.Component<NavBarWithSearchPr
         // Simulate AJAX request
         setTimeout(() => {
 
-            const suggestions = matches[Lodash.find(Object.keys(matches), (partial: string) => {
-                return Boolean(input.match(new RegExp(partial, "i")));
-            })] || ['初', '初一', '初二'];
+            // const suggestions = matches[Lodash.find(Object.keys(matches), (partial: string) => {
+            //     return Boolean(input.match(new RegExp(partial, "i")));
+            // })] || ['初', '初一', '初二'];
 
-            resolve(suggestions.filter((suggestion: string, index: number, array: string[]) => {
-                return Boolean(suggestion.match(new RegExp("^" + input.replace(/\W\s/g, ""), "i")));
-            }));
+            // resolve(suggestions.filter((suggestion: string, index: number, array: string[]) => {
+            //     return Boolean(suggestion.match(new RegExp("^" + input.replace(/\W\s/g, ""), "i")));
+            // }));
+            resolve(["初一 - 物理", "初二 - 物理", "初三 - 物理"]);
 
         }, 25);
     }

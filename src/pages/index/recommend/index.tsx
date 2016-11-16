@@ -7,12 +7,12 @@ import Loading from "../../../components/loading/index";
 import ProfileCard from "../../../components/profile-card/index";
 
 import { getRecommendList } from "../../../js/store/index";
-import { RecommendBasic } from '../../../js/interface/common';
+import { RecommendListBasic } from '../../../js/interface/common';
 
 interface RecommendPannelState {
     loading?: boolean;
     loadingMore?: boolean;
-    list?: RecommendBasic[];
+    list?: RecommendListBasic[];
     currentPage?: number;
     totalPage?: number;
 }

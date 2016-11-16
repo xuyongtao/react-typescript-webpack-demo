@@ -1,138 +1,38 @@
 import { Dispatch } from 'redux';
-
 import * as fetch from 'isomorphic-fetch';
+import { api } from "../common/utils";
 
 import {
     CoursesPostBasic,
     CoursesResBasic,
     CourseBasic,
-    TeacherPostBasic,
-    TeacherResBasic,
-    RecommendTeachersPostBasic,
-    RecommendTeachersResBasic,
-    HotTeachersPostBasic,
-    HotTeachersResBasic,
 } from '../interface/teacher';
 
 // TODO: 以下未对请求出现错误做处理
-
 // 请求老师课程列表信息action
 export const REQUEST_COURSES_POST = 'REQUEST_COURSES_POST';
+export const RECEIVE_COURSES_POST = 'RECEIVE_COURSES_POST';
+
 function requestCoursesPost(data: CoursesPostBasic) {
     return {
         type: REQUEST_COURSES_POST,
         requestData: data
     }
 }
-
-export const RECEIVE_COURSES_POST = 'RECEIVE_COURSES_POST';
 function receiveCoursesPost(data: CoursesResBasic) {
     return {
         type: RECEIVE_COURSES_POST,
-        respontData: data
+        responseData: data
     }
 }
-
 export function fetchCoursesPost(url: string, data: CoursesPostBasic) {
-    return function (dispatch: Dispatch<any>) {
+    return (dispatch: Dispatch<any>) => {
         dispatch(requestCoursesPost(data));
 
-        return fetch(url,
-            {
-                method: 'post',
-                body: JSON.stringify({
-                    tid: data.tid,
-                    page: data.page
-                }),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                dispatch(receiveCoursesPost(data))
-            })
-    }
-}
-// end
-
-// 请求推荐的老师action
-export const REQUEST_RECOMMENT_TEACHERS_POST = 'REQUEST_RECOMMENT_TEACHERS_POST';
-function requestRecommendTeachersPost(data: RecommendTeachersPostBasic) {
-    return {
-        type: REQUEST_RECOMMENT_TEACHERS_POST,
-        requestData: data,
-    }
-}
-
-export const RECEIVE_RECOMMENT_TEACHERS_POST = 'RECEIVE_RECOMMENT_TEACHERS_POST';
-function receiveRecommendTeachersPost(data: RecommendTeachersResBasic) {
-    return {
-        type: RECEIVE_RECOMMENT_TEACHERS_POST,
-        respontData: data
-    }
-}
-
-export function fetchRecommendTeachers(url: string, data: RecommendTeachersPostBasic) {
-    return function (dispatch: Dispatch<any>) {
-        dispatch(requestRecommendTeachersPost(data));
-
-        return fetch(url,
-            {
-                method: 'post',
-                body: JSON.stringify({
-                    page: data.page
-                }),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-
-                dispatch(receiveRecommendTeachersPost(data))
-            })
-    }
-}
-// end
-
-// 请求热门的老师action
-export const REQUEST_HOT_TEACHERS_POST = 'REQUEST_HOT_TEACHERS_POST';
-function requestHotTeachersPost(data: HotTeachersPostBasic) {
-    return {
-        type: REQUEST_HOT_TEACHERS_POST,
-        requestData: data,
-    }
-}
-
-export const RECEIVE_HOT_TEACHERS_POST = 'RECEIVE_HOT_TEACHERS_POST';
-function receiveHotTeachersPost(data: HotTeachersResBasic) {
-    return {
-        type: RECEIVE_HOT_TEACHERS_POST,
-        respontData: data
-    }
-}
-
-export function fetchHotTeachers(url: string, data: HotTeachersPostBasic) {
-    return function (dispatch: Dispatch<any>) {
-        dispatch(requestHotTeachersPost(data));
-
-        return fetch(url,
-            {
-                method: 'post',
-                body: JSON.stringify({
-                    page: data.page
-                }),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                dispatch(receiveHotTeachersPost(data))
+        return api
+            .post(url, data)
+            .then(res => {
+                dispatch(receiveCoursesPost(<CoursesResBasic>res.data));
             })
     }
 }

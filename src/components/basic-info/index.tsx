@@ -6,7 +6,6 @@ import { Link } from "react-router";
 
 import UserLabel from "../user-label";
 
-import { TeacherResBasic } from "../../js/interface/teacher";
 import { defaultAvatar, Role } from "../../js/common/config";
 
 interface BasicInfoProps {
@@ -42,19 +41,19 @@ export default class BasicInfo extends React.Component<BasicInfoProps, any> {
     }
 
     render() {
-        let role = Role.studio === this.props.role ? "studio" : "teacher";
+        const { id, role, name, avatar, teachingAge, certified, selfIntro } = this.props;
 
         return (
             <div className="basic-info">
-                <Link to={ `/${role}/${this.props.id}` }>
-                    <img src={ this.props.avatar } alt={ this.props.name }/>
+                <Link to={ `/${Role.studio === role ? "studio" : "teacher"}/${id}` }>
+                    <img src={ avatar } alt={ name }/>
                     <div className="detail">
                         <div>
-                            <strong>{ this.props.name }</strong>
-                            { this.props.teachingAge ? <UserLabel classname="label-teaching-age" label={ this.props.teachingAge + "年教龄" } /> : null }
-                            { this.props.certified ? <UserLabel classname="label-certified" label="机构认证" /> : null }
+                            <strong>{ name }</strong>
+                            { teachingAge ? <UserLabel classname="label-teaching-age" label={ teachingAge + "年教龄" } /> : null }
+                            { certified ? <UserLabel classname="label-certified" label="机构认证" /> : null }
                         </div>
-                        <p>{ this.props.selfIntro }</p>
+                        <p>{ selfIntro }</p>
                     </div>
                 </Link>
             </div>

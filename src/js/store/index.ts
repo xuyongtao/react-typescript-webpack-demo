@@ -6,37 +6,34 @@ import { publicPath } from "../common/config";
 
 // interface
 import {
-    TeacherResBasic,
     CoursesResBasic,
-    RecommendTeachersResBasic,
-    HotTeachersResBasic
 } from "../interface/teacher";
 import {
     RequestBasicInfoPost,
     ReceiveBasicInfoPost,
     RequestRecommendListPost,
     ReceiveRecommendListPost,
+    RequestHotListPost,
+    ReceiveHotListPost,
 } from "../interface/common";
 
 // reducers
 import reducers from "../reducers/index";
 // actions
 import {
-
     fetchBasicInfoPost,
     fetchRecommendList,
+    fetchHotList,
 } from "../actions/common";
 import {
     fetchCoursesPost,
-    fetchRecommendTeachers,
-    fetchHotTeachers,
 } from "../actions/teacher";
 
 interface stateBasic {
     basicInfo: ReceiveBasicInfoPost,
     courseList: CoursesResBasic,
     recommendList: ReceiveRecommendListPost,
-    hotTeachers: HotTeachersResBasic
+    hotList: ReceiveHotListPost,
 }
 
 
@@ -69,8 +66,11 @@ export function getRecommendList(page = 1): Promise<ReceiveRecommendListPost> {
         .then(() => (store.getState() as stateBasic).recommendList)
 }
 
-export function getHotTeachers(page = 1): PromiseLike<HotTeachersResBasic> {
+export function getHotList(page = 1): Promise<ReceiveHotListPost> {
     return store
-        .dispatch(fetchHotTeachers(publicPath + "api/get-hot-teachers", { page }))
-        .then(() => (store.getState() as stateBasic).hotTeachers)
+        .dispatch(fetchHotList({
+            url: publicPath + "api/get-recommend-teachers",
+            data: { page }
+        }))
+        .then(() => (store.getState() as stateBasic).hotList)
 }

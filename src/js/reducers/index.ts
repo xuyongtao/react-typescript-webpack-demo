@@ -8,6 +8,8 @@ import {
     ReceiveBasicInfoPost,
     RequestRecommendListPost,
     ReceiveRecommendListPost,
+    RequestHotListPost,
+    ReceiveHotListPost,
 } from "../interface/common";
 
 import {
@@ -15,26 +17,18 @@ import {
     RECEIVE_BASIC_INFO_POST,
     REQUEST_RECOMMENT_LIST_POST,
     RECEIVE_RECOMMENT_LIST_POST,
+    REQUEST_HOT_LIST_POST,
+    RECEIVE_HOT_LIST_POST,
 } from "../actions/common";
 
 import {
-    TeacherPostBasic,
-    TeacherResBasic,
     CoursesPostBasic,
     CoursesResBasic,
-    RecommendTeachersPostBasic,
-    RecommendTeachersResBasic,
-    HotTeachersPostBasic,
-    HotTeachersResBasic,
 } from "../interface/teacher";
 
 import {
     REQUEST_COURSES_POST,
     RECEIVE_COURSES_POST,
-    REQUEST_RECOMMENT_TEACHERS_POST,
-    RECEIVE_RECOMMENT_TEACHERS_POST,
-    REQUEST_HOT_TEACHERS_POST,
-    RECEIVE_HOT_TEACHERS_POST,
 } from "../actions/teacher"
 
 function postBasicInfo(state = {
@@ -43,7 +37,7 @@ function postBasicInfo(state = {
     role: Role.teacher,
 }, action: {
     type: string,
-    respontData?: ReceiveBasicInfoPost,
+    responseData?: ReceiveBasicInfoPost,
     requestData?: RequestBasicInfoPost,
 }) {
     switch (action.type) {
@@ -56,14 +50,14 @@ function postBasicInfo(state = {
         case RECEIVE_BASIC_INFO_POST:
             return Lodash.assign({}, state, {
                 isFetching: false,
-                id: action.respontData.id,
-                role: action.respontData.role,
-                roleType: action.respontData.roleType,
-                name: action.respontData.name,
-                avatar: action.respontData.avatar,
-                selfIntro: action.respontData.selfIntro,
-                teachingAge: action.respontData.teachingAge,
-                certified: action.respontData.certified,
+                id: action.responseData.id,
+                role: action.responseData.role,
+                roleType: action.responseData.roleType,
+                name: action.responseData.name,
+                avatar: action.responseData.avatar,
+                selfIntro: action.responseData.selfIntro,
+                teachingAge: action.responseData.teachingAge,
+                certified: action.responseData.certified,
             })
         default:
             return state;
@@ -96,13 +90,39 @@ function postRecommendList(state = {
     }
 }
 
+function postHotList(state = {
+    isFetching: false,
+    page: 0
+}, action: {
+    type: string;
+    responseData?: ReceiveRecommendListPost;
+    requestData?: RequestRecommendListPost;
+}) {
+    switch (action.type) {
+        case REQUEST_HOT_LIST_POST:
+            return Lodash.assign({}, state, {
+                isFetching: true,
+                page: action.requestData.page,
+            })
+        case RECEIVE_HOT_LIST_POST:
+            return Lodash.assign({}, state, {
+                isFetching: false,
+                page: action.responseData.page,
+                totalPage: action.responseData.totalPage,
+                list: action.responseData.list,
+            })
+        default:
+            return state;
+    }
+}
+
 function postCourses(state = {
     isFetching: false,
     tid: 0,
     page: 0,
 }, action: {
     type: string,
-    respontData?: CoursesResBasic,
+    responseData?: CoursesResBasic,
     requestData?: CoursesPostBasic
 }) {
     switch (action.type) {
@@ -117,48 +137,22 @@ function postCourses(state = {
 
             return Lodash.assign({}, state, {
                 isFetching: false,
-                page: action.respontData.page,
-                totalPage: action.respontData.totalPage,
-                courses: action.respontData.courses
+                page: action.responseData.page,
+                totalPage: action.responseData.totalPage,
+                courses: action.responseData.courses
             })
         default:
             return state;
     }
 }
 
-function postHotTeachers(state = {
-    isFetching: false,
-    page: 0
-}, action: {
-    type: string,
-    respontData?: HotTeachersResBasic,
-    requestData?: HotTeachersPostBasic
-}) {
-    switch (action.type) {
-        case REQUEST_HOT_TEACHERS_POST:
 
-            return Lodash.assign({}, state, {
-                isFetching: true,
-                page: action.requestData.page,
-            })
-        case RECEIVE_HOT_TEACHERS_POST:
-
-            return Lodash.assign({}, state, {
-                isFetching: false,
-                page: action.respontData.page,
-                totalPage: action.respontData.totalPage,
-                teachers: action.respontData.teachers
-            })
-        default:
-            return state;
-    }
-}
 
 const reducers = combineReducers({
     basicInfo: postBasicInfo,
     courseList: postCourses,
     recommendList: postRecommendList,
-    hotTeachers: postHotTeachers,
+    hotList: postHotList,
 })
 
 export default reducers;  

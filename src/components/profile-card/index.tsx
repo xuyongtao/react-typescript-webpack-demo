@@ -7,7 +7,7 @@ import UserLabel from "../user-label";
 
 import { defaultAvatar, Role } from "../../js/common/config";
 // interface
-import { RecommendBasic } from "../../js/interface/common";
+import { RecommendListBasic } from "../../js/interface/common";
 
 interface ProfileBasic {
     avatar?: string,
@@ -37,12 +37,14 @@ class Course extends React.Component<any, any> {
     }
 
     render() {
+        const { name, type, floorPrice } = this.props;
+
         return (
             <div className="course">
-                <span className="type">课程类型: { this.props.type }</span>
+                <span className="type">课程类型: { type }</span>
                 <span className="other">
-                    { this.props.name }
-                    <strong>￥{ this.props.floorPrice }</strong>起/课时
+                    { name }
+                    <strong>￥{ floorPrice }</strong>起/课时
                 </span>
             </div>
         )
@@ -73,7 +75,7 @@ class CourseList extends React.Component<CourseListProps, any> {
     }
 }
 
-interface ProfileCardProps extends RecommendBasic {
+interface ProfileCardProps extends RecommendListBasic {
 
 }
 export default class ProfileCard extends React.Component<ProfileCardProps, any> {
@@ -98,24 +100,26 @@ export default class ProfileCard extends React.Component<ProfileCardProps, any> 
     }
 
     render() {
+        const { id, role, name, avatar, teachingAge, certified, selfIntro, starCount, viewedCount, courses } = this.props;
+
         return (
-            <Link className="profile-card" to={ `${this.props.role === Role.teacher ? "/teacher/" : "/studio/"}` + this.props.id }>
+            <Link className="profile-card" to={ `${role === Role.teacher ? "/teacher/" : "/studio/"}` + id }>
                 <div className="profile">
-                    <img className="avatar" src={ this.props.avatar } alt={ this.props.name }/>
+                    <img className="avatar" src={ avatar } alt={ name }/>
                     <div className="detail">
                         <div>
-                            <strong>{ this.props.name }</strong>
-                            { this.props.teachingAge ? <UserLabel classname="label-teaching-age" label={ this.props.teachingAge + '年教龄' } /> : null }
-                            { this.props.certified ? <UserLabel classname="label-certified" label="机构认证" /> : null }
+                            <strong>{ name }</strong>
+                            { teachingAge ? <UserLabel classname="label-teaching-age" label={ teachingAge + '年教龄' } /> : null }
+                            { certified ? <UserLabel classname="label-certified" label="机构认证" /> : null }
                         </div>
-                        <p className="intro">{ this.props.selfIntro }</p>
+                        <p className="intro">{ selfIntro }</p>
                         <div className="counts">
-                            <span><i className="iconfont iconstar"></i>{ this.props.starCount }</span>
-                            <span><i className="iconfont iconviewed"></i>{ this.props.viewedCount }</span>
+                            <span><i className="iconfont iconstar"></i>{ starCount }</span>
+                            <span><i className="iconfont iconviewed"></i>{ viewedCount }</span>
                         </div>
                     </div>
                 </div>
-                { this.props.courses && this.props.courses.length ? <CourseList courses={ this.props.courses } /> : null }
+                { courses && courses.length ? <CourseList courses={ courses } /> : null }
             </Link>
         )
     }

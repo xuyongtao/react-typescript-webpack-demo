@@ -6,7 +6,6 @@ import { render } from "react-dom";
 import { Link } from "react-router";
 
 import TabsBar from "../../components/tabs-bar";
-import { getHotTeachers } from "../../js/store/index";
 import { catEntrances, indexRouters } from "../../js/common/config";
 
 class Banner extends React.Component<any, any> {

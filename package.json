@@ -20,6 +20,7 @@
     "html-webpack-plugin": "^2.24.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
+    "postcss-loader": "^1.1.1",
     "react-hot-loader": "^3.0.0-beta.6",
     "redux-thunk": "^2.1.0",
     "style-loader": "^0.13.1",
