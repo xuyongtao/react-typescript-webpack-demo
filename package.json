@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run dev:local",
-    "dev:local": "NODE_ENV=development node build/webpack.dev.js --hot"
+    "release": "npm run deploy:online",
+    "dev:local": "NODE_ENV=development node build/webpack.dev.js --hot",
+    "deploy:online": "NODE_ENV=production node build/webpack.production.js"
   },
   "author": "yota",
   "license": "ISC",
@@ -18,6 +20,7 @@
     "file-loader": "^0.9.0",
     "glob": "^7.1.1",
     "html-webpack-plugin": "^2.24.0",
+    "image-webpack-loader": "^3.0.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "postcss-loader": "^1.1.1",
@@ -29,6 +32,7 @@
     "webpack-dev-server": "^1.16.2"
   },
   "dependencies": {
+    "autoprefixer": "^6.5.3",
     "body-parser": "^1.15.2",
     "classnames": "^2.2.5",
     "es6-promise": "^3.3.1",
