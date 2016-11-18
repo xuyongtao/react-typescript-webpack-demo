@@ -85,19 +85,21 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
     }
 
     render() {
-        if (this.state.loading) {
+        const { loading, loadingMore, list, currentPage, totalPage } = this.state;
+
+        if (loading) {
             return (
                 <Loading />
             )
         } else {
             return (
                 <div className="recommend-list">
-                    { this.state.list.map((teacher, index) => {
+                    { list.map((teacher, index) => {
                         return (
                             <ProfileCard { ...teacher } key={ index } />
                         )
                     }) }
-                    { this.state.currentPage == this.state.totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (this.state.loadingMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.loadMore.bind(this) }>点击加载更多</div>) }
+                    { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loadingMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.loadMore.bind(this) }>点击加载更多</div>) }
                 </div>
             )
         }

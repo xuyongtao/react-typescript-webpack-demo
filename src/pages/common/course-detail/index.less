@@ -71,5 +71,83 @@
         border-radius: 5px;
         text-align: center;
         cursor: pointer;
+        &.disabled {
+            color: rgba(0, 0, 0, 0.3);
+            background-color: #f7f7f7;
+        }
     } 
+}
+
+.consult-modal {
+    position: absolute;
+    height: 700/@REM;
+    width: 500/@REM;
+    top: 50%;
+    left: 50%;
+    right: initial;
+    bottom: initial;
+    margin-top: -350/@REM;
+    margin-left: -250/@REM;
+    background: rgb(255, 255, 255);
+    border-radius: 10/@REM;
+    outline: none;
+    ul.consult-modal-tabs {
+        li {
+            position: relative;
+            top: -10/@REM;
+            display: inline-block;
+            width: 50%;
+            font-size: 28/@REM;
+            color: @MAIN_COLOR;
+            text-align: center;
+            line-height: 90/@REM;
+            background-color: #ececec;
+            &:first-child {
+                border-radius: 10/@REM 10/@REM 10/@REM 0;
+            }
+            &:last-child {
+                border-radius: 10/@REM 10/@REM 0 10/@REM;
+            }
+            &.active {
+                top: -20/@REM;
+                background-color: #fff;
+                color: @MAIN_CONTENT_COLOR;
+            }
+        }
+    }
+    .consult-form {
+        input, textarea, span.btn-submit {
+            display: block;
+            margin: 0 auto;
+            margin-top: 20/@REM;
+            padding: 10/@REM 30/@REM;
+            width: 90%;
+            line-height: 60/@REM;
+            border: 1px solid #e7e7e7;
+            border-radius: 5/@REM;
+            font-size: 24/@REM;
+        }
+        input {
+            height: 80/@REM;
+        }
+        span.btn-submit {
+            color: #fff;
+            background-color: @WARN_COLOR;  
+            border-color: @WARN_COLOR; 
+            text-align: center;
+        }
+    }
+    .qr-code {
+        padding: @GAP_WIDTH*2;
+        img {
+            display: block;
+            width: 100%;
+        }
+        p {
+            margin-top: @GAP_WIDTH;
+            text-align: center;
+            color: @SECOND_COLOR;
+            font-size: 24/@REM;
+        }
+    }
 }

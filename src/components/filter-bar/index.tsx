@@ -11,19 +11,6 @@ interface CatBasic {
     id: number | string;
 }
 
-class CourseFilter extends React.Component<any, any> {
-    constructor() {
-        super();
-    }
-
-    render() {
-        return (
-            <div></div>
-        )
-    }
-}
-
-
 interface FilterBarProps {
     showCatsFilter: boolean;
     onShowSyntheticalFilter(show: boolean): void;
@@ -44,15 +31,15 @@ interface FilterBarState {
 }
 
 export default class FilterBar extends React.Component<FilterBarProps, FilterBarState> {
-    static defaultProps = {
-
-    }
     static propTypes = {
-        showCatsFilter: React.PropTypes.bool,
+        showCatsFilter: React.PropTypes.bool.isRequired,
         currentCat: React.PropTypes.array,
         onShowCatsFilter: React.PropTypes.func,
         onShowSyntheticalFilter: React.PropTypes.func,
         onCloseAllFilter: React.PropTypes.func,
+    }
+    static defaultProps = {
+        currentCat: new Array(3),
     }
     constructor(props: FilterBarProps, context: FilterBarState) {
         super(props, context);
@@ -73,7 +60,7 @@ export default class FilterBar extends React.Component<FilterBarProps, FilterBar
             showSyntheticalFilter: false,
         })
         this.props.onOrderByFavAscActive(!this.state.orderByFavAsc);
-        this.props.onCloseAllFilter();
+        this.props.onCloseAllFilter && this.props.onCloseAllFilter();
 
         console.log("根据收藏排序");
     }
@@ -86,20 +73,30 @@ export default class FilterBar extends React.Component<FilterBarProps, FilterBar
             showSyntheticalFilter: false,
         })
         this.props.onOrderByViewAscActive(!this.state.orderByViewAsc);
-        this.props.onCloseAllFilter();
+        this.props.onCloseAllFilter && this.props.onCloseAllFilter();
+
         console.log("根据查看排序");
     }
 
     onShowSyntheticalFilter() {
-        this.props.onShowSyntheticalFilter(!(this.props.showCatsFilter && this.state.showSyntheticalFilter));
+        if (this.props.onShowSyntheticalFilter) {
+            this.props.onShowSyntheticalFilter(!(this.props.showCatsFilter && this.state.showSyntheticalFilter));
+        } else {
+            console.log("外部父组件 没有传递对应的 点击筛选标签 的函数");
+        }
         this.setState({
             showCatsFilter: false,
             showSyntheticalFilter: !(this.props.showCatsFilter && this.state.showSyntheticalFilter),
         })
     }
 
-    onShowCatsFilter() {
-        this.props.onShowCatsFilter(!(this.props.showCatsFilter && this.state.showCatsFilter));
+    onClickCatLabel() {
+        if (this.props.onShowCatsFilter) {
+            this.props.onShowCatsFilter(!(this.props.showCatsFilter && this.state.showCatsFilter));
+        } else {
+            console.log("外部父组件 没有传递对应的 点击科目标签 的函数");
+        }
+
         this.setState({
             showCatsFilter: !(this.props.showCatsFilter && this.state.showCatsFilter),
         })
@@ -110,10 +107,9 @@ export default class FilterBar extends React.Component<FilterBarProps, FilterBar
     }
 
     render() {
-
         return (
             <div className="filter-bar">
-                <div onClick={ this.onShowCatsFilter.bind(this) }><span className={classNames({
+                <div onClick={ this.onClickCatLabel.bind(this) }><span className={classNames({
                     up: this.props.showCatsFilter && this.state.showCatsFilter,
                 }) }>{ this.props.currentCat[this.props.currentCat.length - 1] ? this.props.currentCat[this.props.currentCat.length - 1].label : "科目" }</span></div>
                 <div onClick={ this.onOrderByFav.bind(this) }><span className={classNames({

@@ -39,7 +39,7 @@ class CatOption extends React.Component<CatOptionProp, any> {
         id: React.PropTypes.number.isRequired,
         label: React.PropTypes.string.isRequired,
         active: React.PropTypes.bool,
-        onClick: React.PropTypes.func,
+        onClick: React.PropTypes.func.isRequired,
     }
     static defaultProps = {
         active: false,
@@ -54,9 +54,9 @@ class CatOption extends React.Component<CatOptionProp, any> {
 
     render() {
         return (
-            <span onClick={ this.onClickHandler.bind(this) } className={classNames("cats-filter-label-level3", {
+            <span onClick={ this.onClickHandler.bind(this) } className={ classNames("cats-filter-label-level3", {
                 active: this.props.active,
-            }) }>{this.props.label}</span>
+            }) }>{ this.props.label }</span>
         )
     }
 }
@@ -77,11 +77,14 @@ interface CatPannelProps {
     onChooseCat?(cats: CatBasicInfo[]): void;
 }
 class CatPannel extends React.Component<CatPannelProps, any> {
-    static PropTypes = {
-        level1Cat: React.PropTypes.object,
+    static propTypes = {
+        level1Cat: React.PropTypes.object.isRequired,
         cats: React.PropTypes.object.isRequired,
         initCat: React.PropTypes.array,
-        onChooseCat: React.PropTypes.func,
+        onChooseCat: React.PropTypes.func.isRequired,
+    }
+    static defaultProps = {
+        initCat: new Array(3),
     }
     constructor(props: CatPannelProps, context: any) {
         super(props, context);

@@ -10,10 +10,24 @@ import CourseList from "../../../components/course-list/index";
 // store
 import { getTeacherCourses } from "../../../js/store/index";
 // interface
-import { CoursesResBasic } from "../../../js/interface/teacher";
+import { CoursesResBasic, CourseBasic } from "../../../js/interface/teacher";
 
-export default class TeacherCourses extends React.Component<any, any> {
-    constructor(props: any, context: any) {
+interface TeacherCoursesProps {
+    params: {
+        tid: number;
+        [key: string]: any;
+    }
+}
+
+interface TeacherCoursesState {
+    loadingMore?: boolean;
+    courses?: CourseBasic[];
+    currentPage?: number;
+    totalPage?: number;
+}
+
+export default class TeacherCourses extends React.Component<TeacherCoursesProps, TeacherCoursesState> {
+    constructor(props: TeacherCoursesProps, context: TeacherCoursesState) {
         super(props, context);
         this.state = {
             loadingMore: false,
@@ -30,7 +44,7 @@ export default class TeacherCourses extends React.Component<any, any> {
             loadingMore: true,
         })
 
-        getTeacherCourses(this.props.tid, this.state.currentPage + 1)
+        getTeacherCourses(this.props.params.tid, this.state.currentPage + 1)
             .then(res => {
                 let data: CoursesResBasic = res;
 
@@ -48,13 +62,13 @@ export default class TeacherCourses extends React.Component<any, any> {
     }
 
     componentDidMount() {
-
+        console.log(this.props.params.tid);
         if (!this.state.courses.length) {
             this.setState({
                 loadingMore: true,
             })
 
-            getTeacherCourses(this.props.tid)
+            getTeacherCourses(this.props.params.tid)
                 .then(res => {
                     let data: CoursesResBasic = res;
 
@@ -74,12 +88,13 @@ export default class TeacherCourses extends React.Component<any, any> {
 
     render() {
         console.log('构建课程列表');
+        const { courses, currentPage, totalPage, loadingMore } = this.state;
+
         let props = {
-            hidden: this.props.hidden,
-            courses: this.state.courses,
-            currentPage: this.state.currentPage,
-            totalPage: this.state.totalPage,
-            loadingMore: this.state.loadingMore,
+            courses,
+            currentPage,
+            totalPage,
+            loadingMore,
             loadMore: this.loadMore.bind(this),
         }
 

@@ -10,6 +10,11 @@ interface teacherBasicInfo {
 }
 
 class TeachingCase extends React.Component<any, any> {
+    static propTypes = {
+        startTime: React.PropTypes.string,
+        endTime: React.PropTypes.string,
+        cont: React.PropTypes.string,
+    }
     constructor(props: any, context: any) {
         super(props, context);
     }
@@ -38,7 +43,7 @@ export default class TeacherIntro extends React.Component<any, any> {
 
         console.log('构建自我介绍');
         return (
-            <div hidden={ this.props.hidden }>
+            <div>
                 <div id="intro-pannel">
                     <ul>
                         <li>

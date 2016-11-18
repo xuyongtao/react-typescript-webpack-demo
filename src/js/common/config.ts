@@ -6,6 +6,16 @@ export const numberMap = ["zero", "one", "two", "three", "four", "five"];
 
 export enum Role { teacher = 3, studio };// 这里对应的是数据库的role表
 
+export enum PriceUnitId { hour, term, course };
+
+export const ModalOverlayBackgroundColor = "rgba(0, 0, 0, 0.7)";
+
+export const PriceUnitMap: string[] = [];
+PriceUnitMap[PriceUnitId.hour] = "课时";
+PriceUnitMap[PriceUnitId.term] = "学期";
+PriceUnitMap[PriceUnitId.course] = "课程";
+
+
 export const catEntrances = [
     {
         name: "艺术",

@@ -123,7 +123,9 @@ export default class SyntheticalFilter extends React.Component<SyntheticalFilter
         })
         console.log("综合筛选条件ids：", optionIds);
 
-        this.props.onConfirmSyntheticalFilterOptions(optionIds);
+        if (this.props.onConfirmSyntheticalFilterOptions) {
+            this.props.onConfirmSyntheticalFilterOptions(optionIds);
+        }
     }
     // 选中功能
     onChoose(option: FilterConditionOption) {
@@ -131,7 +133,9 @@ export default class SyntheticalFilter extends React.Component<SyntheticalFilter
     }
     // 关闭功能
     onClose() {
-        this.props.onClose();
+        if (this.props) {
+            this.props.onClose();
+        }
     }
 
     render() {

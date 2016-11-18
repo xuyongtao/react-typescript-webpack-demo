@@ -25,7 +25,7 @@ interface CourseBasic {
     floorPrice?: number,
 }
 
-class Course extends React.Component<any, any> {
+class Course extends React.Component<CourseBasic, any> {
     static propTypes = {
         cid: React.PropTypes.number.isRequired,
         name: React.PropTypes.string.isRequired,

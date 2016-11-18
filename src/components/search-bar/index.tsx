@@ -11,7 +11,7 @@ import * as Lodash from "lodash";
 interface SuggestionsProps {
     highlightedItem: number;
     searchTerm: string;
-    suggestions: any[];
+    suggestions: string[];
     onSelection(suggestion: string): void;
 }
 interface SuggestionsStates {
@@ -22,7 +22,8 @@ class Suggestions extends React.Component<SuggestionsProps, SuggestionsStates> {
     static propTypes = {
         highlightedItem: React.PropTypes.number,
         searchTerm: React.PropTypes.string.isRequired,
-        suggestions: React.PropTypes.array.isRequired
+        suggestions: React.PropTypes.array.isRequired,
+        onSelection: React.PropTypes.func,
     };
     timer: number;
     touchedMoved: boolean;
@@ -41,39 +42,41 @@ class Suggestions extends React.Component<SuggestionsProps, SuggestionsStates> {
     }
     onTouchMove() {
         clearTimeout(this.timer);
+
         this.touchedMoved = true;
         this.setState({ activeItem: -1 });
     }
-    onTouchEnd(suggestion: any) {
+    onTouchEnd(suggestion: string) {
         if (!this.touchedMoved) {
             setTimeout(() => {
-                this.props.onSelection(suggestion);
+                this.props.onSelection && this.props.onSelection(suggestion);
             }, 220);
         }
         this.touchedMoved = false;
     }
     render() {
-        const {highlightedItem, searchTerm, suggestions} = this.props;
-        const {activeItem} = this.state;
+        const { highlightedItem, searchTerm, suggestions } = this.props;
+        const { activeItem } = this.state;
+
         return (
             <ul
                 className="search-bar-suggestions"
-                onMouseLeave={() => this.setState({ activeItem: -1 }) }>
-                {suggestions.map((suggestion: string, index: number) =>
+                onMouseLeave={ () => this.setState({ activeItem: -1 }) }>
+                { suggestions.map((suggestion, index) =>
                     <li
-                        className={classNames({
+                        className={ classNames({
                             highlighted: highlightedItem === index || activeItem === index
                         }) }
-                        key={index}
-                        onClick={() => this.props.onSelection(suggestion) }
-                        onMouseEnter={() => this.setState({ activeItem: index }) }
-                        onMouseDown={(e) => e.preventDefault() }
-                        onTouchStart={() => this.onTouchStart(index) }
-                        onTouchMove={() => this.onTouchMove() }
-                        onTouchEnd={() => this.onTouchEnd(suggestion) }>
+                        key={ index }
+                        onClick={ () => this.props.onSelection(suggestion) }
+                        onMouseEnter={ () => this.setState({ activeItem: index }) }
+                        onMouseDown={ (e) => e.preventDefault() }
+                        onTouchStart={ () => this.onTouchStart(index) }
+                        onTouchMove={ () => this.onTouchMove() }
+                        onTouchEnd={ () => this.onTouchEnd(suggestion) }>
                         <span>
-                            {searchTerm}
-                            <strong>{suggestion.substr(searchTerm.length) }</strong>
+                            { searchTerm }
+                            <strong>{ suggestion.substr(searchTerm.length) }</strong>
                         </span>
                     </li>
                 ) }
@@ -152,6 +155,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     }
     autosuggest() {
         const searchTerm = this.normalizeInput();
+
         if (!searchTerm) return;
         new Promise((resolve) => {
             this.props.onChange(searchTerm, resolve);
@@ -165,7 +169,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         });
     }
     scroll(key: number) {
-        const {highlightedItem: item, suggestions} = this.state;
+        const { highlightedItem: item, suggestions } = this.state;
         const lastItem = suggestions.length - 1;
         let nextItem: number;
 
@@ -182,11 +186,14 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     }
     search() {
         if (!this.state.value) return;
+
         const value = this.normalizeInput();
         const inputNode: any = this.refs["input"];
+        const { highlightedItem, suggestions } = this.initialState;
+
         clearTimeout(this.timer);
         inputNode.blur();
-        const {highlightedItem, suggestions} = this.initialState;
+
         this.setState({ highlightedItem, suggestions });
         if (this.props.onSearch) {
             this.props.onSearch(value);
@@ -194,8 +201,10 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     }
     onChange(e: FormEvent) {
         clearTimeout(this.timer);
+
         const target: any = e.target;
         const input = target.value;
+
         if (!input) return this.setState(this.initialState);
         this.setState({ value: input });
         this.timer = setTimeout(() => this.autosuggest(), this.props.delay);
@@ -242,35 +251,35 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
                     </span>
                     <input
                         className="search-bar-input"
-                        name={this.props.inputName}
+                        name={ this.props.inputName }
                         type="text"
                         maxLength="100"
                         autoCapitalize="none"
                         autoComplete="off"
                         autoCorrect="off"
                         ref="input"
-                        value={this.state.value}
-                        placeholder={this.props.placeholder}
-                        onChange={this.onChange.bind(this) }
-                        onBlur={() => this.setState({ isFocused: false, suggestions: [] }) }
-                        onKeyDown={this.state.suggestions && this.onKeyDown.bind(this) }
-                        onFocus={() => this.setState({ isFocused: true }) } />
+                        value={ this.state.value }
+                        placeholder={ this.props.placeholder }
+                        onChange={ this.onChange.bind(this) }
+                        onBlur={ () => this.setState({ isFocused: false, suggestions: [] }) }
+                        onKeyDown={ this.state.suggestions && this.onKeyDown.bind(this) }
+                        onFocus={ () => this.setState({ isFocused: true }) } />
                     { this.state.value &&
                         <span
                             className="icon search-bar-clear"
-                            onClick={() => this.setState(this.initialState) }>
+                            onClick={ () => this.setState(this.initialState) }>
                         </span> }
                     <span
                         className="icon search-bar-submit"
-                        onClick={this.onSearch.bind(this) }>
+                        onClick={ this.onSearch.bind(this) }>
                     </span>
                 </div>
                 { this.state.suggestions.length > 0 &&
                     <Suggestions
-                        searchTerm={this.state.searchTerm}
-                        suggestions={this.state.suggestions}
-                        highlightedItem={this.state.highlightedItem}
-                        onSelection={this.onSelection.bind(this) } /> }
+                        searchTerm={ this.state.searchTerm }
+                        suggestions={ this.state.suggestions }
+                        highlightedItem={ this.state.highlightedItem }
+                        onSelection={ this.onSelection.bind(this) } /> }
             </div>
         );
     }

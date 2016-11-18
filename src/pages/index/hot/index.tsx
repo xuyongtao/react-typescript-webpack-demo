@@ -77,19 +77,21 @@ export default class HotPannel extends React.Component<any, HotPannelState> {
     }
 
     render() {
-        if (this.state.loading) {
+        const { loading, list, currentPage, totalPage, loadingMore } = this.state;
+
+        if (loading) {
             return (
                 <Loading />
             )
         } else {
             return (
                 <div className="hot-list">
-                    { this.state.list.map((teacher, index) => {
+                    { list.map((teacher, index) => {
                         return (
                             <ProfileCard { ...teacher } key={ index } />
                         )
                     }) }
-                    { this.state.currentPage == this.state.totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (this.state.loadingMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.loadMore.bind(this) }>点击加载更多</div>) }
+                    { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loadingMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.loadMore.bind(this) }>点击加载更多</div>) }
                 </div>
             )
         }

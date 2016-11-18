@@ -17,13 +17,15 @@ export default class Tab extends React.Component<any, any> {
     }
 
     render() {
-        if (this.props.isIndex) {
+        const { name, to, isIndex } = this.props;
+
+        if (isIndex) {
             return (
-                <IndexLink activeClassName="active" to={ this.props.to }>{ this.props.name }</IndexLink>
+                <IndexLink activeClassName="active" to={ to }>{ name }</IndexLink>
             )
         } else {
             return (
-                <Link activeClassName="active" to={ this.props.to } >{ this.props.name }</Link>
+                <Link activeClassName="active" to={ to } >{ name }</Link>
             )
         }
     }

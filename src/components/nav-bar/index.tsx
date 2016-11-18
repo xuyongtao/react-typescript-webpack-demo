@@ -9,6 +9,10 @@ interface PageBasic {
 }
 
 export default class NavBar extends React.Component<any, any> {
+    static propTypes = {
+        pageTitle: React.PropTypes.string.isRequired,
+    }
+
     constructor(props: PageBasic, context: any) {
         super(props, context);
     }

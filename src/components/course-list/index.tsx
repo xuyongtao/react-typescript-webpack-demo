@@ -29,16 +29,18 @@ export default class CourseList extends React.Component<CourseListProps, any> {
     }
 
     render() {
+        const { courses, currentPage, totalPage, loadingMore, loadMore } = this.props;
+
         return (
             <div>
                 <ul className="course-list">
-                    { this.props.courses.map((course: CourseBasic, index: number) => {
+                    { courses.map((course: CourseBasic, index: number) => {
                         return (
-                            <Course key={ course.cid } {...course} />
+                            <Course key={ course.cid } {...course } />
                         )
                     }) }
                 </ul>
-                { this.props.currentPage == this.props.totalPage ? <div className="end-line">全部课程都在这里了呢</div> : (this.props.loadingMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.props.loadMore }>点击加载更多</div>) }
+                { currentPage == totalPage ? <div className="end-line">全部课程都在这里了呢</div> : (loadingMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ loadMore }>点击加载更多</div>) }
             </div>
         )
     }
