@@ -2,6 +2,7 @@ import "./index.less";
 
 import * as React from "react";
 import { render } from "react-dom";
+import * as QueueAnim from 'rc-queue-anim';
 
 import NavBarWithSearch from "../../components/search-bar/index";
 import FilterBar from "../../components/filter-bar/index";
@@ -82,6 +83,7 @@ interface SearchProps {
 }
 interface SearchState {
     teachers?: RecommendListBasic[];
+    showFilterMask?: boolean;
     showSyntheticalFilter?: boolean;
     showCatsFilter?: boolean;
     currentCat?: CatBasic[];
@@ -97,6 +99,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
 
         this.state = {
             teachers: [],
+            showFilterMask: false,
             showSyntheticalFilter: false,
             showCatsFilter: false,
             currentCat: new Array<CatBasic>(3),
@@ -108,6 +111,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
 
     onShowSyntheticalFilter(show: boolean) {
         this.setState({
+            showFilterMask: true,
             showSyntheticalFilter: show,
             showCatsFilter: false,
         })
@@ -121,6 +125,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
 
     onShowCatsFilter(show: boolean) {
         this.setState({
+            showFilterMask: true,
             showSyntheticalFilter: false,
             showCatsFilter: show,
         })
@@ -188,6 +193,20 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         })
     }
 
+    handlerCloseFilterMask({
+        key,
+        type
+    }: {
+            key: string;
+            type: string;
+        }) {
+        type === "leave" && this.setState({ showFilterMask: false });
+    }
+
+    handlerFocus() {
+        this.onCloseAllFilter();
+    }
+
     getTeachers({
         cat,
         orderByFavAscActive,
@@ -241,13 +260,16 @@ export default class Search extends React.Component<SearchProps, SearchState> {
 
     render() {
         const navBarProps = {
+            onFocus: this.handlerFocus.bind(this),
             keyword: this.props.location.query.keyword,
         };
         const filterProps = {
+            visible: this.state.showSyntheticalFilter,
             onClose: this.onCloseSyntheticalFilter.bind(this),
             conditions: syntheticalFilterConditions,
             currentFilterOptions: this.state.currentSyntheticalFilterOptions,
             onConfirmSyntheticalFilterOptions: this.onConfirmSyntheticalFilterOptions.bind(this),
+            handlerAnimEnd: this.handlerCloseFilterMask.bind(this),
         }
         const filterBarProps = {
             orderByFavAscActive: this.state.orderByFavAscActive,
@@ -265,19 +287,23 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             teachers: this.state.teachers,
         }
         const catsFilterProps = {
+            visible: this.state.showCatsFilter,
             initCat: this.state.currentCat,
-            onChooseCat: this.onChooseCat.bind(this)
+            onChooseCat: this.onChooseCat.bind(this),
+            handlerAnimEnd: this.handlerCloseFilterMask.bind(this),
         }
 
         return (
             <div>
-                { this.state.showSyntheticalFilter ? <FilterMask /> : null }
                 <NavBarWithSearch { ...navBarProps } />
                 <FilterBar { ...filterBarProps } />
-                { this.state.showSyntheticalFilter ? <SyntheticalFilter { ...filterProps } /> : null }
-                { this.state.showCatsFilter ? <CatsFilter { ...catsFilterProps } /> : null}
+                <SyntheticalFilter { ...filterProps } />
+                <CatsFilter key="catsFilter" { ...catsFilterProps } />
                 <NameList { ...nameListProps } />
             </div>
         )
     }
 }
+
+
+

@@ -2,8 +2,12 @@ import "./index.less";
 
 import * as React from "react";
 import { render } from "react-dom";
+import * as QueueAnim from 'rc-queue-anim';
+
 import * as classNames from "classnames";
 import * as Lodash from "lodash";
+
+import FilterMask from "../filter-mask/index";
 
 interface CatBasicInfo {
     id: string;
@@ -134,8 +138,10 @@ interface Cats {
     cats?: Cats[];
 }
 interface CatsFilterProps {
+    visible: boolean;
     initCat?: CatBasicInfo[];// 初始化最后一级的科目
     onChooseCat?(cats: CatBasicInfo[]): void;
+    handlerAnimEnd?(): void;
 }
 interface CatsFilterState {
     currentLevel1Cat: {
@@ -145,9 +151,12 @@ interface CatsFilterState {
 }
 
 export default class CatsFilter extends React.Component<CatsFilterProps, CatsFilterState> {
-
     static propTypes = {
+        visible: React.PropTypes.bool.isRequired,
         initCat: React.PropTypes.array,
+    }
+    static defaultProps = {
+        visible: false,
     }
 
     initState: any;
@@ -179,18 +188,28 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
         }
 
         return (
-            <div className="cats-filter">
-                <ul className="cats-filter-left">
-                    { Lodash.map(catsData, (cat, key) => {
-                        return (
-                            <li key={ key } onClick={ this.onClickHandler.bind(this, key, cat.label) } className={classNames({
-                                active: key == this.state.currentLevel1Cat.id
-                            }) }>{ cat.label }</li>
-                        )
-                    }) }
-                </ul>
-                <CatPannel { ...CatPannelsProps } />
-            </div>
+            <QueueAnim
+                className="cats-filter-wrapper"
+                duration={ 450 }
+                type={["top", "top"]}
+                ease={["easeOutQuart", "easeInOutQuart"]}
+                onEnd={ this.props.handlerAnimEnd }
+                >
+                { this.props.visible ? <FilterMask classNames={["cats-filter-mask"]}/> : null }
+                { this.props.visible ? <div key="filter" className="cats-filter">
+                    <ul className="cats-filter-left">
+                        { Lodash.map(catsData, (cat, key) => {
+                            return (
+                                <li key={ key } onClick={ this.onClickHandler.bind(this, key, cat.label) } className={classNames({
+                                    active: key == this.state.currentLevel1Cat.id
+                                }) }>{ cat.label }</li>
+                            )
+                        }) }
+                    </ul>
+                    <CatPannel { ...CatPannelsProps } />
+                </div> : null }
+            </QueueAnim>
         )
     }
 }
+

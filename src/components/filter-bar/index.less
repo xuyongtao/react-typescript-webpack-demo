@@ -7,12 +7,12 @@
     border-width: 1px 0;
     text-align: center;
     font-size: 24/@REM;
+    height: @FILTE_RBAR_HEIGHT;
+    line-height: @FILTE_RBAR_HEIGHT;
     div {
         position: relative;
         display: inline-block;
         width: 25%;
-        height: 80/@REM;
-        line-height: 80/@REM;
         cursor: pointer;
         vertical-align: top;
         &:first-child {
@@ -29,15 +29,6 @@
                 border-right: 0;
             }
         }
-
-        &:last-child {
-            span {
-                &:after {
-                    content: "\e666";
-                    font-size: 20/@REM;
-                }
-            }
-        }
         &:first-child,
         &:last-child {
             span {
@@ -52,6 +43,15 @@
                 }
                 &.up:after {
                     content: "\e7f1"
+                }
+            }
+        }
+
+        &:last-child {
+            span {
+                &:after {
+                    content: "\e666";
+                    font-size: 20/@REM;
                 }
             }
         }
@@ -75,74 +75,4 @@
         }
     }
 }
-
-.synthetical-filter-pannel {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    background-color: #fff;  
-    width: 100%;
-    padding-bottom: 90/@REM;
-    overflow-y: scroll;
-    z-index: @SYNTHETICAL_FILTER_PANNEL;
-    .synthetical-filter-action-btns {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        line-height: 90/@REM;
-        font-size: 26/@REM;
-        color: @MAIN_CONTENT_COLOR;  
-        text-align: center; 
-        background-color: #fff; 
-    }   
-    .synthetical-filter-action-reset-btn, 
-    .synthetical-filter-action-confirm-btn {
-        display: inline-block;
-        width: 50%;
-        cursor: pointer;
-        vertical-align: top;
-    }
-    .synthetical-filter-action-reset-btn {
-        border-top: 1px solid @BORDER_COLOR;             
-    }
-    .synthetical-filter-action-confirm-btn {
-        background-color: @WARN_COLOR;
-        color: #fff;
-    }
-}
-
-.synthetical-filter-condition {
-    padding: 0 30/@REM;        
-    line-height: 65/@REM;    
-    .synthetical-filter-condition-type {
-        font-size: 24/@REM;
-        color: @MAIN_COLOR;
-        font-weight: normal;
-    }
-    .synthetical-filter-condition-options {
-        padding-bottom: 5/@REM;
-        border-bottom: 1px solid @BORDER_COLOR;
-    }
-    .synthetical-filter-condition-option {
-        display: inline-block;
-        padding: 0 20/@REM;
-        margin: 0 15/@REM 15/@REM 0;
-        font-size: 22/@REM;
-        color: @MAIN_CONTENT_COLOR;
-        border: 1px solid @BORDER_COLOR;
-        border-radius: 5px;
-        vertical-align: top;
-        cursor: pointer;
-    }
-    .synthetical-filter-condition-option-choosed {
-        border-color: @WARN_COLOR;
-        background-color: @WARN_COLOR;
-        color: #fff;
-    }
-}
-
-
-
 

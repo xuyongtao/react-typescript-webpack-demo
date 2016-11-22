@@ -105,6 +105,7 @@ interface SearchBarProps {
     inputName?: string;
     onChange(searchTerm: string, resolve: (value?: any | Thenable<any>) => void): void;
     onSearch?(value: string): void;
+    onFocus?(): void;
     placeholder?: string;
     initValue?: string;
 }
@@ -116,6 +117,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         inputName: React.PropTypes.string,
         onChange: React.PropTypes.func.isRequired,
         onSearch: React.PropTypes.func,
+        onFocus: React.PropTypes.func,
         placeholder: React.PropTypes.string,
         initValue: React.PropTypes.string,
     };
@@ -263,7 +265,10 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
                         onChange={ this.onChange.bind(this) }
                         onBlur={ () => this.setState({ isFocused: false, suggestions: [] }) }
                         onKeyDown={ this.state.suggestions && this.onKeyDown.bind(this) }
-                        onFocus={ () => this.setState({ isFocused: true }) } />
+                        onFocus={ () => {
+                            this.props.onFocus && this.props.onFocus();
+                            this.setState({ isFocused: true });
+                        } } />
                     { this.state.value &&
                         <span
                             className="icon search-bar-clear"
@@ -304,12 +309,17 @@ const matches: {
 
 interface NavBarWithSearchProps {
     keyword?: string;
+    onFocus?(): void;
 }
 interface NavBarWithSearchState {
 
 }
 
 export default class NavBarWithSearch extends React.Component<NavBarWithSearchProps, NavBarWithSearchState> {
+    static propTypes = {
+        keyword: React.PropTypes.string,
+        handlerFocus: React.PropTypes.func,
+    }
     constructor(props: NavBarWithSearchProps, context: NavBarWithSearchState) {
         super(props, context);
     }
@@ -350,6 +360,7 @@ export default class NavBarWithSearch extends React.Component<NavBarWithSearchPr
                     placeholder="请输入想学的科目"
                     onChange={ this.onChange }
                     onSearch={ this.onSearch }
+                    onFocus={ this.props.onFocus }
                     initValue={ this.props.keyword} />
             </div>
         );

@@ -10,7 +10,6 @@ import LazyLoad from "react-lazyload";
 // console.log(SwipeableViews);
 // console.log(AutoPlay);
 
-
 import * as Lodash from "lodash";
 
 interface PhotosSwiperProps {
