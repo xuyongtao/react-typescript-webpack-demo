@@ -1,18 +1,12 @@
 @import '../../css/variable.less';
 
-.cats-filter-mask {
-    z-index: @CATS_FILTER_MASK_ZINDEX !important;
-    top: @FILTE_RBAR_HEIGHT + @NAV_BAR_HEIGHT !important; 
-}
-
 .cats-filter {
     position: absolute;
-    max-height: 550/@REM;
+    height: 550/@REM;
     width: 100%;
     background-color: #fff;
     overflow: hidden;
     box-shadow: 0 2px 2px #e7e7e7;
-    z-index: @CATS_FILTER_PANNEL;
     .cats-filter-left {
         float: left;
         width: 25%;

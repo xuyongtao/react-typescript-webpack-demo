@@ -200,6 +200,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             key: string;
             type: string;
         }) {
+        console.log("动画key: ", key);
         type === "leave" && this.setState({ showFilterMask: false });
     }
 
@@ -298,7 +299,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
                 <NavBarWithSearch { ...navBarProps } />
                 <FilterBar { ...filterBarProps } />
                 <SyntheticalFilter { ...filterProps } />
-                <CatsFilter key="catsFilter" { ...catsFilterProps } />
+                <CatsFilter { ...catsFilterProps } />
                 <NameList { ...nameListProps } />
             </div>
         )

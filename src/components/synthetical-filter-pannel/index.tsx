@@ -97,22 +97,30 @@ interface SyntheticalFilterProps {
     visible: boolean;
 }
 
-export default class SyntheticalFilter extends React.Component<SyntheticalFilterProps, any> {
+interface SyntheticalFilterStates {
+    maskVisible: boolean;
+}
+
+export default class SyntheticalFilter extends React.Component<SyntheticalFilterProps, SyntheticalFilterStates> {
     static propTypes = {
         conditions: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
         initConditions: React.PropTypes.array,
         onClose: React.PropTypes.func,
         currentFilterOptions: React.PropTypes.array,
         onConfirmSyntheticalFilterOptions: React.PropTypes.func,
-        visible: React.PropTypes.bool.isRequired,
+        visible: React.PropTypes.bool,
         handlerAnimEnd: React.PropTypes.func,
     }
     static defaultProps = {
         visible: false,
     }
 
-    constructor(props: SyntheticalFilterProps, context: any) {
+    constructor(props: SyntheticalFilterProps, context: SyntheticalFilterStates) {
         super(props, context);
+
+        this.state = {
+            maskVisible: this.props.visible || false,
+        }
     }
 
     // 重置功能
@@ -145,35 +153,46 @@ export default class SyntheticalFilter extends React.Component<SyntheticalFilter
         }
     }
 
+    handlerAnimEnd({ key, type }: { key: string; type: string }) {
+        this.setState({
+            maskVisible: type === "enter",
+        })
+    }
+
     render() {
         return (
-            <QueueAnim
-                className="synthetical-filter-wrapper"
-                duration={ 450 }
-                type={["right", "right"]}
-                ease={["easeOutQuart", "easeInOutQuart"]}
-                onEnd={ this.props.handlerAnimEnd }
-                >
-                { this.props.visible ? <FilterMask classNames={["synthetical-filter-mask"]}/> : null }
-                { this.props.visible ? <div key="filter" className="synthetical-filter-pannel">
-                    <div className="synthetical-filter-conditions">
-                        { this.props.conditions.map((condition, index) => {
-                            let props = {
-                                onChoose: this.onChoose,
-                                initOption: this.props.currentFilterOptions[index],
-                            }
+            <div className="synthetical-filter-wrapper">
+                { this.props.visible || this.state.maskVisible ? <FilterMask classNames={["synthetical-filter-mask"]}/> : null }
+                <QueueAnim
+                    duration={ 450 }
+                    type={ "right" }
+                    ease={ "easeOutQuart" }
+                    animConfig={{
+                        opacity: [1, 1],
+                        translateX: [0, "100%"]
+                    }}
+                    onEnd={ this.handlerAnimEnd.bind(this) }
+                    >
+                    { this.props.visible ? <div key="filter" className="synthetical-filter-pannel">
+                        <div className="synthetical-filter-conditions">
+                            { this.props.conditions.map((condition, index) => {
+                                let props = {
+                                    onChoose: this.onChoose,
+                                    initOption: this.props.currentFilterOptions[index],
+                                }
 
-                            return (
-                                <FilterCondition key={ index } ref={ `condition${index}` } { ...props } { ...condition } />
-                            )
-                        }) }
-                    </div>
-                    <div className="synthetical-filter-action-btns">
-                        <span className="synthetical-filter-action-reset-btn" onClick={ this.onReset.bind(this) }>重置</span>
-                        <span className="synthetical-filter-action-confirm-btn" onClick={ this.onConfirm.bind(this) }>确定</span>
-                    </div>
-                </div> : null }
-            </QueueAnim>
+                                return (
+                                    <FilterCondition key={ index } ref={ `condition${index}` } { ...props } { ...condition } />
+                                )
+                            }) }
+                        </div>
+                        <div className="synthetical-filter-action-btns">
+                            <span className="synthetical-filter-action-reset-btn" onClick={ this.onReset.bind(this) }>重置</span>
+                            <span className="synthetical-filter-action-confirm-btn" onClick={ this.onConfirm.bind(this) }>确定</span>
+                        </div>
+                    </div> : null }
+                </QueueAnim>
+            </div>
         );
     }
 }

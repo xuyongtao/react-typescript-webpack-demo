@@ -144,7 +144,8 @@ interface CatsFilterProps {
     handlerAnimEnd?(): void;
 }
 interface CatsFilterState {
-    currentLevel1Cat: {
+    maskVisible?: boolean;
+    currentLevel1Cat?: {
         id: string;
         label: string;
     };
@@ -152,7 +153,7 @@ interface CatsFilterState {
 
 export default class CatsFilter extends React.Component<CatsFilterProps, CatsFilterState> {
     static propTypes = {
-        visible: React.PropTypes.bool.isRequired,
+        visible: React.PropTypes.bool,
         initCat: React.PropTypes.array,
     }
     static defaultProps = {
@@ -165,6 +166,7 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
         super(props, context);
 
         this.state = this.initState = {
+            maskVisible: this.props.visible || false,
             currentLevel1Cat: {
                 id: this.props.initCat[0] ? this.props.initCat[0].id : "1",
                 label: this.props.initCat[0] ? this.props.initCat[0].label : "艺术",
@@ -178,7 +180,14 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
         })
     }
 
+    handlerAnimEnd({ key, type }: { key: string; type: string }) {
+        this.setState({
+            maskVisible: type === "enter",
+        })
+    }
+
     render() {
+        console.log("initCat: ", this.props.initCat);
 
         let CatPannelsProps = {
             level1Cat: this.state.currentLevel1Cat,
@@ -188,27 +197,32 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
         }
 
         return (
-            <QueueAnim
-                className="cats-filter-wrapper"
-                duration={ 450 }
-                type={["top", "top"]}
-                ease={["easeOutQuart", "easeInOutQuart"]}
-                onEnd={ this.props.handlerAnimEnd }
-                >
-                { this.props.visible ? <FilterMask classNames={["cats-filter-mask"]}/> : null }
-                { this.props.visible ? <div key="filter" className="cats-filter">
-                    <ul className="cats-filter-left">
-                        { Lodash.map(catsData, (cat, key) => {
-                            return (
-                                <li key={ key } onClick={ this.onClickHandler.bind(this, key, cat.label) } className={classNames({
-                                    active: key == this.state.currentLevel1Cat.id
-                                }) }>{ cat.label }</li>
-                            )
-                        }) }
-                    </ul>
-                    <CatPannel { ...CatPannelsProps } />
-                </div> : null }
-            </QueueAnim>
+            <div className="cats-filter-wrapper">
+                { this.props.visible || this.state.maskVisible ? <FilterMask classNames={["cats-filter-mask"]}/> : null }
+                <QueueAnim
+                    duration={ 450 }
+                    type={ "top" }
+                    ease={ "easeOutQuart" }
+                    animConfig={{
+                        opacity: [1, 1],
+                        translateY: [0, "-11rem"]
+                    }}
+                    onEnd={ this.handlerAnimEnd.bind(this) }
+                    >
+                    { this.props.visible ? <div key="filter" className="cats-filter">
+                        <ul className="cats-filter-left">
+                            { Lodash.map(catsData, (cat, key) => {
+                                return (
+                                    <li key={ key } onClick={ this.onClickHandler.bind(this, key, cat.label) } className={classNames({
+                                        active: key == this.state.currentLevel1Cat.id
+                                    }) }>{ cat.label }</li>
+                                )
+                            }) }
+                        </ul>
+                        <CatPannel { ...CatPannelsProps } />
+                    </div> : null }
+                </QueueAnim>
+            </div>
         )
     }
 }

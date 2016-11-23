@@ -98,6 +98,7 @@ export default class FilterBar extends React.Component<FilterBarProps, FilterBar
         }
 
         this.setState({
+            showSyntheticalFilter: false,
             showCatsFilter: !(this.props.showCatsFilter && this.state.showCatsFilter),
         })
     }

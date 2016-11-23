@@ -1,3 +1,29 @@
+@import '../../css/variable.less';
+
+@CATS_FILTER_WRAPPER_ZINDEX : 1;
+@FILTER_BAR_ZINDEX : @CATS_FILTER_WRAPPER_ZINDEX + 1;
+@NAV_SEARCH_BAR_ZINDEX : @FILTER_BAR_ZINDEX + 1;
+@SYNTHETICAL_FILTER_WRAPPER_ZINDEX : @NAV_SEARCH_BAR_ZINDEX + 1; 
+
 .name-list {
     margin-top: -1px; 
+}
+
+.synthetical-filter-wrapper,
+.cats-filter-wrapper,
+.filter-bar,
+.nav-search-bar {
+    position: relative;
+}
+.synthetical-filter-wrapper {
+    z-index: @SYNTHETICAL_FILTER_WRAPPER_ZINDEX;
+}
+.cats-filter-wrapper {
+    z-index: @CATS_FILTER_WRAPPER_ZINDEX;
+}
+.filter-bar {
+    z-index: @FILTER_BAR_ZINDEX;
+}
+.nav-search-bar {
+    z-index: @NAV_SEARCH_BAR_ZINDEX;
 }
