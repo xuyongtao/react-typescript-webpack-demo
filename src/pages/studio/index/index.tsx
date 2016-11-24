@@ -4,6 +4,9 @@ import * as React from "react";
 import { render } from "react-dom";
 import { Link } from "react-router";
 
+import * as Carousel from "nuka-carousel";
+import * as classNames from "classnames";
+
 import Course from "../../../components/course/index";
 import BasicInfo from "../../../components/basic-info/index";
 import IntroPanel from "../intro/index";
@@ -49,6 +52,43 @@ export default class Intro extends React.Component<IntroProps, any> {
 
         return (
             <div className="studio-index-page">
+                <div className="carousel-wrapper">
+                    <Carousel
+                        autoplay={true}
+                        autoplayInterval={3000}
+                        decorators={[{
+                            component: React.createClass({
+                                render() {
+                                    let slideCount: number = this.props.slideCount;
+                                    let currentSlide: number = this.props.currentSlide;
+                                    let slideArray = new Array(slideCount + 1).join("0").split("");
+
+                                    return (
+                                        <ul className="carousel-dots">
+                                            { slideArray.map((cont, index) => {
+                                                return (
+                                                    <li key={ index } className={classNames("carousel-dot", {
+                                                        "carousel-dot-active": index === currentSlide,
+                                                    }) } onClick={ () => { this.props.goToSlide(index) } }></li>
+                                                )
+                                            }) }
+                                        </ul>
+                                    )
+                                }
+                            }),
+                            position: "BottomCenter",
+                        }]}
+                        wrapAround={true}
+                        slideIndex={0}
+                        >
+                        <img src={ require("../../../img/banner.png") }/>
+                        <img src={ require("../../../img/banner.png") }/>
+                        <img src={ require("../../../img/banner.png") }/>
+                        <img src={ require("../../../img/banner.png") }/>
+                        <img src={ require("../../../img/banner.png") }/>
+                        <img src={ require("../../../img/banner.png") }/>
+                    </Carousel>
+                </div>
                 <div className="hot-courses">
                     <div className="title">
                         <h2>热门课程</h2>

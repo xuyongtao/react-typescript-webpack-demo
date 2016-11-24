@@ -43,6 +43,7 @@
     "json-loader": "^0.5.4",
     "lodash": "^4.16.4",
     "node-fetch": "^1.6.3",
+    "nuka-carousel": "^2.0.3",
     "rc-queue-anim": "^0.12.6",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",

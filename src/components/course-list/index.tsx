@@ -8,6 +8,7 @@ import Course from "../course/index";
 
 
 interface CourseListProps {
+    wrapperClassName?: string;
     courses: CourseBasic[];
     currentPage: number;
     totalPage: number;
@@ -17,6 +18,7 @@ interface CourseListProps {
 
 export default class CourseList extends React.Component<CourseListProps, any> {
     static propTypes = {
+        wrapperClassName: React.PropTypes.string,
         courses: React.PropTypes.array.isRequired,
         currentPage: React.PropTypes.number.isRequired,
         totalPage: React.PropTypes.number.isRequired,
@@ -29,10 +31,10 @@ export default class CourseList extends React.Component<CourseListProps, any> {
     }
 
     render() {
-        const { courses, currentPage, totalPage, loadingMore, loadMore } = this.props;
+        const { courses, currentPage, totalPage, loadingMore, loadMore, wrapperClassName } = this.props;
 
         return (
-            <div>
+            <div className={ wrapperClassName }>
                 <ul className="course-list">
                     { courses.map((course: CourseBasic, index: number) => {
                         return (

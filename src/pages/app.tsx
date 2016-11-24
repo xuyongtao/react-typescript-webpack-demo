@@ -23,7 +23,7 @@ import StudioCourses from "./studio/courses/index";
 import StudioTeachers from "./studio/teachers/index";
 import StudioPhotos from "./studio/photos/index";
 import CourseDetail from "./common/course-detail/index";
-import NotFound from "./common/404/index";
+// import NotFound from "./common/404/index";
 import Test from "./common/test/index";
 
 render((
@@ -33,15 +33,12 @@ render((
                 <IndexRoute component={ RecommendList } />
                 <Route path="hot" component={ HotList } />
             </Route>
-
             <Route path="/search(/:cids)(?keyword=*)" component={ Search } />
-
             <Route path="/teacher/:tid" component={ TeacherIndex } >
                 <IndexRoute component={ TeacherIntro } />
                 <Route path="courses" component={ TeacherCourses } />
                 <Route path="photos" component={ TeacherPhotos } />
             </Route>
-
             <Route path="/studio/:sid" component={ StudioEntrance } >
                 <IndexRoute component={ StudioIndex } />
                 <Route path="courses" component={ StudioCourses } />
@@ -49,10 +46,14 @@ render((
                 <Route path="photos" component={ StudioPhotos } />
                 <Route path="intro" component={ StudioIntro } />
             </Route>
-
             <Route path="/course/:cid" component={ CourseDetail }></Route>
+
             <Route path="/test" component={ Test }></Route>
-            <Route path="*" component={ NotFound }></Route>
+            <Route path="*" getComponent={(location: Location, callback: any) => {
+                require.ensure([], require => {
+                    callback(null, require('./common/404/index').default)
+                }, '404')
+            } }></Route>
         </Router>
     </Provider>
 ), document.getElementById("app"))

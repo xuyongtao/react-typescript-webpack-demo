@@ -1,23 +1,30 @@
 @import '../../../css/variable.less';
 
-.end-line {
-    font-size: 24/@REM;
-    line-height: 30/@REM;
-    text-align: center;
-    color: #aaa;
-    &::before,&::after { 
-        content: '';
-        display: inline-block;
-        vertical-align: top;
-        margin-top: 15/@REM;
-        width: 100/@REM;
-        height: 1px;
-        background-color: #aaa; 
+.teacher-courses-wrapper {
+    .course-list {
+        margin-bottom: @GAP_WIDTH;
     }
-    &::before {
-        margin-right: 20/@REM;
-    }
-    &::after {
-        margin-left: 20/@REM;
+
+    .end-line {
+        font-size: 24/@REM;
+        line-height: 30/@REM;
+        text-align: center;
+        color: #aaa;
+        &::before,&::after { 
+            content: '';
+            display: inline-block;
+            vertical-align: top;
+            margin-top: 15/@REM;
+            width: 100/@REM;
+            height: 1px;
+            background-color: #aaa; 
+        }
+        &::before {
+            margin-right: 20/@REM;
+        }
+        &::after {
+            margin-left: 20/@REM;
+        }
     }
 }
+

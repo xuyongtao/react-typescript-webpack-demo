@@ -2,88 +2,47 @@ import "./index.less";
 import * as React from "react";
 import { render, findDOMNode } from "react-dom";
 import { TouchEvent, UIEvent } from "react";
-import SwipeableViews from "react-swipeable-views";
-import LazyLoad from "react-lazyload";
-// import AutoPlay from "react-swipeable-views/lib/autoPlay";
 
-// const test = AutoPlay(SwipeableViews);
-// console.log(SwipeableViews);
-// console.log(AutoPlay);
+import LazyLoad from "react-lazyload";
+import * as Carousel from "nuka-carousel";
 
 import * as Lodash from "lodash";
 
-interface PhotosSwiperProps {
-    hidden: boolean,
-    maxSwiperWidth?: number,
-    pics: string[],
-    index: number,
-    closeHandler(): void,
-}
-interface PhotosSwiperStates {
-    swiperWidth: number,
-    swiperHeight: number,
+interface PhotosCarouselProps {
+    pics: string[];
+    slideIndex: number;
+    handlerClose?(): void;
 }
 
-class PhotosSwiper extends React.Component<PhotosSwiperProps, PhotosSwiperStates> {
-    constructor(props: PhotosSwiperProps, context: PhotosSwiperStates) {
-        super(props, context);
-
-        this.state = {
-            swiperWidth: 0,
-            swiperHeight: 0,
-        }
-    }
-
-    getClientWH() {
-        let node = findDOMNode(this.refs['swiper']);
-
-        return {
-            W: node.clientWidth,
-            H: node.clientHeight,
-        }
-    }
-
-    clickHandler() {
-        this.props.closeHandler();
+class PhotosCarousel extends React.Component<PhotosCarouselProps, any> {
+    static propTypes = {
+        pics: React.PropTypes.array.isRequired,
+        slideIndex: React.PropTypes.number,
+        handlerClose: React.PropTypes.func,
     }
 
     componentDidMount() {
-        this.setState({
-            swiperWidth: this.getClientWH().W,
-            swiperHeight: this.getClientWH().H,
-        })
+
     }
 
     render() {
-        console.log('index: ', this.props.index);
-
-        let swiperStyle = this.state.swiperWidth ? { width: this.state.swiperWidth } : null;
-        let slideStyle = {
-            height: "100%",
-            width: "100%",
-            backgroundSize: "contain",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-        };
-        let swipeableViewsProps = {
-            resistance: true,
-            index: this.props.index,
-            slideStyle: {
-                paddingLeft: "2.5%",
-                paddingRight: "2.5%",
-            }
-        };
 
         return (
-            <div id="swiper" ref="swiper" style={ swiperStyle } hidden={ this.props.hidden } onClick={ this.clickHandler.bind(this) }>
-                <SwipeableViews { ...swipeableViewsProps }>
-                    { this.props.pics.map((pic: string, index: number) => {
+            <div id="teacher-gallery-carousel" onClick={ () => { this.props.handlerClose() } }>
+                <Carousel
+                    autoplay={ false }
+                    decorators={[]}
+                    wrapAround={ true }
+                    slideIndex={ this.props.slideIndex }
+                    >
+                    { this.props.pics.map((pic, index) => {
                         return (
-                            <div key={ index } style={ Lodash.assign({}, slideStyle, { backgroundImage: `url(${require(pic)})` }) } ></div>
+                            <div key={ index } style={ {
+                                backgroundImage: `url(${require(pic)})`,
+                            } } ></div>
                         )
                     }) }
-                </SwipeableViews>
-
+                </Carousel>
             </div>
         )
     }
@@ -95,9 +54,9 @@ interface TeacherPhotosProps {
     },
 }
 interface TeacherPhotosStates {
-    hiddenSwiper?: boolean;
+    hiddenCarousel?: boolean;
     pics?: string[];
-    swiperIndex?: number;
+    slideIndex?: number;
 }
 
 export default class TeacherPhotos extends React.Component<TeacherPhotosProps, TeacherPhotosStates> {
@@ -105,22 +64,22 @@ export default class TeacherPhotos extends React.Component<TeacherPhotosProps, T
         super(props, context);
 
         this.state = {
-            hiddenSwiper: true,
+            hiddenCarousel: true,
             pics: [],
-            swiperIndex: 0,
+            slideIndex: 0,
         };
     }
 
-    showPhotosSwiper(index: number) {
+    showPhotosCarousel(index: number) {
         this.setState({
-            hiddenSwiper: false,
-            swiperIndex: index,
+            hiddenCarousel: false,
+            slideIndex: index,
         })
     }
 
-    hidePhotosSwiper() {
+    hidePhotosCarousel() {
         this.setState({
-            hiddenSwiper: true,
+            hiddenCarousel: true,
         })
     }
 
@@ -132,28 +91,27 @@ export default class TeacherPhotos extends React.Component<TeacherPhotosProps, T
     }
 
     render() {
-        let swiperProps = {
-            hidden: this.state.hiddenSwiper,
-            pics: this.state.pics,
-            index: this.state.swiperIndex,
-            closeHandler: this.hidePhotosSwiper.bind(this),
-        };
-        let lazyloadProps = {
+        const lazyloadProps = {
             height: 200,
         };
-        let pics = {
+        const pics = {
             left: this.state.pics.slice(0, Math.floor(this.state.pics.length / 2)),
             right: this.state.pics.slice(Math.floor(this.state.pics.length / 2), this.state.pics.length),
         };
+        const carouselProps = {
+            pics: this.state.pics,
+            slideIndex: this.state.slideIndex,
+            handlerClose: this.hidePhotosCarousel.bind(this),
+            hidden: this.state.hiddenCarousel,
+        }
 
         return (
             <div id="gallery-wall">
-                <PhotosSwiper { ...swiperProps }/>
-
+                { this.state.hiddenCarousel ? null : <PhotosCarousel ref="carousel" { ...carouselProps } /> }
                 <div className="gallery-wall-left">
                     { pics.left.map((pic, index) => {
                         return (
-                            <div key={ index } className="gallery-wall-item" onClick={ this.showPhotosSwiper.bind(this, index) }>
+                            <div key={ index } className="gallery-wall-item" onClick={ this.showPhotosCarousel.bind(this, index) }>
                                 <LazyLoad { ...lazyloadProps }>
                                     <img src={ require(pic) } alt={ `图片${index}` }/>
                                 </LazyLoad>
@@ -164,7 +122,7 @@ export default class TeacherPhotos extends React.Component<TeacherPhotosProps, T
                 <div className="gallery-wall-right">
                     { pics.right.map((pic, index) => {
                         return (
-                            <div key={ index } className="gallery-wall-item" onClick={ this.showPhotosSwiper.bind(this, index + Math.floor(this.state.pics.length / 2)) }>
+                            <div key={ index } className="gallery-wall-item" onClick={ this.showPhotosCarousel.bind(this, index + Math.floor(this.state.pics.length / 2)) }>
                                 <LazyLoad { ...lazyloadProps }>
                                     <img src={ require(pic) } alt={ `图片${index + Math.floor(this.state.pics.length / 2)}` }/>
                                 </LazyLoad>

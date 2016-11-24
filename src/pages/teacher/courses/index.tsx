@@ -96,6 +96,7 @@ export default class TeacherCourses extends React.Component<TeacherCoursesProps,
             totalPage,
             loadingMore,
             loadMore: this.loadMore.bind(this),
+            wrapperClassName: "teacher-courses-wrapper",
         }
 
         return (

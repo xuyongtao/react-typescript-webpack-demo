@@ -1,14 +1,35 @@
 @import '../../../css/variable.less';
 
 .studio-index-page {
-    .hot-courses ul.course-list,
-    .hot-teachers ul.teacher-list {
+    .carousel-wrapper {
+        min-height: 370/@REM;
+        padding: @GAP_WIDTH;
+        .carousel-dots,
+        .carousel-dot {
+            line-height: 0;
+        }
+        .carousel-dots {
+            margin-bottom: @GAP_WIDTH;
+        }
+        .carousel-dot {
+            display: inline-block;
+            line-height: 0;
+            width: 10/@REM;
+            height: 10/@REM;
+            border-radius: 50%;
+            margin: 0 10/@REM;
+            background-color: rgba(225, 225, 225, 0.6);
+        }
+        .carousel-dot-active {
+            background-color: rgba(225, 225, 225, 0.9);
+        }
+    }
+    .carousel-wrapper,
+    .hot-courses,
+    .hot-teachers {
         margin-bottom: @GAP_WIDTH;
         border-bottom: 1px solid @BORDER_COLOR;
         background-color: #fff;
-    }
-    .intro div.cont {
-        
     }
     .hot-courses,
     .hot-teachers,
