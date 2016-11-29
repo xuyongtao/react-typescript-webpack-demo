@@ -23,7 +23,7 @@ import StudioCourses from "./studio/courses/index";
 import StudioTeachers from "./studio/teachers/index";
 import StudioPhotos from "./studio/photos/index";
 import CourseDetail from "./common/course-detail/index";
-// import NotFound from "./common/404/index";
+import NotFound from "./common/404/index";
 import Test from "./common/test/index";
 
 render((
@@ -49,11 +49,7 @@ render((
             <Route path="/course/:cid" component={ CourseDetail }></Route>
 
             <Route path="/test" component={ Test }></Route>
-            <Route path="*" getComponent={(location: Location, callback: any) => {
-                require.ensure([], require => {
-                    callback(null, require('./common/404/index').default)
-                }, '404')
-            } }></Route>
+            <Route path="*" component={ NotFound }></Route>
         </Router>
     </Provider>
 ), document.getElementById("app"))

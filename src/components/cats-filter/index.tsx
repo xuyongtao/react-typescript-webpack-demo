@@ -7,6 +7,8 @@ import * as QueueAnim from 'rc-queue-anim';
 import * as classNames from "classnames";
 import * as Lodash from "lodash";
 
+console.log("load cats filter")
+
 import FilterMask from "../filter-mask/index";
 
 interface CatBasicInfo {
