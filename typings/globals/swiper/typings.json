@@ -1,0 +1,8 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/9726ab64609a5b14c71eea1234a0c8478af1c6b4/swiper/swiper.d.ts",
+    "raw": "registry:dt/swiper#2.0.0+20160906134205",
+    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/9726ab64609a5b14c71eea1234a0c8478af1c6b4/swiper/swiper.d.ts"
+  }
+}
