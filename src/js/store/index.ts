@@ -44,7 +44,7 @@ export function getBasicInfo(id: number, role: number): Promise<ReceiveBasicInfo
         .dispatch(fetchBasicInfoPost({
             url: publicPath + "api/get-teacher-basic-info",
             data: { id, role }
-        }))
+        }) as any as { type: string })
         .then(() => (store.getState() as stateBasic).basicInfo)
 }
 
@@ -62,7 +62,7 @@ export function getRecommendList(page = 1): Promise<ReceiveRecommendListPost> {
         .dispatch(fetchRecommendList({
             url: publicPath + "api/get-recommend-teachers",
             data: { page }
-        }))
+        }) as any as { type: string })
         .then(() => (store.getState() as stateBasic).recommendList)
 }
 
@@ -71,6 +71,6 @@ export function getHotList(page = 1): Promise<ReceiveHotListPost> {
         .dispatch(fetchHotList({
             url: publicPath + "api/get-recommend-teachers",
             data: { page }
-        }))
+        }) as any as { type: string })
         .then(() => (store.getState() as stateBasic).hotList)
 }
