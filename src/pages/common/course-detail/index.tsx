@@ -40,7 +40,8 @@ export default class CourseDetail extends React.Component<CourseDetailProps, Cou
             loading: true,
             title: "钢琴一对一私教",
             detail: "钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教",
-            cover: require("../../../img/default-course-cover.png"),
+            // cover: require("../../../img/default-course-cover.png"),
+            cover: "",
             onlinePrice: 120,
             indoorPrice: 120,
             outdoorPrice: 120,
@@ -233,7 +234,7 @@ class ConsultModal extends React.Component<ConsultModalProps, ConsultModalState>
                         <span onClick={ this.onSubmit.bind(this) } className="btn-submit">确定提交</span>
                     </div>
                     <div className="qr-code">
-                        <img src={ require("./qr-code.png") } alt="二维码"/>
+                        <img src={ require("./qr-code1.png") } alt="二维码"/>
                         <p>扫一扫上面的二维码图片，加老师微信进行咨询</p>
                     </div>
                 </SwipeableViews>
