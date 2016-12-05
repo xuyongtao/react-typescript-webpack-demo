@@ -2,7 +2,6 @@ import "./index.less";
 
 import * as React from "react";
 import { render } from "react-dom";
-import * as QueueAnim from 'rc-queue-anim';
 
 import NavBarWithSearch from "../../components/search-bar/index";
 import FilterBar from "../../components/filter-bar/index";

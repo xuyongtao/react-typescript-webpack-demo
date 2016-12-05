@@ -2,6 +2,7 @@ import "./index.less";
 
 import * as React from "react";
 import { render } from "react-dom";
+import { browserHistory } from 'react-router';
 
 import NavBar from "../../components/nav-bar";
 import TabsBar from "../../components/tabs-bar";
@@ -14,13 +15,16 @@ export default class StudioIndex extends React.Component<any, any> {
     }
 
     render() {
-        let sid: number = this.props.params.sid;
-
-        let tabsBarProps = {
+        const sid: number = this.props.params.sid;
+        const navBarProps = {
+            pageTitle: "机构主页",
+            pathToJump: `/studio/${sid}`,
+        }
+        const tabsBarProps = {
             tabs: [
                 {
                     name: "主页",
-                    to: `/studio/${sid}/`,
+                    to: `/studio/${sid}`,
                     isIndex: true
                 }, {
                     name: "课程",
@@ -36,18 +40,18 @@ export default class StudioIndex extends React.Component<any, any> {
                     to: `/studio/${sid}/intro`
                 },
             ],
-        }
-        let studioProps = {
+        };
+        const studioProps = {
             id: 2,
             role: Role.studio,
             avatar: "",
             name: "机构1",
             selfIntro: "机构1简介机构1简介机构1简介机构1简介机构1简介机构1简介机构1简介",
-        }
+        };
 
         return (
             <div>
-                <NavBar pageTitle="机构主页" />
+                <NavBar { ...navBarProps } />
                 <BasicInfo { ...studioProps } />
                 <TabsBar { ...tabsBarProps } />
                 { this.props.children }

@@ -51,7 +51,7 @@
     "react-modal": "^1.5.2",
     "react-motion": "^0.4.5",
     "react-redux": "^4.4.5",
-    "react-router": "^2.7.0",
+    "react-router": "^2.8.1",
     "react-swipeable-views": "^0.8.0",
     "redux": "^3.5.2",
     "thenfail": "http://registry.npm.taobao.org/thenfail/download/thenfail-0.4.0.tgz",
