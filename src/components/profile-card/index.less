@@ -16,8 +16,7 @@
         .label-teaching-age,
         .label-certified {
             float: right;
-            margin-left: 10/@REM;
-            margin-top: 14/@REM;
+            margin: 14/@REM 0 14/@REM 10/@REM;
         }
         img.avatar {
             float: left;
@@ -30,16 +29,21 @@
         div.detail {
             margin-left: @AVATAR_SIZE + @CARD_PADDING_SIZE;
             font-size: 22/@REM;  
-            line-height: @CARD_PADDING_SIZE*2;          
+            line-height: @CARD_PADDING_SIZE*2; 
+            div {
+                overflow: hidden;
+            }         
             p.intro {
                 line-height: 32/@REM;
                 color: @SECOND_COLOR;
             }            
             strong {
-                display: inline-block;
-                vertical-align: top;
+                display: block;
                 color: @MAIN_CONTENT_COLOR;
                 font-size: 30/@REM;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
         }
         div.counts {
@@ -56,7 +60,11 @@
         font-size: 24/@REM;
         line-height: 45/@REM;
         border-top: 1px solid #e0e0e0;
+    }
+    .course {
+        margin-top: 24/@REM;
         span.type {
+            float: left;
             background-color: @WARN_COLOR;
             color: #fff;
             font-size: 20/@REM;
@@ -64,14 +72,19 @@
             padding: 10/@REM 20/@REM;
             border-radius: 2px;
         }
-        span.other {
+        span.name {
+            display: block;
+            margin: 0 150/@REM 0 180/@REM;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-align: right;
+        }
+        span.price {
             float: right;
             strong {
                 color: @WARN_COLOR;    
             }
         }
-    }
-    .course {
-        margin-top: 24/@REM;
     }
 }

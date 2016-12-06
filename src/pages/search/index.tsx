@@ -184,6 +184,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
     }
 
     onChooseCat(cat: CatBasic[]) {
+        console.log("选择科目为：", cat);
         this.setState({
             currentCat: cat,
             showCatsFilter: false,
@@ -240,6 +241,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             type: string;
         }) {
         console.log("动画key: ", key);
+        console.log("动画type: ", type);
         type === "leave" && this.setState({ showFilterMask: false });
     }
 

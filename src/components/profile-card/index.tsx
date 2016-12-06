@@ -41,11 +41,9 @@ class Course extends React.Component<CourseBasic, any> {
 
         return (
             <div className="course">
+                <span className="price"><strong>{ floorPrice }</strong>起/课时</span>
                 <span className="type">课程类型: { type }</span>
-                <span className="other">
-                    { name }
-                    <strong>{ floorPrice }</strong>起/课时
-                </span>
+                <span className="name">{ name }</span>
             </div>
         )
     }
@@ -108,9 +106,9 @@ export default class ProfileCard extends React.Component<ProfileCardProps, any> 
                     <img className="avatar" src={ avatarUrl } alt={ name }/>
                     <div className="detail">
                         <div>
-                            <strong>{ name }</strong>
                             { teachingAge ? <UserLabel classname="label-teaching-age" label={ teachingAge + '年教龄' } /> : null }
                             { certified ? <UserLabel classname="label-certified" label="机构认证" /> : null }
+                            <strong>{ name }</strong>
                         </div>
                         <p className="intro">{ selfIntro }</p>
                         <div className="counts">

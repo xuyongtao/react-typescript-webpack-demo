@@ -179,7 +179,7 @@ app.use('/apis/mobile/getIndexRoleList', function (req, res) {
                 name: 'yota' + id,
                 selfIntro: '自我简介自我简介自我简介自我简介自我简介自我简介自我简介自我简介自我简介',
                 teachingAge: 4,
-                starCount: 120,
+                favCount: 120,
                 viewedCount: 230,
                 certified: true,
                 courses: [{
@@ -232,7 +232,7 @@ app.use('/apis/mobile/getSearchRoleList', function (req, res) {
                 name: 'yota' + id,
                 selfIntro: '自我简介自我简介自我简介自我简介自我简介自我简介自我简介自我简介自我简介',
                 teachingAge: 4,
-                starCount: 120,
+                favCount: 120,
                 viewedCount: 230,
                 certified: true,
                 courses: [{
