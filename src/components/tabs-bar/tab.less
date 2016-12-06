@@ -30,23 +30,12 @@
         }
     }
 }
-.tabs-two {
-    a {
-        width: 100%/2;
+
+.generate-tabs(@n, @i: 2) when (@i <= @n) {
+    .tabs-@{i} a {
+        width: (100% / @i);
     }
+    .generate-tabs(@n, (@i + 1));
 }
-.tabs-three {
-    a {
-        width: 100%/3;
-    }
-}
-.tabs-four {
-    a {
-        width: 100%/4;
-    }
-}
-.tabs-five {
-    a {
-        width: 100%/5;
-    }
-}
+
+.generate-tabs(5);

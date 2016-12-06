@@ -78,18 +78,29 @@
     } 
 }
 
+.tab-border-radius(@top-left, @top-right, @bottom-right, @bottom-left) {
+    border-top-left-radius: @top-left;
+    border-top-right-radius: @top-right;
+    border-bottom-right-radius: @bottom-right;
+    border-bottom-left-radius: @bottom-left;   
+}
+
 .consult-modal {
+    @modal-width: 500/@REM;
+    @modal-height: 700/@REM;
+    @tab-border-radius-width: 10/@REM;
+
     position: absolute;
-    height: 700/@REM;
-    width: 500/@REM;
+    height: @modal-height;
+    width: @modal-width;
     top: 50%;
     left: 50%;
     right: initial;
     bottom: initial;
-    margin-top: -350/@REM;
-    margin-left: -250/@REM;
+    margin-top: -@modal-height/2;
+    margin-left: -@modal-width/2;
     background: rgb(255, 255, 255);
-    border-radius: 10/@REM;
+    border-radius: @tab-border-radius-width;
     outline: none;
     ul.consult-modal-tabs {
         li {
@@ -103,10 +114,10 @@
             line-height: 90/@REM;
             background-color: #ececec;
             &:first-child {
-                border-radius: 10/@REM 10/@REM 10/@REM 0;
+                .tab-border-radius(@tab-border-radius-width, @tab-border-radius-width, @tab-border-radius-width, 0);
             }
             &:last-child {
-                border-radius: 10/@REM 10/@REM 0 10/@REM;
+                .tab-border-radius(@tab-border-radius-width, @tab-border-radius-width, 0, @tab-border-radius-width);
             }
             &.active {
                 top: -20/@REM;

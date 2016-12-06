@@ -56,7 +56,7 @@ var config = {
             }, {
                 test: /\.less$/,
                 exclude: /node_modules/,
-                loader: extractCSS.extract(["css", "less", "postcss"])
+                loader: extractCSS.extract(["css", "postcss", "less"])
                 //第一个参数是可选参数，传入一个loader，当css样式没有被抽取的时候可以使用该loader。
                 //第二个参数则是用于编译解析的css文件loader，很明显这个是必须传入的，就像上述例子的css-loader。
             }, {

@@ -4,7 +4,6 @@ import * as React from "react";
 import { render } from "react-dom";
 
 import Tab from './tab';
-import { numberMap } from '../../js/common/config';
 
 interface TabBasic {
     isIndex: boolean,
@@ -24,7 +23,7 @@ export default class TabsBar extends React.Component<any, any> {
 
     render() {
         return (
-            <div className={ `tabs tabs-${numberMap[this.props.tabs.length]}` }>
+            <div className={ `tabs tabs-${this.props.tabs.length}` }>
                 { this.props.tabs.map((tab: TabBasic, index: number) => {
                     let tabProps = {
                         key: index,
