@@ -55,7 +55,7 @@ export const catEntrances = [
     }, {
         name: "语言",
         className: "language",
-        cid: 499,
+        cid: 490,
     }, {
         name: "其他",
         className: "other",

@@ -75,7 +75,9 @@ class NameList extends React.Component<NameListProps, NameListState> {
 
         this
             .props
-            .handlerLoadMore({})
+            .handlerLoadMore({
+                loadMore: true,
+            })
             .then(() => {
                 this.setState({
                     loading: false,
@@ -237,6 +239,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             key: string;
             type: string;
         }) {
+        console.log("动画key: ", key);
         type === "leave" && this.setState({ showFilterMask: false });
     }
 
@@ -251,13 +254,15 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         orderByFavAscActive = this.state.orderByFavAscActive,
         orderByViewAscActive = this.state.orderByViewAscActive,
         syntheticalFilterConditions = this.state.currentSyntheticalFilterOptions,
+        loadMore = false,
     }: {
             page?: number;
             totalPage?: number;
             cat?: CatBasic[];
             orderByFavAscActive?: boolean;
             orderByViewAscActive?: boolean;
-            syntheticalFilterConditions?: number[]
+            syntheticalFilterConditions?: number[];
+            loadMore?: boolean;
         }) {
         // 根据给出的条件获取对应的数据
 
@@ -272,7 +277,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             role: syntheticalFilterConditions[2] || 0,
         }).then(data => {
             this.setState({
-                teachers: this.state.teachers.concat(data.list),
+                teachers: loadMore ? this.state.teachers.concat(data.list) : data.list,
                 currentPage: data.page,
                 totalPage: data.totalPage,
             })
