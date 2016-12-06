@@ -1,10 +1,10 @@
 export const defaultAvatar = require("../../img/default-avatar.png");
 
-export const publicPath = "http://192.168.2.55:8080";
+export const publicPath = "http://192.168.2.55:8080/";
 
 export const apis = {
-    getIndexRoleList: `${publicPath}/apis/mobile/getIndexRoleList`,
-    getSearchRoleList: `${publicPath}/apis/mobile/getSearchRoleList`,
+    getIndexRoleList: `${publicPath}apis/mobile/getIndexRoleList`,
+    getSearchRoleList: `${publicPath}apis/mobile/getSearchRoleList`,
 };
 
 export enum Role { teacher = 3, studio };// 这里对应的是数据库的role表

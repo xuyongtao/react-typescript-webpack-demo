@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
 
 import { Promise } from "thenfail";
-import { publicPath } from "../common/config";
+import { apis, publicPath } from "../common/config";
 
 // interface
 import {
@@ -57,20 +57,28 @@ export function getTeacherCourses(tid: number, page = 1): PromiseLike<CoursesRes
         .then(() => (store.getState() as stateBasic).courseList)
 }
 
-export function getRecommendList(page = 1): Promise<ReceiveRecommendListPost> {
+export function getRecommendList(page = 1, pageSize = 8, isRecommend = true): Promise<ReceiveRecommendListPost> {
     return store
         .dispatch(fetchRecommendList({
-            url: publicPath + "api/get-recommend-teachers",
-            data: { page }
+            url: apis.getIndexRoleList,
+            data: {
+                page,
+                pageSize,
+                isRecommend,
+            }
         }))
         .then(() => (store.getState() as stateBasic).recommendList)
 }
 
-export function getHotList(page = 1): Promise<ReceiveHotListPost> {
+export function getHotList(page = 1, pageSize = 8, isRecommend = false): Promise<ReceiveHotListPost> {
     return store
         .dispatch(fetchHotList({
-            url: publicPath + "api/get-recommend-teachers",
-            data: { page }
+            url: apis.getIndexRoleList,
+            data: {
+                page,
+                pageSize,
+                isRecommend,
+            }
         }))
         .then(() => (store.getState() as stateBasic).hotList)
 }

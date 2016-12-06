@@ -89,7 +89,7 @@ export default class ProfileCard extends React.Component<ProfileCardProps, any> 
         avatar: React.PropTypes.string,
         name: React.PropTypes.string.isRequired,
         selfIntro: React.PropTypes.string,
-        starCount: React.PropTypes.number,
+        favCount: React.PropTypes.number,
         viewedCount: React.PropTypes.number,
         teachingAge: React.PropTypes.number,
         certified: React.PropTypes.bool,
@@ -100,7 +100,7 @@ export default class ProfileCard extends React.Component<ProfileCardProps, any> 
     }
 
     render() {
-        const { id, role, name, avatar, teachingAge, certified, selfIntro, starCount, viewedCount, courses } = this.props;
+        const { id, role, name, avatar, teachingAge, certified, selfIntro, favCount, viewedCount, courses } = this.props;
 
         return (
             <Link className="profile-card" to={ `${role === Role.teacher ? "/teacher/" : "/studio/"}` + id }>
@@ -114,7 +114,7 @@ export default class ProfileCard extends React.Component<ProfileCardProps, any> 
                         </div>
                         <p className="intro">{ selfIntro }</p>
                         <div className="counts">
-                            <span><i className="iconfont iconstar"></i>{ starCount }</span>
+                            <span><i className="iconfont iconstar"></i>{ favCount }</span>
                             <span><i className="iconfont iconviewed"></i>{ viewedCount }</span>
                         </div>
                     </div>

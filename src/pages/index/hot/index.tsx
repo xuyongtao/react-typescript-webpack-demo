@@ -6,7 +6,7 @@ import { render } from "react-dom";
 import Loading from "../../../components/loading/index";
 import ProfileCard from "../../../components/profile-card/index";
 
-import { getRecommendList } from "../../../js/store/index";
+import { getHotList } from "../../../js/store/index";
 import { RecommendListBasic } from '../../../js/interface/common';
 
 interface HotPannelState {
@@ -35,7 +35,7 @@ export default class HotPannel extends React.Component<any, HotPannelState> {
             loadingMore: true,
         })
 
-        getRecommendList(this.state.currentPage + 1)
+        getHotList(this.state.currentPage + 1)
             .then(data => {
                 if (data.list && data.list.length) {
                     this.setState({
@@ -61,7 +61,7 @@ export default class HotPannel extends React.Component<any, HotPannelState> {
             loading: true,
         })
 
-        getRecommendList()
+        getHotList()
             .then(data => {
                 this.setState({
                     loading: false,

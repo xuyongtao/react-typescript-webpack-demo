@@ -157,6 +157,59 @@ app.use('/api/get-recommend-teachers', function (req, res) {
     }
 
 })
+app.use('/apis/mobile/getIndexRoleList', function (req, res) {
+    var postPage = req.body.page || 1;// 请求页码
+    var totalPage = 3;// 分页总数
+    var pageCount = 6;// 每页条数
+
+    if (postPage > totalPage) {
+        return res.send({
+            page: totalPage,
+            totalPage: totalPage
+        });
+    } else {
+        var list = [];
+
+        for (var i = 1; i <= pageCount; i++) {
+            var id = (postPage - 1) * pageCount + i;
+
+            list.push({
+                id: id,
+                role: i % 3 === 0 ? 3 : 4,
+                name: 'yota' + id,
+                selfIntro: '自我简介自我简介自我简介自我简介自我简介自我简介自我简介自我简介自我简介',
+                teachingAge: 4,
+                starCount: 120,
+                viewedCount: 230,
+                certified: true,
+                courses: [{
+                    cid: 1000 + id,
+                    name: '高一物理',
+                    type: '1对1',
+                    floorPrice: 120
+                }, {
+                        cid: 2000 + id,
+                        name: '高二物理',
+                        type: '1对2',
+                        floorPrice: 130
+                    }]
+            })
+        }
+
+        return res.send({
+            data: {
+                page: postPage,
+                totalPage: totalPage,
+                list: list
+            },
+            meta: {
+                code: 0,
+                msg: ""
+            }
+        });
+    }
+
+})
 app.use('/api/get-hot-teachers', function (req, res) {
     var postPage = req.body.page || 1;// 请求页码
     var totalPage = 3;// 分页总数

@@ -15,6 +15,8 @@ export interface ReceiveBasicInfoPost {
 
 export interface RequestRecommendListPost {
     page: number,
+    pageSize: number,
+    isRecommend: boolean,
 }
 export interface ReceiveRecommendListPost {
     page: number,
@@ -28,7 +30,7 @@ export interface RecommendListBasic {
     avatar?: string,
     name: string,
     selfIntro?: string,
-    starCount?: number,
+    favCount?: number,
     viewedCount?: number,
     teachingAge?: number,
     certified?: boolean,
@@ -42,6 +44,8 @@ export interface RecommendListBasic {
 
 export interface RequestHotListPost {
     page: number,
+    pageSize: number,
+    isRecommend: boolean,
 }
 export interface ReceiveHotListPost {
     page: number,
