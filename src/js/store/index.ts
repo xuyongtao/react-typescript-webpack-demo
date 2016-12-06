@@ -15,6 +15,8 @@ import {
     ReceiveRecommendListPost,
     RequestHotListPost,
     ReceiveHotListPost,
+    RequestSearchListPost,
+    ReceiveSearchListPost,
 } from "../interface/common";
 
 // reducers
@@ -24,6 +26,7 @@ import {
     fetchBasicInfoPost,
     fetchRecommendList,
     fetchHotList,
+    searchList,
 } from "../actions/common";
 import {
     fetchCoursesPost,
@@ -34,6 +37,7 @@ interface stateBasic {
     courseList: CoursesResBasic,
     recommendList: ReceiveRecommendListPost,
     hotList: ReceiveHotListPost,
+    searchList: ReceiveSearchListPost,
 }
 
 
@@ -81,4 +85,23 @@ export function getHotList(page = 1, pageSize = 8, isRecommend = false): Promise
             }
         }))
         .then(() => (store.getState() as stateBasic).hotList)
+}
+
+export function search(data: RequestSearchListPost): Promise<ReceiveSearchListPost> {
+    return store
+        .dispatch(searchList({
+            url: apis.getSearchRoleList,
+            data: {
+                page: data.page,
+                pageSize: data.pageSize,
+                catId: data.catId,
+                orderByFavCount: data.orderByFavCount,
+                orderByViewedCount: data.orderByViewedCount,
+                teachingWay: data.teachingWay,
+                teachingAge: data.teachingAge,
+                role: data.role,
+                keyword: data.keyword,
+            }
+        }))
+        .then(() => (store.getState() as stateBasic).searchList)
 }

@@ -11,7 +11,7 @@ import FilterMask from "../../components/filter-mask/index";
 import ProfileCard from "../../components/profile-card/index";
 
 import { RecommendListBasic } from '../../js/interface/common';
-import { getRecommendList } from "../../js/store/index";
+import { search } from "../../js/store/index";
 import { syntheticalFilterConditions } from "../../js/common/config";
 
 interface CatBasic {
@@ -45,24 +45,56 @@ const catsData: CatDataBasic = require("../../js/common/cats.js");
 
 interface NameListProps {
     teachers: RecommendListBasic[];
+    currentPage: number;
+    totalPage: number;
+    handlerLoadMore?(options: any): Promise<void>;
 }
-class NameList extends React.Component<NameListProps, any> {
+interface NameListState {
+    loading: boolean;
+}
+class NameList extends React.Component<NameListProps, NameListState> {
     static propTypes = {
         teachers: React.PropTypes.array.isRequired,
+        currentPage: React.PropTypes.number.isRequired,
+        totalPage: React.PropTypes.number.isRequired,
+        handlerLoadMore: React.PropTypes.func.isRequired,
     }
 
-    constructor(props: NameListProps, context: any) {
+    constructor(props: NameListProps, context: NameListState) {
         super(props, context);
+
+        this.state = {
+            loading: false,
+        }
+    }
+
+    loadMore() {
+        this.setState({
+            loading: true,
+        })
+
+        this
+            .props
+            .handlerLoadMore({})
+            .then(() => {
+                this.setState({
+                    loading: false,
+                })
+            });
     }
 
     render() {
+        const { teachers, currentPage, totalPage } = this.props;
+        const { loading } = this.state;
+
         return (
             <div className="name-list">
-                { this.props.teachers.map((teacher, index) => {
+                { teachers.map((teacher, index) => {
                     return (
                         <ProfileCard { ...teacher } key={ index } />
                     )
                 }) }
+                { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loading ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.loadMore.bind(this) }>点击加载更多</div>) }
             </div>
         )
     }
@@ -89,6 +121,8 @@ interface SearchState {
     currentSyntheticalFilterOptions?: number[];
     orderByFavAscActive?: boolean;
     orderByViewAscActive?: boolean;
+    currentPage?: number;
+    totalPage?: number;
 }
 
 export default class Search extends React.Component<SearchProps, SearchState> {
@@ -105,8 +139,12 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             currentSyntheticalFilterOptions: new Array<number>(4),
             orderByFavAscActive: false,
             orderByViewAscActive: false,
+            currentPage: 0,
+            totalPage: 0,
         }
     }
+
+    private PageSize = 8;
 
     onShowSyntheticalFilter(show: boolean) {
         this.setState({
@@ -151,7 +189,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             orderByViewAscActive: false,
             currentSyntheticalFilterOptions: new Array<number>(4),
         })
-        this.getTeachers({ cat });
+        this.getNameList({ cat });
     }
 
     onConfirmSyntheticalFilterOptions(options: number[]) {
@@ -160,7 +198,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             currentSyntheticalFilterOptions: options,
         })
         // 请求数据
-        this.getTeachers({
+        this.getNameList({
             cat: this.state.currentCat,
             orderByFavAscActive: this.state.orderByFavAscActive,
             orderByViewAscActive: this.state.orderByViewAscActive,
@@ -172,7 +210,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         this.setState({
             orderByFavAscActive: active,
         })
-        this.getTeachers({
+        this.getNameList({
             cat: this.state.currentCat,
             orderByFavAscActive: active,
             orderByViewAscActive: false,
@@ -184,7 +222,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         this.setState({
             orderByViewAscActive: active,
         })
-        this.getTeachers({
+        this.getNameList({
             cat: this.state.currentCat,
             orderByFavAscActive: false,
             orderByViewAscActive: active,
@@ -199,7 +237,6 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             key: string;
             type: string;
         }) {
-        console.log("动画key: ", key);
         type === "leave" && this.setState({ showFilterMask: false });
     }
 
@@ -207,12 +244,16 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         this.onCloseAllFilter();
     }
 
-    getTeachers({
-        cat,
-        orderByFavAscActive,
-        orderByViewAscActive,
-        syntheticalFilterConditions,
+    getNameList({
+        page = this.state.currentPage,
+        totalPage = this.state.totalPage,
+        cat = this.state.currentCat,
+        orderByFavAscActive = this.state.orderByFavAscActive,
+        orderByViewAscActive = this.state.orderByViewAscActive,
+        syntheticalFilterConditions = this.state.currentSyntheticalFilterOptions,
     }: {
+            page?: number;
+            totalPage?: number;
             cat?: CatBasic[];
             orderByFavAscActive?: boolean;
             orderByViewAscActive?: boolean;
@@ -220,7 +261,22 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         }) {
         // 根据给出的条件获取对应的数据
 
-        console.log("发出请求");
+        return search({
+            page: page || 1,
+            pageSize: this.PageSize,
+            catId: cat[cat.length - 1] ? Number(cat[cat.length - 1].id) : 0,
+            orderByFavCount: orderByFavAscActive || false,
+            orderByViewedCount: orderByViewAscActive || false,
+            teachingWay: syntheticalFilterConditions[0] || 0,
+            teachingAge: syntheticalFilterConditions[1] || 0,
+            role: syntheticalFilterConditions[2] || 0,
+        }).then(data => {
+            this.setState({
+                teachers: this.state.teachers.concat(data.list),
+                currentPage: data.page,
+                totalPage: data.totalPage,
+            })
+        })
     }
 
     componentDidMount() {
@@ -249,13 +305,17 @@ export default class Search extends React.Component<SearchProps, SearchState> {
 
         this.setState({ currentCat });
 
-        getRecommendList()
-            .then(data => {
-                this.setState({
-                    teachers: data.list,
-                })
+        search({
+            page: 1,
+            pageSize: this.PageSize,
+            keyword: this.props.location.query.keyword || "",
+        }).then(data => {
+            this.setState({
+                teachers: data.list,
+                currentPage: data.page,
+                totalPage: data.totalPage,
             })
-        console.log(this.props.location.query);
+        })
     }
 
     render() {
@@ -285,6 +345,9 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         }
         const nameListProps = {
             teachers: this.state.teachers,
+            currentPage: this.state.currentPage,
+            totalPage: this.state.totalPage,
+            handlerLoadMore: this.getNameList.bind(this),
         }
         const catsFilterProps = {
             visible: this.state.showCatsFilter,

@@ -9,6 +9,8 @@ import {
     ReceiveRecommendListPost,
     RequestHotListPost,
     ReceiveHotListPost,
+    RequestSearchListPost,
+    ReceiveSearchListPost,
 } from "../interface/common";
 
 export const REQUEST_BASIC_INFO_POST = "REQUEST_BASIC_INFO_POST";
@@ -17,6 +19,8 @@ export const REQUEST_RECOMMENT_LIST_POST = 'REQUEST_RECOMMENT_LIST_POST';
 export const RECEIVE_RECOMMENT_LIST_POST = 'RECEIVE_RECOMMENT_LIST_POST';
 export const REQUEST_HOT_LIST_POST = 'REQUEST_HOT_LIST_POST';
 export const RECEIVE_HOT_LIST_POST = 'RECEIVE_HOT_LIST_POST';
+export const REQUEST_SEARCH_LIST_POST = 'REQUEST_SEARCH_LIST_POST';
+export const RECEIVE_SEARCH_LIST_POST = 'RECEIVE_SEARCH_LIST_POST';
 
 function requestBasicInfoPost(data: RequestBasicInfoPost) {
     return {
@@ -104,6 +108,36 @@ export function fetchHotList({
             .post(url, data)
             .then(res => {
                 dispatch(receiveHotListPost(<ReceiveHotListPost>res.data));
+            })
+    }
+}
+
+function requestSearchListPost(data: RequestSearchListPost) {
+    return {
+        type: REQUEST_SEARCH_LIST_POST,
+        requestData: data,
+    }
+}
+function receiveSearchListPost(data: ReceiveSearchListPost) {
+    return {
+        type: RECEIVE_SEARCH_LIST_POST,
+        responseData: data
+    }
+}
+export function searchList({
+    url,
+    data,
+}: {
+        url: string;
+        data: RequestSearchListPost;
+    }) {
+    return (dispatch: Dispatch<any>) => {
+        dispatch(requestSearchListPost(data));
+
+        return api
+            .post(url, data)
+            .then(res => {
+                dispatch(receiveSearchListPost(<ReceiveSearchListPost>res.data));
             })
     }
 }

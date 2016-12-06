@@ -13,21 +13,10 @@ export interface ReceiveBasicInfoPost {
     certified?: boolean;
 }
 
-export interface RequestRecommendListPost {
-    page: number,
-    pageSize: number,
-    isRecommend: boolean,
-}
-export interface ReceiveRecommendListPost {
-    page: number,
-    totalPage: number,
-    list: RecommendListBasic[],
-    isFetching?: boolean,
-}
-export interface RecommendListBasic {
+interface ProfileCardBasic {
     id: number,
     role: number,
-    avatar?: string,
+    avatarUrl?: string,
     name: string,
     selfIntro?: string,
     favCount?: number,
@@ -42,6 +31,21 @@ export interface RecommendListBasic {
     }[]
 }
 
+export interface RequestRecommendListPost {
+    page: number,
+    pageSize: number,
+    isRecommend: boolean,
+}
+export interface ReceiveRecommendListPost {
+    page: number,
+    totalPage: number,
+    list: RecommendListBasic[],
+    isFetching?: boolean,
+}
+export interface RecommendListBasic extends ProfileCardBasic {
+
+}
+
 export interface RequestHotListPost {
     page: number,
     pageSize: number,
@@ -53,23 +57,29 @@ export interface ReceiveHotListPost {
     list: HotListBasic[],
     isFetching?: boolean,
 }
-export interface HotListBasic {
-    id: number,
-    role: number,
-    avatar?: string,
-    name: string,
-    selfIntro?: string,
-    starCount?: number,
-    viewedCount?: number,
-    teachingAge?: number,
-    certified?: boolean,
-    courses: {
-        cid: number,
-        name: string,
-        type?: string,
-        floorPrice?: number,
-    }[]
+export interface HotListBasic extends ProfileCardBasic {
+
 }
 
+export interface RequestSearchListPost {
+    page: number;
+    pageSize: number;
+    catId?: number;
+    orderByFavCount?: boolean;
+    orderByViewedCount?: boolean;
+    teachingWay?: number;
+    teachingAge?: number;
+    role?: number;
+    keyword?: string;
+}
+export interface ReceiveSearchListPost {
+    page: number,
+    totalPage: number,
+    list: SearchListBasic[],
+    isFetching?: boolean,
+}
+export interface SearchListBasic extends ProfileCardBasic {
+
+}
 
 

@@ -7,6 +7,27 @@
 
 .name-list {
     margin-top: -1px; 
+    .end-line {
+        font-size: 24/@REM;
+        line-height: 30/@REM;
+        text-align: center;
+        color: #aaa;
+        &::before,&::after { 
+            content: '';
+            display: inline-block;
+            vertical-align: top;
+            margin-top: 15/@REM;
+            width: 100/@REM;
+            height: 1px;
+            background-color: #aaa; 
+        }
+        &::before {
+            margin-right: 20/@REM;
+        }
+        &::after {
+            margin-left: 20/@REM;
+        }
+    }
 }
 
 .synthetical-filter-wrapper,

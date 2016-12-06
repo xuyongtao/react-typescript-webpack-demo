@@ -44,7 +44,7 @@ class Course extends React.Component<CourseBasic, any> {
                 <span className="type">课程类型: { type }</span>
                 <span className="other">
                     { name }
-                    <strong>￥{ floorPrice }</strong>起/课时
+                    <strong>{ floorPrice }</strong>起/课时
                 </span>
             </div>
         )
@@ -80,13 +80,13 @@ interface ProfileCardProps extends RecommendListBasic {
 }
 export default class ProfileCard extends React.Component<ProfileCardProps, any> {
     static defaultProps = {
-        avatar: defaultAvatar,
+        avatarUrl: defaultAvatar,
     }
 
     static PropTypes = {
         id: React.PropTypes.number.isRequired,
         role: React.PropTypes.number.isRequired,
-        avatar: React.PropTypes.string,
+        avatarUrl: React.PropTypes.string,
         name: React.PropTypes.string.isRequired,
         selfIntro: React.PropTypes.string,
         favCount: React.PropTypes.number,
@@ -100,12 +100,12 @@ export default class ProfileCard extends React.Component<ProfileCardProps, any> 
     }
 
     render() {
-        const { id, role, name, avatar, teachingAge, certified, selfIntro, favCount, viewedCount, courses } = this.props;
+        const { id, role, name, avatarUrl, teachingAge, certified, selfIntro, favCount, viewedCount, courses } = this.props;
 
         return (
             <Link className="profile-card" to={ `${role === Role.teacher ? "/teacher/" : "/studio/"}` + id }>
                 <div className="profile">
-                    <img className="avatar" src={ avatar } alt={ name }/>
+                    <img className="avatar" src={ avatarUrl } alt={ name }/>
                     <div className="detail">
                         <div>
                             <strong>{ name }</strong>
