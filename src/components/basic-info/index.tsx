@@ -44,19 +44,17 @@ export default class BasicInfo extends React.Component<BasicInfoProps, any> {
         const { id, role, name, avatar, teachingAge, certified, selfIntro } = this.props;
 
         return (
-            <div className="basic-info">
-                <Link to={ `/${Role.studio === role ? "studio" : "teacher"}/${id}` }>
-                    <img src={ avatar } alt={ name }/>
-                    <div className="detail">
-                        <div>
-                            <strong>{ name }</strong>
-                            { teachingAge ? <UserLabel classname="label-teaching-age" label={ teachingAge + "年教龄" } /> : null }
-                            { certified ? <UserLabel classname="label-certified" label="机构认证" /> : null }
-                        </div>
-                        <p>{ selfIntro }</p>
+            <Link className="basic-info" to={ `/${Role.studio === role ? "studio" : "teacher"}/${id}` }>
+                <img src={ avatar } alt={ name }/>
+                <div className="detail">
+                    <div>
+                        <strong>{ name }</strong>
+                        { teachingAge ? <UserLabel classname="label-teaching-age" label={ teachingAge + "年教龄" } /> : null }
+                        { certified ? <UserLabel classname="label-certified" label="机构认证" /> : null }
                     </div>
-                </Link>
-            </div>
+                    <p>{ selfIntro }</p>
+                </div>
+            </Link>
         )
     }
 }

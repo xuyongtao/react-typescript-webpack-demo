@@ -186,10 +186,6 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
     }
 
     handlerAnimEnd({ key, type }: { key: string; type: string }) {
-        console.log("动画key: ", key);
-        console.log("动画type: ", type);
-
-
         // this.props.handlerAnimEnd({
         //     key,
         //     type,
@@ -208,8 +204,6 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
             onChooseCat: this.props.onChooseCat,
         }
 
-        console.log("visible: ", this.props.visible);
-        console.log("maskVisible: ", this.state.maskVisible);
         return (
             <div className="cats-filter-wrapper">
                 { this.props.visible || this.state.maskVisible ? <FilterMask classNames={["cats-filter-mask"]}/> : null }

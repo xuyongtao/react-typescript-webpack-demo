@@ -52,7 +52,9 @@ export default class StudioIndex extends React.Component<any, any> {
         return (
             <div>
                 <NavBar { ...navBarProps } />
-                <BasicInfo { ...studioProps } />
+                <div className="studio-basic-info">
+                    <BasicInfo { ...studioProps } />
+                </div>
                 <TabsBar { ...tabsBarProps } />
                 { this.props.children }
             </div>

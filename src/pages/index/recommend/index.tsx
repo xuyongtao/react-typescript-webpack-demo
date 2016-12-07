@@ -3,7 +3,8 @@ import './index.less';
 import * as React from "react";
 import { render } from "react-dom";
 
-import Loading from "../../../components/loading/index";
+import LoadingToast from "../../../components/toast/index";
+import EmptyList from "../../../components/empty-list/index";
 import ProfileCard from "../../../components/profile-card/index";
 
 import { getRecommendList } from "../../../js/store/index";
@@ -87,13 +88,17 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
     render() {
         const { loading, loadingMore, list, currentPage, totalPage } = this.state;
 
-        if (loading) {
-            return (
-                <Loading />
-            )
-        } else {
+        if (list.length) {
+            const loadingToastProps = {
+                tip: "加载中...",
+                iconClassName: "icon-loading",
+                isOpen: this.state.loading || this.state.loadingMore,
+            };
+
             return (
                 <div className="recommend-list">
+                    <LoadingToast { ...loadingToastProps }/>
+
                     { list.map((teacher, index) => {
                         return (
                             <ProfileCard { ...teacher } key={ index } />
@@ -101,6 +106,10 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
                     }) }
                     { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loadingMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.loadMore.bind(this) }>点击加载更多</div>) }
                 </div>
+            )
+        } else {
+            return (
+                <EmptyList tip="暂无推荐的机构和老师" />
             )
         }
     }

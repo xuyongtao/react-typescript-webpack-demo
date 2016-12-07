@@ -8,7 +8,7 @@ import * as ClassNames from "classnames";
 
 import NarBar from "../../../components/nav-bar";
 import Loading from "../../../components/loading/index";
-import SuccessModal from "../../../components/success-modal/index";
+import SuccessModal from "../../../components/toast/index";
 import { PriceUnitMap, ModalOverlayBackgroundColor } from "../../../js/common/config";
 
 interface CourseDetailProps {
@@ -90,6 +90,8 @@ export default class CourseDetail extends React.Component<CourseDetailProps, Cou
         }
         const SuccessModalProps = {
             isOpen: this.state.isOpenSuccessModal,
+            tip: "已完成",
+            iconClassName: "icon-complete",
         }
 
         return (

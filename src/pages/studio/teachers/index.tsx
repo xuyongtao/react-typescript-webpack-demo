@@ -26,22 +26,26 @@ export default class Teachers extends React.Component<any, any> {
             }];
 
         return (
-            <ul className="teacher-list">
-                { teachers.map((teacher, index) => {
-                    let teacherProps = {
-                        id: teacher.tid,
-                        role: Role.teacher,
-                        avatar: teacher.avatar,
-                        name: teacher.name,
-                        teachingAge: teacher.teachingAge,
-                        selfIntro: teacher.selfIntro,
-                    }
+            <div className="studio-teachers-page">
+                <ul className="teacher-list">
+                    { teachers.map((teacher, index) => {
+                        let teacherProps = {
+                            id: teacher.tid,
+                            role: Role.teacher,
+                            avatar: teacher.avatar,
+                            name: teacher.name,
+                            teachingAge: teacher.teachingAge,
+                            selfIntro: teacher.selfIntro,
+                        }
 
-                    return (
-                        <BasicInfo key={ index } { ...teacherProps } />
-                    )
-                }) }
-            </ul>
+                        return (
+                            <li key={ index }>
+                                <BasicInfo { ...teacherProps } />
+                            </li>
+                        )
+                    }) }
+                </ul>
+            </div>
         )
     }
 }

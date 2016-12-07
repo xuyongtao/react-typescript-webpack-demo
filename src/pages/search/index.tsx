@@ -9,6 +9,8 @@ import SyntheticalFilter from "../../components/synthetical-filter-pannel/index"
 import CatsFilter from "../../components/cats-filter/index";
 import FilterMask from "../../components/filter-mask/index";
 import ProfileCard from "../../components/profile-card/index";
+import LoadingToast from "../../components/toast/index";
+import EmptyList from "../../components/empty-list/index";
 
 import { RecommendListBasic } from '../../js/interface/common';
 import { search } from "../../js/store/index";
@@ -48,9 +50,10 @@ interface NameListProps {
     currentPage: number;
     totalPage: number;
     handlerLoadMore?(options: any): Promise<void>;
+    loading: boolean;
 }
 interface NameListState {
-    loading: boolean;
+    loadMore: boolean;
 }
 class NameList extends React.Component<NameListProps, NameListState> {
     static propTypes = {
@@ -58,19 +61,20 @@ class NameList extends React.Component<NameListProps, NameListState> {
         currentPage: React.PropTypes.number.isRequired,
         totalPage: React.PropTypes.number.isRequired,
         handlerLoadMore: React.PropTypes.func.isRequired,
+        loading: React.PropTypes.bool.isRequired,
     }
 
     constructor(props: NameListProps, context: NameListState) {
         super(props, context);
 
         this.state = {
-            loading: false,
+            loadMore: false,
         }
     }
 
     loadMore() {
         this.setState({
-            loading: true,
+            loadMore: true,
         })
 
         this
@@ -80,25 +84,41 @@ class NameList extends React.Component<NameListProps, NameListState> {
             })
             .then(() => {
                 this.setState({
-                    loading: false,
+                    loadMore: false,
                 })
             });
     }
 
     render() {
-        const { teachers, currentPage, totalPage } = this.props;
-        const { loading } = this.state;
+        const { teachers, currentPage, totalPage, loading } = this.props;
+        const { loadMore } = this.state;
 
-        return (
-            <div className="name-list">
-                { teachers.map((teacher, index) => {
-                    return (
-                        <ProfileCard { ...teacher } key={ index } />
-                    )
-                }) }
-                { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loading ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.loadMore.bind(this) }>点击加载更多</div>) }
-            </div>
-        )
+        if (teachers.length) {
+            const loadingToastProps = {
+                tip: "加载中...",
+                iconClassName: "icon-loading",
+                isOpen: loading || loadMore,
+            };
+
+            return (
+                <div className="name-list">
+                    <LoadingToast { ...loadingToastProps }/>
+
+                    { teachers.map((teacher, index) => {
+                        return (
+                            <ProfileCard { ...teacher } key={ index } />
+                        )
+                    }) }
+                    { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loadMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.loadMore.bind(this) }>点击加载更多</div>) }
+                </div>
+            )
+        } else {
+            return (
+                <EmptyList tip="暂无匹配的机构和老师" />
+            )
+        }
+
+
     }
 }
 
@@ -125,6 +145,7 @@ interface SearchState {
     orderByViewAscActive?: boolean;
     currentPage?: number;
     totalPage?: number;
+    loading?: boolean;
 }
 
 export default class Search extends React.Component<SearchProps, SearchState> {
@@ -143,6 +164,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             orderByViewAscActive: false,
             currentPage: 0,
             totalPage: 0,
+            loading: false,
         }
     }
 
@@ -184,7 +206,6 @@ export default class Search extends React.Component<SearchProps, SearchState> {
     }
 
     onChooseCat(cat: CatBasic[]) {
-        console.log("选择科目为：", cat);
         this.setState({
             currentCat: cat,
             showCatsFilter: false,
@@ -240,8 +261,6 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             key: string;
             type: string;
         }) {
-        console.log("动画key: ", key);
-        console.log("动画type: ", type);
         type === "leave" && this.setState({ showFilterMask: false });
     }
 
@@ -267,6 +286,9 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             loadMore?: boolean;
         }) {
         // 根据给出的条件获取对应的数据
+        this.setState({
+            loading: true,
+        })
 
         return search({
             page: page || 1,
@@ -279,9 +301,14 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             role: syntheticalFilterConditions[2] || 0,
         }).then(data => {
             this.setState({
+                loading: false,
                 teachers: loadMore ? this.state.teachers.concat(data.list) : data.list,
                 currentPage: data.page,
                 totalPage: data.totalPage,
+            })
+        }, () => {
+            this.setState({
+                loading: false,
             })
         })
     }
@@ -310,7 +337,10 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             }
         })
 
-        this.setState({ currentCat });
+        this.setState({
+            loading: true,
+            currentCat
+        });
 
         search({
             page: 1,
@@ -318,9 +348,14 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             keyword: this.props.location.query.keyword || "",
         }).then(data => {
             this.setState({
+                loading: false,
                 teachers: data.list,
                 currentPage: data.page,
                 totalPage: data.totalPage,
+            })
+        }, () => {
+            this.setState({
+                loading: false,
             })
         })
     }
@@ -355,6 +390,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             currentPage: this.state.currentPage,
             totalPage: this.state.totalPage,
             handlerLoadMore: this.getNameList.bind(this),
+            loading: this.state.loading,
         }
         const catsFilterProps = {
             visible: this.state.showCatsFilter,

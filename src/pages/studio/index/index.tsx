@@ -76,7 +76,9 @@ export default class Intro extends React.Component<IntroProps, any> {
                                 detail: course.detail,
                             }
                             return (
-                                <Course key={ index } { ...courseProps } />
+                                <li key={ index }>
+                                    <Course { ...courseProps } />
+                                </li>
                             )
                         }) }
                     </ul>
@@ -98,7 +100,9 @@ export default class Intro extends React.Component<IntroProps, any> {
                             }
 
                             return (
-                                <BasicInfo key={ index } { ...teacherProps } />
+                                <li key={ index }>
+                                    <BasicInfo { ...teacherProps } />
+                                </li>
                             )
                         }) }
                     </ul>

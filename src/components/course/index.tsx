@@ -22,15 +22,13 @@ export default class Course extends React.Component<CourseBasic, any> {
         const { cid, title, cover, detail } = this.props;
 
         return (
-            <li className="course">
-                <Link to={ `/course/${cid}` }>
-                    <img src={ cover } alt={ title }/>
-                    <div>
-                        <strong>{ title }</strong>
-                        <p>{ detail }</p>
-                    </div>
-                </Link>
-            </li>
+            <Link className="course" to={ `/course/${cid}` }>
+                <img src={ cover } alt={ title }/>
+                <div>
+                    <strong>{ title }</strong>
+                    <p>{ detail }</p>
+                </div>
+            </Link>
         )
     }
 }

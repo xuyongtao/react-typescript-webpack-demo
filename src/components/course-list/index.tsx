@@ -38,7 +38,9 @@ export default class CourseList extends React.Component<CourseListProps, any> {
                 <ul className="course-list">
                     { courses.map((course: CourseBasic, index: number) => {
                         return (
-                            <Course key={ course.cid } {...course } />
+                            <li key={ course.cid }>
+                                <Course {...course } />
+                            </li>
                         )
                     }) }
                 </ul>
