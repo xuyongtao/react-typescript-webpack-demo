@@ -22,7 +22,7 @@ interface CourseBasic {
     cid: number,
     name: string,
     type?: string,
-    floorPrice?: number,
+    floorPrice?: number | string,
 }
 
 class Course extends React.Component<CourseBasic, any> {
@@ -30,7 +30,7 @@ class Course extends React.Component<CourseBasic, any> {
         cid: React.PropTypes.number.isRequired,
         name: React.PropTypes.string.isRequired,
         type: React.PropTypes.string,
-        floorPrice: React.PropTypes.number,
+        floorPrice: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
     }
     constructor(props: CourseBasic, context: any) {
         super(props, context);
@@ -41,7 +41,11 @@ class Course extends React.Component<CourseBasic, any> {
 
         return (
             <div className="course">
-                <span className="price"><strong>{ floorPrice }</strong>起/课时</span>
+                {
+                    typeof floorPrice === "number" ?
+                        <span className="price"><strong>{ floorPrice }</strong>起/课时</span> :
+                        <span className="price">{ floorPrice }</span>
+                }
                 <span className="type">课程类型: { type }</span>
                 <span className="name">{ name }</span>
             </div>

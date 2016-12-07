@@ -186,7 +186,7 @@ app.use('/apis/mobile/getIndexRoleList', function (req, res) {
                     cid: 1000 + id,
                     name: '高一物理',
                     type: '1对1',
-                    floorPrice: 120
+                    floorPrice: '价格面议'
                 }, {
                         cid: 2000 + id,
                         name: '高二物理',

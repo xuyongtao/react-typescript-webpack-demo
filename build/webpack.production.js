@@ -19,6 +19,10 @@ config.plugins.push(
     })
 );
 
+//线上发布时需要改为线上的域名
+// config.output.publicPath = "http://m.qmjy91.com/";
+config.output.publicPath = "http://m.qmjy.dev/";
+
 webpack(config, function (err, status) {
     if (err) {
         console.log('fail! ', err);
