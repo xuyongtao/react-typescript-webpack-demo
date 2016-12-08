@@ -2,32 +2,40 @@ import { Dispatch } from "redux";
 import * as fetch from "isomorphic-fetch";
 import { api } from "../common/utils";
 
-function requestSearchListPost(data: RequestSearchListPost) {
+export const REQUEST_INDEX_PAGE_INFO_POST = "REQUEST_INDEX_PAGE_INFO_POST";
+export const RECEIVE_INDEX_PAGE_INFO_POST = "RECEIVE_INDEX_PAGE_INFO_POST";
+
+import {
+    RequestIndexPageInfoPost,
+    ReceiveIndexPageInfoPost,
+} from "../interface/studio";
+
+function requestIndexPageInfoPost(data: RequestIndexPageInfoPost) {
     return {
-        type: REQUEST_SEARCH_LIST_POST,
+        type: REQUEST_INDEX_PAGE_INFO_POST,
         requestData: data,
     }
 }
-function receiveSearchListPost(data: ReceiveSearchListPost) {
+function receiveIndexPageInfoPost(data: ReceiveIndexPageInfoPost) {
     return {
-        type: RECEIVE_SEARCH_LIST_POST,
+        type: RECEIVE_INDEX_PAGE_INFO_POST,
         responseData: data
     }
 }
-export function searchList({
+export function fetchIndexPageInfo({
     url,
     data,
 }: {
         url: string;
-        data: RequestSearchListPost;
+        data: RequestIndexPageInfoPost;
     }) {
     return (dispatch: Dispatch<any>) => {
-        dispatch(requestSearchListPost(data));
+        dispatch(requestIndexPageInfoPost(data));
 
         return api
             .post(url, data)
             .then(res => {
-                dispatch(receiveSearchListPost(<ReceiveSearchListPost>res.data));
+                dispatch(receiveIndexPageInfoPost(<ReceiveIndexPageInfoPost>res.data));
             })
     }
 }

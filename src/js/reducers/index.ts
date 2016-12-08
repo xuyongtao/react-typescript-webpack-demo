@@ -4,6 +4,8 @@ import * as Lodash from "lodash";
 import { Role } from "../common/config";
 
 import {
+    CoursesPostBasic,
+    CoursesResBasic,
     RequestBasicInfoPost,
     ReceiveBasicInfoPost,
     RequestRecommendListPost,
@@ -26,14 +28,18 @@ import {
 } from "../actions/common";
 
 import {
-    CoursesPostBasic,
-    CoursesResBasic,
-} from "../interface/common";
-
-import {
     REQUEST_COURSES_POST,
     RECEIVE_COURSES_POST,
-} from "../actions/teacher"
+} from "../actions/teacher";
+
+import {
+    RequestIndexPageInfoPost as RequestStudioIndexPageInfoPost,
+    ReceiveIndexPageInfoPost as ReceiveStudioIndexPageInfoPost,
+} from "../interface/studio";
+import {
+    REQUEST_INDEX_PAGE_INFO_POST as REQUEST_STUDIO_INDEX_PAGE_INFO_POST,
+    RECEIVE_INDEX_PAGE_INFO_POST as RECEIVE_STUDIO_INDEX_PAGE_INFO_POST,
+} from "../actions/studio";
 
 function postBasicInfo(state = {
     isFetching: false,
@@ -135,14 +141,12 @@ function postCourses(state = {
 }) {
     switch (action.type) {
         case REQUEST_COURSES_POST:
-
             return Lodash.assign({}, state, {
                 isFetching: true,
                 tid: action.requestData.tid,
                 page: action.requestData.page,
             })
         case RECEIVE_COURSES_POST:
-
             return Lodash.assign({}, state, {
                 isFetching: false,
                 page: action.responseData.page,
@@ -182,12 +186,40 @@ function postSearchList(state = {
     }
 }
 
+function postStudioIndexPageInfo(state = {
+    isFetching: false,
+    id: 0,
+}, action: {
+    type: string;
+    requestData?: RequestStudioIndexPageInfoPost;
+    responseData?: ReceiveStudioIndexPageInfoPost;
+}) {
+    switch (action.type) {
+        case REQUEST_STUDIO_INDEX_PAGE_INFO_POST:
+            return Lodash.assign({}, state, {
+                isFetching: true,
+                id: action.requestData.id,
+            });
+        case RECEIVE_STUDIO_INDEX_PAGE_INFO_POST:
+            return Lodash.assign({}, state, {
+                isFetching: false,
+                banners: action.responseData.banners,
+                courses: action.responseData.courses,
+                teachers: action.responseData.teachers,
+                intro: action.responseData.intro,
+            });
+        default:
+            return state;
+    }
+}
+
 const reducers = combineReducers({
     basicInfo: postBasicInfo,
     courseList: postCourses,
     recommendList: postRecommendList,
     hotList: postHotList,
     searchList: postSearchList,
+    studioIndexPageInfo: postStudioIndexPageInfo,
 })
 
 export default reducers;  
