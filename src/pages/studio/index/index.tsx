@@ -56,7 +56,11 @@ export default class IndexPage extends React.Component<IndexPageProps, IndexPage
 
         return (
             <div className="studio-index-page">
-                <Carousel { ...CarouselProps } />
+                { banners.length ?
+                    <Carousel { ...CarouselProps } /> :
+                    null
+                }
+
 
                 { courses.length ?
                     <div className="hot-courses">
