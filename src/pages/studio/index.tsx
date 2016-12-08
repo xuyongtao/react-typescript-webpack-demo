@@ -7,11 +7,45 @@ import { browserHistory } from 'react-router';
 import NavBar from "../../components/nav-bar";
 import TabsBar from "../../components/tabs-bar";
 import BasicInfo from "../../components/basic-info";
-import { Role } from "../../js/common/config";
 
-export default class StudioIndex extends React.Component<any, any> {
-    constructor(props: any, context: any) {
+import { getBasicInfo } from "../../js/store/index";
+import { Role, defaultAvatar } from "../../js/common/config";
+import { BasicInfo as StudioBasicInfo } from "../../js/interface/common";
+
+interface StudioIndexProps {
+    params: {
+        sid: number;
+    }
+}
+
+export default class StudioIndex extends React.Component<StudioIndexProps, any> {
+    constructor(props: StudioIndexProps, context: any) {
         super(props, context);
+
+        this.state = {
+            id: 0,
+            role: Role.studio,
+            name: "机构名称",
+            avatar: defaultAvatar,
+            selfIntro: "机构简介",
+        }
+    }
+
+    private studioInfo: StudioBasicInfo = {};
+
+    componentDidMount() {
+        // 获取机构基本信息请求
+
+        getBasicInfo(this.props.params.sid, Role.studio)
+            .then(res => {
+                this.setState({
+                    id: res.id,
+                    role: res.role,
+                    name: res.name,
+                    avatar: res.avatar,
+                    selfIntro: res.selfIntro,
+                });
+            })
     }
 
     render() {
@@ -41,19 +75,12 @@ export default class StudioIndex extends React.Component<any, any> {
                 },
             ],
         };
-        const studioProps = {
-            id: 2,
-            role: Role.studio,
-            avatar: "",
-            name: "机构1",
-            selfIntro: "机构1简介机构1简介机构1简介机构1简介机构1简介机构1简介机构1简介",
-        };
 
         return (
             <div>
                 <NavBar { ...navBarProps } />
                 <div className="studio-basic-info">
-                    <BasicInfo { ...studioProps } />
+                    <BasicInfo { ...this.state } />
                 </div>
                 <TabsBar { ...tabsBarProps } />
                 { this.props.children }

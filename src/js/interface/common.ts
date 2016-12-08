@@ -1,3 +1,13 @@
+export interface BasicInfo {
+    id?: number;
+    role?: number;
+    avatar?: string;
+    name?: string;
+    teachingAge?: number;
+    certified?: boolean;
+    selfIntro?: string;
+}
+
 export interface RequestBasicInfoPost {
     id: number;
     role: number;
