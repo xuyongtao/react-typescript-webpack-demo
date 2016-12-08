@@ -5,7 +5,7 @@ import { render } from "react-dom";
 import { Link } from "react-router";
 
 // interface
-import { CourseBasic } from '../../js/interface/teacher';
+import { CourseBasic } from '../../js/interface/common';
 
 export default class Course extends React.Component<CourseBasic, any> {
     static propTypes = {

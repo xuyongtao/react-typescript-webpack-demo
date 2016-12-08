@@ -5,6 +5,8 @@ export const publicPath = "http://192.168.2.55:8080/";
 export const apis = {
     getIndexRoleList: `${publicPath}apis/mobile/getIndexRoleList`,
     getSearchRoleList: `${publicPath}apis/mobile/getSearchRoleList`,
+    getBasicInfo: `${publicPath}apis/mobile/getBasicInfo`,
+    getStudioIndexPageInfo: `${publicPath}apis/mobile/getStudioIndexPageInfo`,
 };
 
 export enum Role { teacher = 3, studio };// 这里对应的是数据库的role表

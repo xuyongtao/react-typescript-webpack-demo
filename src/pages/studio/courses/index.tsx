@@ -10,7 +10,7 @@ import CourseList from "../../../components/course-list/index";
 // store
 import { getTeacherCourses } from "../../../js/store/index";
 // interface
-import { CoursesResBasic } from "../../../js/interface/teacher";
+import { CoursesResBasic } from "../../../js/interface/common";
 
 export default class TeacherCourses extends React.Component<any, any> {
     constructor(props: any, context: any) {

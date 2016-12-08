@@ -10,7 +10,7 @@ import CourseList from "../../../components/course-list/index";
 // store
 import { getTeacherCourses } from "../../../js/store/index";
 // interface
-import { CoursesResBasic, CourseBasic } from "../../../js/interface/teacher";
+import { CoursesResBasic, CourseBasic } from "../../../js/interface/common";
 
 interface TeacherCoursesProps {
     params: {

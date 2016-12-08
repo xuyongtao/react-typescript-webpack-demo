@@ -6,7 +6,7 @@ import {
     CoursesPostBasic,
     CoursesResBasic,
     CourseBasic,
-} from '../interface/teacher';
+} from '../interface/common';
 
 // TODO: 以下未对请求出现错误做处理
 // 请求老师课程列表信息action

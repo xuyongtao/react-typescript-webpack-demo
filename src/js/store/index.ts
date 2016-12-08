@@ -7,8 +7,6 @@ import { apis, publicPath } from "../common/config";
 // interface
 import {
     CoursesResBasic,
-} from "../interface/teacher";
-import {
     RequestBasicInfoPost,
     ReceiveBasicInfoPost,
     RequestRecommendListPost,
@@ -18,6 +16,10 @@ import {
     RequestSearchListPost,
     ReceiveSearchListPost,
 } from "../interface/common";
+import {
+    RequestIndexPageInfoBasic as RequestStudioIndexPageInfoBasic,
+    ReceiveIndexPageInfoBasic as ReceiveStudioIndexPageInfoBasic,
+} from "../interface/studio";
 
 // reducers
 import reducers from "../reducers/index";
@@ -27,6 +29,7 @@ import {
     fetchRecommendList,
     fetchHotList,
     searchList,
+
 } from "../actions/common";
 import {
     fetchCoursesPost,
@@ -46,7 +49,7 @@ export const store = createStore(reducers, {}, applyMiddleware(thunkMiddleware))
 export function getBasicInfo(id: number, role: number): Promise<ReceiveBasicInfoPost> {
     return store
         .dispatch(fetchBasicInfoPost({
-            url: publicPath + "api/get-teacher-basic-info",
+            url: apis.getBasicInfo,
             data: { id, role }
         }))
         .then(() => (store.getState() as stateBasic).basicInfo)
@@ -104,4 +107,10 @@ export function search(data: RequestSearchListPost): Promise<ReceiveSearchListPo
             }
         }))
         .then(() => (store.getState() as stateBasic).searchList)
+}
+
+export function getStudioIndexPageInfo(id: number): Promise<ReceiveStudioIndexPageInfoBasic> {
+
+    return null;
+
 }

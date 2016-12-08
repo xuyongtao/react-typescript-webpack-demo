@@ -39,7 +39,7 @@ var app = new WebpackDevServer(webpack(config), {
 });
 
 app.use(bodyParser.json()); // for parsing application/json
-app.use('/api/get-teacher-basic-info', function (req, res) {
+app.use('/apis/mobile/getBasicInfo', function (req, res) {
     var id = req.body.id || 1;// 请求的用户对应身份的id
 
     res.send({

@@ -10,6 +10,8 @@ import Carousel from "../../../components/carousel/index";
 import IntroPanel from "../intro/index";
 import { Role } from "../../../js/common/config";
 
+import { getStudioIndexPageInfo } from "../../../js/store/index";
+
 interface IntroProps {
     params: {
         sid: number;
@@ -19,6 +21,20 @@ interface IntroProps {
 export default class Intro extends React.Component<IntroProps, any> {
     constructor(props: IntroProps) {
         super(props);
+
+        this.state = {
+            banners: [],
+            courses: [],
+            teachers: [],
+            intro: '',
+        }
+    }
+
+    componentDidMount() {
+        getStudioIndexPageInfo(this.props.params.sid)
+            .then(res => {
+
+            })
     }
 
     render() {
@@ -110,7 +126,6 @@ export default class Intro extends React.Component<IntroProps, any> {
                 <div className="intro">
                     <div className="title">
                         <h2>机构介绍</h2>
-                        <Link className="link-more" to={ `/studio/${this.props.params.sid}/intro` }>更多</Link>
                     </div>
                     <div className="intro-cont">
                         全民教育致力于打造人人乐用的学习服务平台，聚焦本土优质师资，通过更高效、更智能、更精准地匹配师生资源，为老师及学生提供全而专的教育信息和增值服务，通过移动互联网，全力创建一个专业、高效、智能、安全的高品质教育信息平台，让教与学变得更便捷、平等、高效。

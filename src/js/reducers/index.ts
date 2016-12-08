@@ -28,7 +28,7 @@ import {
 import {
     CoursesPostBasic,
     CoursesResBasic,
-} from "../interface/teacher";
+} from "../interface/common";
 
 import {
     REQUEST_COURSES_POST,
