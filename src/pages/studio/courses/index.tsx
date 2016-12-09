@@ -43,8 +43,6 @@ export default class StudioCourseList extends React.Component<StudioCourseListPr
     }
 
     handlerLoadMore() {
-        console.log('loading more...');
-
         this.setState({
             loadMore: true,
         })
@@ -100,7 +98,6 @@ export default class StudioCourseList extends React.Component<StudioCourseListPr
     }
 
     render() {
-        console.log('构建课程列表');
         const { currentPage, totalPage, loading, loadMore, courses } = this.state;
 
         if (courses.length) {

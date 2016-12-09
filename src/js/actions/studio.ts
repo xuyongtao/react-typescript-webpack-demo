@@ -10,8 +10,8 @@ export const RECEIVE_TEACHER_LIST_POST = "RECEIVE_TEACHER_LIST_POST";
 import {
     RequestIndexPageInfoPost,
     ReceiveIndexPageInfoPost,
-    RequestTeacherList,
-    ReceiveTeacherList,
+    RequestTeacherListPost,
+    ReceiveTeacherListPost,
 } from "../interface/studio";
 
 function requestIndexPageInfoPost(data: RequestIndexPageInfoPost) {
@@ -44,12 +44,32 @@ export function fetchIndexPageInfo({
     }
 }
 
-function requestTeacherList(data: RequestTeacherList) {
+function requestTeacherList(data: RequestTeacherListPost) {
     return {
         type: REQUEST_TEACHER_LIST_POST,
+        requestData: data,
+    }
+}
+function receiveTeacherList(data: ReceiveTeacherListPost) {
+    return {
+        type: RECEIVE_TEACHER_LIST_POST,
         responseData: data,
     }
 }
-function receiveTeacherList(data: ReceiveTeacherList) {
+export function fetchTeacherList({
+    url,
+    data,
+}: {
+        url: string;
+        data: RequestTeacherListPost
+    }) {
+    return (dispatch: Dispatch<any>) => {
+        dispatch(requestTeacherList(data));
 
+        return api
+            .post(url, data)
+            .then(res => {
+                dispatch(receiveTeacherList(<ReceiveTeacherListPost>res.data));
+            })
+    }
 }

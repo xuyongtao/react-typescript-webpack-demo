@@ -19,6 +19,8 @@ import {
 import {
     RequestIndexPageInfoPost as RequestStudioIndexPageInfoPost,
     ReceiveIndexPageInfoPost as ReceiveStudioIndexPageInfoPost,
+    RequestTeacherListPost,
+    ReceiveTeacherListPost,
 } from "../interface/studio";
 
 // reducers
@@ -34,6 +36,7 @@ import {
 
 import {
     fetchIndexPageInfo as fetchStudioIndexPageInfo,
+    fetchTeacherList as fetchStudioTeacherList,
 } from "../actions/studio";
 
 interface stateBasic {
@@ -43,6 +46,7 @@ interface stateBasic {
     hotList: ReceiveHotListPost,
     searchList: ReceiveSearchListPost,
     studioIndexPageInfo: ReceiveStudioIndexPageInfoPost,
+    studioTeacherList: ReceiveTeacherListPost,
 }
 
 
@@ -125,4 +129,13 @@ export function getStudioIndexPageInfo(id: number): Promise<ReceiveStudioIndexPa
             data: { id }
         }))
         .then(() => (store.getState() as stateBasic).studioIndexPageInfo);
+}
+
+export function getStudioTeacherList(data: RequestTeacherListPost): Promise<ReceiveTeacherListPost> {
+    return store.
+        dispatch(fetchStudioTeacherList({
+            url: apis.getStudioTeacherList,
+            data
+        }))
+        .then(() => (store.getState() as stateBasic).studioTeacherList);
 }

@@ -338,6 +338,29 @@ app.use('/apis/mobile/getStudioInfo/studioInfoIndex', function (req, res) {
         }
     });
 })
+app.use('/apis/mobile/getStudioInfo/teacherList', function (req, res) {
+    return res.send({
+        "meta": {
+            "code": 0,
+            "msg": ""
+        },
+        "data": {
+            "page": 2,
+            "total": 207,
+            "perPage": 6,
+            "teachers": [{
+                avatar: "http://qmin91.com/file/MxcgkDYS576f41617a4b9",
+                certified: true,
+                id: 1,
+                name: "yota3",
+                role: 3,
+                selfIntro: "音乐是打开智慧之门的金钥匙，学习钢琴能陶冶情操，提高艺术修养，有助...",
+                teachingAge: 8,
+            }]
+
+        }
+    })
+})
 
 app.listen(PORT, HOST, function () {
     console.log(localPublicPath);

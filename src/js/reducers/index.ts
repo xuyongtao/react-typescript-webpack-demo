@@ -32,6 +32,8 @@ import {
 import {
     RequestIndexPageInfoPost as RequestStudioIndexPageInfoPost,
     ReceiveIndexPageInfoPost as ReceiveStudioIndexPageInfoPost,
+    RequestTeacherListPost,
+    ReceiveTeacherListPost,
 } from "../interface/studio";
 import {
     REQUEST_INDEX_PAGE_INFO_POST as REQUEST_STUDIO_INDEX_PAGE_INFO_POST,
@@ -222,12 +224,26 @@ function postStudioTeacherList(state = {
     id: 0,
 }, action: {
     type: string;
-    requestData?: any;
-    responseData?: any;
+    requestData?: RequestTeacherListPost;
+    responseData?: ReceiveTeacherListPost;
 }) {
     switch (action.type) {
-        // case 1:
-        //     return;
+        case REQUEST_TEACHER_LIST_POST:
+            return Lodash.assign({}, state, {
+                isFetching: true,
+                id: action.requestData.id,
+                role: action.requestData.role,
+                page: action.requestData.page,
+                perPage: action.requestData.perPage,
+            });
+        case RECEIVE_TEACHER_LIST_POST:
+            return Lodash.assign({}, state, {
+                isFetching: false,
+                page: action.responseData.page,
+                total: action.responseData.total,
+                perPage: action.responseData.perPage,
+                teachers: action.responseData.teachers,
+            })
         default:
             return state;
     }

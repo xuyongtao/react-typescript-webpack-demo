@@ -8,6 +8,7 @@ export const apis = {
     getBasicInfo: `${publicPath}apis/mobile/getBasicInfo`,
     getCourseList: `${publicPath}apis/mobile/getCourseList`,
     getStudioIndexPageInfo: `${publicPath}apis/mobile/getStudioInfo/studioInfoIndex`,
+    getStudioTeacherList: `${publicPath}apis/mobile/getStudioInfo/teacherList`,
 };
 
 export enum Role { teacher = 3, studio };// 这里对应的是数据库的role表

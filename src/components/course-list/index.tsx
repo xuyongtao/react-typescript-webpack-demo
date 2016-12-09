@@ -45,7 +45,7 @@ export default class CourseList extends React.Component<CourseListProps, any> {
                         )
                     }) }
                 </ul>
-                { currentPage == totalPage ? <div className="end-line">全部课程都在这里了呢</div> : (loadMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ handlerLoadMore }>点击加载更多</div>) }
+                { currentPage == totalPage ? <div className="course-list-end-line">全部课程都在这里了</div> : (loadMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ handlerLoadMore }>点击加载更多</div>) }
             </div>
         )
     }

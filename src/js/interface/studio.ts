@@ -10,12 +10,13 @@ export interface ReceiveIndexPageInfoPost {
     intro: string;
 }
 
-export interface RequestTeacherList {
+export interface RequestTeacherListPost {
     id: number;
+    role: number;
     page: number;
     perPage: number;
 }
-export interface ReceiveTeacherList {
+export interface ReceiveTeacherListPost {
     page: number;
     perPage: number;
     total: number;

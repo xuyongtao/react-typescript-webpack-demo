@@ -7,4 +7,26 @@
             border-bottom: none;
         }  
     }
+    .end-line {
+        margin: 20/@REM 0;
+        font-size: 24/@REM;
+        line-height: 30/@REM;
+        text-align: center;
+        color: #aaa;
+        &::before,&::after { 
+            content: '';
+            display: inline-block;
+            vertical-align: top;
+            margin-top: 15/@REM;
+            width: 100/@REM;
+            height: 1px;
+            background-color: #aaa; 
+        }
+        &::before {
+            margin-right: 20/@REM;
+        }
+        &::after {
+            margin-left: 20/@REM;
+        }
+    }
 }
