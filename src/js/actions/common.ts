@@ -5,6 +5,8 @@ import { api } from "../common/utils";
 import {
     RequestBasicInfoPost,
     ReceiveBasicInfoPost,
+    RequestCourseListPost,
+    ReceiveCourseListPost,
     RequestRecommendListPost,
     ReceiveRecommendListPost,
     RequestHotListPost,
@@ -15,6 +17,8 @@ import {
 
 export const REQUEST_BASIC_INFO_POST = "REQUEST_BASIC_INFO_POST";
 export const RECEIVE_BASIC_INFO_POST = "RECEIVE_BASIC_INFO_POST";
+export const REQUEST_COURSE_LIST_POST = 'REQUEST_COURSE_LIST_POST';
+export const RECEIVE_COURSE_LIST_POST = 'RECEIVE_COURSE_LIST_POST';
 export const REQUEST_RECOMMENT_LIST_POST = 'REQUEST_RECOMMENT_LIST_POST';
 export const RECEIVE_RECOMMENT_LIST_POST = 'RECEIVE_RECOMMENT_LIST_POST';
 export const REQUEST_HOT_LIST_POST = 'REQUEST_HOT_LIST_POST';
@@ -48,6 +52,30 @@ export function fetchBasicInfoPost({
             .post(url, data)
             .then(res => {
                 dispatch(receiveBasicInfoPost(<ReceiveBasicInfoPost>res.data));
+            })
+    }
+}
+
+function requestCourseListPost(data: RequestCourseListPost) {
+    return {
+        type: REQUEST_COURSE_LIST_POST,
+        requestData: data
+    }
+}
+function receiveCourseListPost(data: ReceiveCourseListPost) {
+    return {
+        type: RECEIVE_COURSE_LIST_POST,
+        responseData: data
+    }
+}
+export function fetchCourseListPost(url: string, data: RequestCourseListPost) {
+    return (dispatch: Dispatch<any>) => {
+        dispatch(requestCourseListPost(data));
+
+        return api
+            .post(url, data)
+            .then(res => {
+                dispatch(receiveCourseListPost(<ReceiveCourseListPost>res.data));
             })
     }
 }

@@ -7,42 +7,58 @@ import thunkMiddleware from 'redux-thunk';
 import { Link } from "react-router";
 
 import CourseList from "../../../components/course-list/index";
+import LoadingToast from "../../../components/toast/index";
+import EmptyList from "../../../components/empty-list/index";
 // store
-import { getTeacherCourses } from "../../../js/store/index";
+import { getCourseList } from "../../../js/store/index";
 // interface
-import { CoursesResBasic } from "../../../js/interface/common";
+import { CourseBasic, ReceiveCourseListPost } from "../../../js/interface/common";
+import { Role } from "../../../js/common/config";
 
-export default class TeacherCourses extends React.Component<any, any> {
-    constructor(props: any, context: any) {
+interface StudioCourseListState {
+    loading?: boolean;
+    loadMore?: boolean;
+    courses?: CourseBasic[];
+    currentPage?: number;
+    totalPage?: number;
+}
+
+export default class StudioCourseList extends React.Component<any, StudioCourseListState> {
+    constructor(props: any, context: StudioCourseListState) {
         super(props, context);
         this.state = {
-            loadingMore: false,
+            loading: false,
+            loadMore: false,
             courses: [],
             currentPage: 0,
             totalPage: 1,
         }
     }
 
-    loadMore() {
+    handlerLoadMore() {
         console.log('loading more...');
 
         this.setState({
-            loadingMore: true,
+            loadMore: true,
         })
 
-        getTeacherCourses(this.props.tid, this.state.currentPage + 1)
+        getCourseList({
+            id: this.props.tid,
+            role: Role.studio,
+            page: this.state.currentPage + 1,
+        })
             .then(res => {
-                let data: CoursesResBasic = res;
+                let data: ReceiveCourseListPost = res;
 
                 this.setState({
-                    loadingMore: false,
+                    loadMore: false,
                     courses: this.state.courses.concat(data.courses),
                     currentPage: data.page,
-                    totalPage: data.totalPage,
+                    totalPage: data.total,
                 })
             }, () => {
                 this.setState({
-                    loadingMore: false,
+                    loadMore: false,
                 })
             })
     }
@@ -51,22 +67,26 @@ export default class TeacherCourses extends React.Component<any, any> {
 
         if (!this.state.courses.length) {
             this.setState({
-                loadingMore: true,
+                loading: true,
             })
 
-            getTeacherCourses(this.props.tid)
+            getCourseList({
+                id: this.props.tid,
+                role: Role.studio,
+                page: this.state.currentPage + 1,
+            })
                 .then(res => {
-                    let data: CoursesResBasic = res;
+                    let data: ReceiveCourseListPost = res;
 
                     this.setState({
-                        loadingMore: false,
+                        loading: false,
                         courses: data.courses,
                         currentPage: data.page,
-                        totalPage: data.totalPage,
+                        totalPage: data.total,
                     })
                 }, () => {
                     this.setState({
-                        loadingMore: false,
+                        loading: false,
                     })
                 })
         }
@@ -74,18 +94,32 @@ export default class TeacherCourses extends React.Component<any, any> {
 
     render() {
         console.log('构建课程列表');
-        let props = {
-            hidden: this.props.hidden,
-            courses: this.state.courses,
-            currentPage: this.state.currentPage,
-            totalPage: this.state.totalPage,
-            loadingMore: this.state.loadingMore,
-            loadMore: this.loadMore.bind(this),
-        }
+        const { currentPage, totalPage, loading, loadMore, courses } = this.state;
 
-        return (
-            <CourseList { ...props } />
-        )
+        if (courses.length) {
+            const props = {
+                courses,
+                currentPage,
+                totalPage,
+                loadMore,
+                handlerLoadMore: this.handlerLoadMore.bind(this),
+            };
+            const loadingToastProps = {
+                tip: "加载中...",
+                iconClassName: "icon-loading",
+                isOpen: this.state.loading || this.state.loadMore,
+            };
+
+            return (
+                <CourseList { ...props } >
+                    <LoadingToast { ...loadingToastProps } />
+                </CourseList>
+            )
+        } else {
+            return (
+                <EmptyList tip="该机构暂无课程信息" />
+            )
+        }
     }
 }
 

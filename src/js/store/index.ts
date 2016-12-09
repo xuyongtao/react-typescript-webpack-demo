@@ -2,11 +2,11 @@ import { createStore, applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
 
 import { Promise } from "thenfail";
-import { apis, publicPath } from "../common/config";
+import { apis, publicPath, Role } from "../common/config";
 
 // interface
 import {
-    CoursesResBasic,
+    ReceiveCourseListPost,
     RequestBasicInfoPost,
     ReceiveBasicInfoPost,
     RequestRecommendListPost,
@@ -26,20 +26,19 @@ import reducers from "../reducers/index";
 // actions
 import {
     fetchBasicInfoPost,
+    fetchCourseListPost,
     fetchRecommendList,
     fetchHotList,
     searchList,
 } from "../actions/common";
-import {
-    fetchCoursesPost,
-} from "../actions/teacher";
+
 import {
     fetchIndexPageInfo as fetchStudioIndexPageInfo,
 } from "../actions/studio";
 
 interface stateBasic {
     basicInfo: ReceiveBasicInfoPost,
-    courseList: CoursesResBasic,
+    courseList: ReceiveCourseListPost,
     recommendList: ReceiveRecommendListPost,
     hotList: ReceiveHotListPost,
     searchList: ReceiveSearchListPost,
@@ -58,12 +57,19 @@ export function getBasicInfo(id: number, role: number): Promise<ReceiveBasicInfo
         .then(() => (store.getState() as stateBasic).basicInfo)
 }
 
-export function getTeacherCourses(tid: number, page = 1): PromiseLike<CoursesResBasic> {
+export function getCourseList({
+    id,
+    page = 1,
+    perPage = 8,
+    role = Role.teacher,
+}: {
+        id: number;
+        page: number;
+        perPage?: number;
+        role: number;
+    }): PromiseLike<ReceiveCourseListPost> {
     return store
-        .dispatch(fetchCoursesPost(publicPath + "api/get-teacher-courses", {
-            tid,
-            page
-        }))
+        .dispatch(fetchCourseListPost(apis.getCourseList, { id, page, perPage, role }))
         .then(() => (store.getState() as stateBasic).courseList)
 }
 

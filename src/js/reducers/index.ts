@@ -4,8 +4,8 @@ import * as Lodash from "lodash";
 import { Role } from "../common/config";
 
 import {
-    CoursesPostBasic,
-    CoursesResBasic,
+    RequestCourseListPost,
+    ReceiveCourseListPost,
     RequestBasicInfoPost,
     ReceiveBasicInfoPost,
     RequestRecommendListPost,
@@ -25,12 +25,9 @@ import {
     RECEIVE_HOT_LIST_POST,
     REQUEST_SEARCH_LIST_POST,
     RECEIVE_SEARCH_LIST_POST,
+    REQUEST_COURSE_LIST_POST,
+    RECEIVE_COURSE_LIST_POST,
 } from "../actions/common";
-
-import {
-    REQUEST_COURSES_POST,
-    RECEIVE_COURSES_POST,
-} from "../actions/teacher";
 
 import {
     RequestIndexPageInfoPost as RequestStudioIndexPageInfoPost,
@@ -130,28 +127,33 @@ function postHotList(state = {
     }
 }
 
-function postCourses(state = {
+function postCourseList(state = {
     isFetching: false,
-    tid: 0,
+    id: 0,
+    role: Role.teacher,
+    perPage: 8,
     page: 0,
 }, action: {
     type: string,
-    responseData?: CoursesResBasic,
-    requestData?: CoursesPostBasic
+    responseData?: ReceiveCourseListPost,
+    requestData?: RequestCourseListPost
 }) {
     switch (action.type) {
-        case REQUEST_COURSES_POST:
+        case REQUEST_COURSE_LIST_POST:
             return Lodash.assign({}, state, {
                 isFetching: true,
-                tid: action.requestData.tid,
+                id: action.requestData.id,
+                role: action.requestData.role,
+                perPage: action.requestData.perPage,
                 page: action.requestData.page,
             })
-        case RECEIVE_COURSES_POST:
+        case RECEIVE_COURSE_LIST_POST:
             return Lodash.assign({}, state, {
                 isFetching: false,
                 page: action.responseData.page,
-                totalPage: action.responseData.totalPage,
-                courses: action.responseData.courses
+                perPage: action.responseData.perPage,
+                total: action.responseData.total,
+                courses: action.responseData.courses,
             })
         default:
             return state;
@@ -215,7 +217,7 @@ function postStudioIndexPageInfo(state = {
 
 const reducers = combineReducers({
     basicInfo: postBasicInfo,
-    courseList: postCourses,
+    courseList: postCourseList,
     recommendList: postRecommendList,
     hotList: postHotList,
     searchList: postSearchList,

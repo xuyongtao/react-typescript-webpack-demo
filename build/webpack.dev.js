@@ -59,7 +59,7 @@ app.use('/apis/mobile/getBasicInfo', function (req, res) {
 
     });
 })
-app.use('/api/get-teacher-courses', function (req, res) {
+app.use('/apis/mobile/getCourseList', function (req, res) {
     var tid = req.body.tid || 1;// 请求的老师id
     var postPage = req.body.page || 1;// 请求的老师id
     var totalPage = 3;// 分页总数
@@ -69,7 +69,8 @@ app.use('/api/get-teacher-courses', function (req, res) {
         return res.send({
             data: {
                 page: totalPage,
-                totalPage: totalPage
+                total: totalPage,
+                perPage: pageCount,
             },
             meta: {
                 code: 0,
@@ -93,7 +94,8 @@ app.use('/api/get-teacher-courses', function (req, res) {
         return res.send({
             data: {
                 page: postPage,
-                totalPage: totalPage,
+                total: totalPage,
+                perPage: pageCount,
                 courses: courses
             },
             meta: {
@@ -309,18 +311,18 @@ app.use('/api/get-hot-teachers', function (req, res) {
     }
 
 })
-app.use('/apis/mobile/getStudioIndexPageInfo', function (req, res) {
+app.use('/apis/mobile/getStudioInfo/studioInfoIndex', function (req, res) {
     return res.send({
         "meta": {
             "code": 0,
             "msg": ""
         },
         "data": {
-            banners: ["1.png", "2.png", "3.png"],
+            banners: [`${localPublicPath}images/banner.png`, `${localPublicPath}images/banner.png`],
             courses: [{
                 cid: 1,
                 title: "物理",
-                cover: "1.png",
+                cover: `${localPublicPath}images/default-course-cover.png`,
                 detail: "课程详情"
             }],
             teachers: [{

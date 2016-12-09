@@ -8,21 +8,24 @@ export interface BasicInfo {
     selfIntro?: string;
 }
 
-export interface CoursesPostBasic {
-    tid: number,
-    page: number,
+export interface RequestCourseListPost {
+    id: number;
+    role: number;
+    page: number;
+    perPage: number;
 }
 
-export interface CoursesResBasic {
-    page: number,
-    totalPage: number,
-    courses: CourseBasic[]
+export interface ReceiveCourseListPost {
+    page: number;
+    total: number;
+    perPage: number;
+    courses: CourseBasic[];
 }
 
 export interface CourseBasic {
-    cid: number,
-    title: string,
-    cover: string,
+    cid: number;
+    title: string;
+    cover: string;
     detail: string
 }
 
@@ -42,48 +45,48 @@ export interface ReceiveBasicInfoPost {
 }
 
 interface ProfileCardBasic {
-    id: number,
-    role: number,
-    avatarUrl?: string,
-    name: string,
-    selfIntro?: string,
-    favCount?: number,
-    viewedCount?: number,
-    teachingAge?: number,
-    certified?: boolean,
+    id: number;
+    role: number;
+    avatarUrl?: string;
+    name: string;
+    selfIntro?: string;
+    favCount?: number;
+    viewedCount?: number;
+    teachingAge?: number;
+    certified?: boolean;
     courses: {
-        cid: number,
-        name: string,
-        type?: string,
-        floorPrice?: number,
+        cid: number;
+        name: string;
+        type?: string;
+        floorPrice?: number;
     }[]
 }
 
 export interface RequestRecommendListPost {
-    page: number,
-    pageSize: number,
-    isRecommend: boolean,
+    page: number;
+    pageSize: number;
+    isRecommend: boolean;
 }
 export interface ReceiveRecommendListPost {
-    page: number,
-    totalPage: number,
-    list: RecommendListBasic[],
-    isFetching?: boolean,
+    page: number;
+    totalPage: number;
+    list: RecommendListBasic[];
+    isFetching?: boolean;
 }
 export interface RecommendListBasic extends ProfileCardBasic {
 
 }
 
 export interface RequestHotListPost {
-    page: number,
-    pageSize: number,
-    isRecommend: boolean,
+    page: number;
+    pageSize: number;
+    isRecommend: boolean;
 }
 export interface ReceiveHotListPost {
-    page: number,
-    totalPage: number,
-    list: HotListBasic[],
-    isFetching?: boolean,
+    page: number;
+    totalPage: number;
+    list: HotListBasic[];
+    isFetching?: boolean;
 }
 export interface HotListBasic extends ProfileCardBasic {
 
@@ -101,10 +104,10 @@ export interface RequestSearchListPost {
     keyword?: string;
 }
 export interface ReceiveSearchListPost {
-    page: number,
-    totalPage: number,
-    list: SearchListBasic[],
-    isFetching?: boolean,
+    page: number;
+    totalPage: number;
+    list: SearchListBasic[];
+    isFetching?: boolean;
 }
 export interface SearchListBasic extends ProfileCardBasic {
 

@@ -52,7 +52,7 @@ export default class PhotoCarousel extends React.Component<PhotoCarouselProps, a
             <div className="carousel-wrapper">
                 <Carousel
                     ref="carousel"
-                    autoplay={ this.props.autoplay }
+                    autoplay={ this.props.autoplay && this.props.pics.length > 1 }
                     autoplayInterval={ this.props.autoplayInterval }
                     decorators={[{
                         component: React.createClass({
@@ -80,6 +80,7 @@ export default class PhotoCarousel extends React.Component<PhotoCarouselProps, a
                     slideIndex={ this.props.slideIndex }
                     initialSlideHeight={ this.props.initialSlideHeight }
                     slidesToShow={ this.props.slidesToShow }
+                    dragging={ this.props.pics.length > 1 }
                     >
                     { this.props.pics.map((pic, index) => {
                         return (
