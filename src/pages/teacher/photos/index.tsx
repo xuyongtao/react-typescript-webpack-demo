@@ -56,7 +56,7 @@ interface TeacherPhotosProps {
     },
 }
 interface TeacherPhotosStates {
-    loading: boolean;
+    loading?: boolean;
     hiddenCarousel?: boolean;
     pics?: PhotoBasic[];
     picsOfLeftPart?: string[];

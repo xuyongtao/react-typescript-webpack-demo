@@ -22,3 +22,10 @@ export interface ReceiveTeacherListPost {
     total: number;
     teachers: BasicInfo[];
 }
+
+export interface RequestIntroPost {
+    id: number;
+}
+export interface ReceiveIntroPost {
+    intro: string;
+}

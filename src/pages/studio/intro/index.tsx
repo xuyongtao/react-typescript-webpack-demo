@@ -3,16 +3,67 @@ import "./index.less";
 import * as React from "react";
 import { render } from "react-dom";
 
-export default class Intro extends React.Component<any, any> {
-    constructor(props: any, context: any) {
+import LoadingToast from "../../../components/toast/index";
+import EmptyList from "../../../components/empty-list/index";
+
+import { getStudioIntro } from "../../../js/store/index";
+
+interface StudioIntroProps {
+    params: {
+        sid: string;
+        [key: string]: any;
+    }
+}
+
+interface StudioIntroState {
+    loading?: boolean;
+    intro?: string;
+}
+
+export default class StudioIntro extends React.Component<StudioIntroProps, StudioIntroState> {
+    constructor(props: StudioIntroProps, context: StudioIntroState) {
         super(props, context);
+
+        this.state = {
+            loading: false,
+            intro: "",
+        }
+    }
+
+    componentDidMount() {
+        this.setState({
+            loading: true,
+        })
+
+        getStudioIntro(Number(this.props.params.sid))
+            .then(res => {
+                this.setState({
+                    loading: false,
+                    intro: res.intro,
+                })
+            }, () => {
+                this.setState({
+                    loading: false,
+                })
+            })
     }
 
     render() {
+        const { loading, intro } = this.state;
+        const loadingToastProps = {
+            tip: "加载中...",
+            iconClassName: "icon-loading",
+            isOpen: this.state.loading,
+        };
+
         return (
-            <div className="intro-cont">
-                全民教育致力于打造人人乐用的学习服务平台，聚焦本土优质师资，通过更高效、更智能、更精准地匹配师生资源，为老师及学生提供全而专的教育信息和增值服务，通过移动互联网，全力创建一个专业、高效、智能、安全的高品质教育信息平台，让教与学变得更便捷、平等、高效。
+            <div>
+                <LoadingToast { ...loadingToastProps } />
+                { intro ? <div className="intro-cont">
+                    { intro }
+                </div> : <EmptyList tip="该机构暂未填写介绍" /> }
             </div>
+
         )
     }
 }

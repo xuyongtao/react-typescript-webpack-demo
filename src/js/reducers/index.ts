@@ -38,12 +38,16 @@ import {
     ReceiveIndexPageInfoPost as ReceiveStudioIndexPageInfoPost,
     RequestTeacherListPost,
     ReceiveTeacherListPost,
+    RequestIntroPost as RequestStudioIntroPost,
+    ReceiveIntroPost as ReceiveStudioIntroPost,
 } from "../interface/studio";
 import {
     REQUEST_INDEX_PAGE_INFO_POST as REQUEST_STUDIO_INDEX_PAGE_INFO_POST,
     RECEIVE_INDEX_PAGE_INFO_POST as RECEIVE_STUDIO_INDEX_PAGE_INFO_POST,
     REQUEST_TEACHER_LIST_POST,
     RECEIVE_TEACHER_LIST_POST,
+    REQUEST_INTRO_POST as REQUEST_STUDIO_INTRO_POST,
+    RECEIVE_INTRO_POST as RECEIVE_STUDIO_INTRO_POST,
 } from "../actions/studio";
 
 const DEFAULT_PAGE_SIZE = 8;
@@ -282,6 +286,30 @@ function postStudioTeacherList(state = {
     }
 }
 
+function postStudioIntro(state = {
+    isFetching: false,
+    id: 0,
+}, action: {
+    type: string;
+    requestData?: RequestStudioIntroPost;
+    responseData?: ReceiveStudioIntroPost;
+}) {
+    switch (action.type) {
+        case REQUEST_STUDIO_INTRO_POST:
+            return Lodash.assign({}, state, {
+                isFetching: true,
+                id: action.requestData.id,
+            });
+        case RECEIVE_STUDIO_INTRO_POST:
+            return Lodash.assign({}, state, {
+                isFetching: false,
+                intro: action.responseData.intro,
+            })
+        default:
+            return state;
+    }
+}
+
 const reducers = combineReducers({
     basicInfo: postBasicInfo,
     courseList: postCourseList,
@@ -291,6 +319,7 @@ const reducers = combineReducers({
     searchList: postSearchList,
     studioIndexPageInfo: postStudioIndexPageInfo,
     studioTeacherList: postStudioTeacherList,
+    studioIntro: postStudioIntro,
 })
 
 export default reducers;  
