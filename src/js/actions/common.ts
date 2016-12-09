@@ -7,6 +7,8 @@ import {
     ReceiveBasicInfoPost,
     RequestCourseListPost,
     ReceiveCourseListPost,
+    RequestPhotoListPost,
+    ReceivePhotoListPost,
     RequestRecommendListPost,
     ReceiveRecommendListPost,
     RequestHotListPost,
@@ -19,6 +21,8 @@ export const REQUEST_BASIC_INFO_POST = "REQUEST_BASIC_INFO_POST";
 export const RECEIVE_BASIC_INFO_POST = "RECEIVE_BASIC_INFO_POST";
 export const REQUEST_COURSE_LIST_POST = 'REQUEST_COURSE_LIST_POST';
 export const RECEIVE_COURSE_LIST_POST = 'RECEIVE_COURSE_LIST_POST';
+export const REQUEST_PHOTO_LIST_POST = 'REQUEST_PHOTO_LIST_POST';
+export const RECEIVE_PHOTO_LIST_POST = 'RECEIVE_PHOTO_LIST_POST';
 export const REQUEST_RECOMMENT_LIST_POST = 'REQUEST_RECOMMENT_LIST_POST';
 export const RECEIVE_RECOMMENT_LIST_POST = 'RECEIVE_RECOMMENT_LIST_POST';
 export const REQUEST_HOT_LIST_POST = 'REQUEST_HOT_LIST_POST';
@@ -76,6 +80,30 @@ export function fetchCourseListPost(url: string, data: RequestCourseListPost) {
             .post(url, data)
             .then(res => {
                 dispatch(receiveCourseListPost(<ReceiveCourseListPost>res.data));
+            })
+    }
+}
+
+function requestPhotoListPost(data: RequestPhotoListPost) {
+    return {
+        type: REQUEST_PHOTO_LIST_POST,
+        requestData: data
+    }
+}
+function receivePhotoListPost(data: ReceivePhotoListPost) {
+    return {
+        type: RECEIVE_PHOTO_LIST_POST,
+        responseData: data
+    }
+}
+export function fetchPhotoList(url: string, data: RequestPhotoListPost) {
+    return (dispatch: Dispatch<any>) => {
+        dispatch(requestPhotoListPost(data));
+
+        return api
+            .post(url, data)
+            .then(res => {
+                dispatch(receivePhotoListPost(<ReceivePhotoListPost>res.data));
             })
     }
 }

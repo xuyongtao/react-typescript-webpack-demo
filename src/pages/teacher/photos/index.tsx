@@ -6,7 +6,13 @@ import LazyLoad from "react-lazyload";
 import * as Carousel from "nuka-carousel";
 
 import PhotosCarousel from "../../../components/photos-carousel/index";
+import LoadingToast from "../../../components/toast/index";
+import EmptyList from "../../../components/empty-list/index";
 
+import { getPhotoList } from "../../../js/store/index";
+import { Role } from "../../../js/common/config";
+
+import { PhotoBasic, ReceivePhotoListPost } from "../../../js/interface/common";
 interface LazyLoadImageProps {
     src: string;
     alt?: string;
@@ -45,12 +51,16 @@ class LazyLoadImage extends React.Component<LazyLoadImageProps, any> {
 
 interface TeacherPhotosProps {
     params: {
+        tid: string;
         [key: string]: any
     },
 }
 interface TeacherPhotosStates {
+    loading: boolean;
     hiddenCarousel?: boolean;
-    pics?: string[];
+    pics?: PhotoBasic[];
+    picsOfLeftPart?: string[];
+    picsOfRightPart?: string[];
     loadedPics?: string[];
     slideIndex?: number;
 }
@@ -60,15 +70,15 @@ export default class TeacherPhotos extends React.Component<TeacherPhotosProps, T
         super(props, context);
 
         this.state = {
+            loading: false,
             hiddenCarousel: true,
             pics: [],
+            picsOfLeftPart: [],
+            picsOfRightPart: [],
             loadedPics: [],
             slideIndex: 0,
         };
     }
-
-    private picsOfLeftPart: string[] = [];
-    private picsOfRightPart: string[] = [];
 
     handlerShowPhotosCarousel(index: number) {
         this.setState({
@@ -95,26 +105,38 @@ export default class TeacherPhotos extends React.Component<TeacherPhotosProps, T
     }
 
     componentDidMount() {
-        // 通过请求获取图片的链接地址
-        let pics = [
-            "http://st.qmin91.com/file/NgqZ8kyR5769fcbf0f59f", "http://st.qmin91.com/file/ygfoKcXm5769fdea91875",
-            "http://st.qmin91.com/file/f2gbVVWW5769fdeac7ba7", "http://st.qmin91.com/file/mxCryDL4576b918bbd3b8",
-            "http://st.qmin91.com/file/BjClyLiU576b919ecfb2b", "http://st.qmin91.com/file/87Ax0Y0H576b91a99d03f",
-            "http://st.qmin91.com/file/ncJWCPzR583bd174b124e", "http://st.qmin91.com/file/aQQkssF1583bd183dd9d2",
-            "http://st.qmin91.com/file/jcde8bsy577474d228a48", "http://st.qmin91.com/file/GrCHT6o6577474d243e91",
-            "http://st.qmin91.com/file/JbSIH4rJ577474d2704b6", "http://st.qmin91.com/file/e6eUoe1z577481a44b348",
-            "http://st.qmin91.com/file/FQBdbvVM577481a480618"
-        ];
         this.setState({
-            pics,
+            loading: true,
         })
-        pics.forEach((value, index) => {
-            if (index % 2 === 0) {
-                this.picsOfLeftPart.push(value);
-            } else {
-                this.picsOfRightPart.push(value);
-            }
+
+        getPhotoList({
+            id: Number(this.props.params.tid),
+            role: Role.teacher,
         })
+            .then(res => {
+                let pics = res.photos;
+                let picsOfLeftPart: string[] = [];
+                let picsOfRightPart: string[] = [];
+
+                pics.forEach((item, index) => {
+                    if (index % 2 === 0) {
+                        picsOfLeftPart.push(item.mediumSrc);
+                    } else {
+                        picsOfRightPart.push(item.mediumSrc);
+                    }
+                })
+
+                this.setState({
+                    loading: false,
+                    pics,
+                    picsOfLeftPart,
+                    picsOfRightPart,
+                })
+            }, () => {
+                this.setState({
+                    loading: false,
+                })
+            })
     }
 
     render() {
@@ -122,51 +144,63 @@ export default class TeacherPhotos extends React.Component<TeacherPhotosProps, T
             height: 200,
         };
         const pics = {
-            left: this.picsOfLeftPart,
-            right: this.picsOfRightPart,
+            left: this.state.picsOfLeftPart,
+            right: this.state.picsOfRightPart,
         };
         const carouselProps = {
             pics: this.state.loadedPics,
             slideIndex: this.state.slideIndex,
             handlerClose: this.handlerHidePhotosCarousel.bind(this),
             hidden: this.state.hiddenCarousel,
-        }
+        };
+        const loadingToastProps = {
+            tip: "加载中...",
+            iconClassName: "icon-loading",
+            isOpen: this.state.loading,
+        };
 
-        return (
-            <div id="gallery-wall">
-                { this.state.hiddenCarousel ? null : <PhotosCarousel ref="carousel" { ...carouselProps } /> }
-                <div className="gallery-wall-left">
-                    { pics.left.map((src, index) => {
-                        return (
-                            <div key={ index * 2 } className="gallery-wall-item">
-                                <LazyLoad { ...lazyloadProps }>
-                                    <LazyLoadImage
-                                        src={ src }
-                                        handlerLoaded={ this.handlerAddLoadedPics.bind(this, src, index * 2) }
-                                        handlerClick={ this.handlerShowPhotosCarousel.bind(this) }
-                                        />
-                                </LazyLoad>
-                            </div>
-                        )
-                    }) }
+        if (this.state.pics.length) {
+            return (
+                <div id="gallery-wall">
+                    <LoadingToast { ...loadingToastProps } />
+                    { this.state.hiddenCarousel ? null : <PhotosCarousel ref="carousel" { ...carouselProps } /> }
+                    <div className="gallery-wall-left">
+                        { pics.left.map((src, index) => {
+                            return (
+                                <div key={ index * 2 } className="gallery-wall-item">
+                                    <LazyLoad { ...lazyloadProps }>
+                                        <LazyLoadImage
+                                            src={ src }
+                                            handlerLoaded={ this.handlerAddLoadedPics.bind(this, src, index * 2) }
+                                            handlerClick={ this.handlerShowPhotosCarousel.bind(this) }
+                                            />
+                                    </LazyLoad>
+                                </div>
+                            )
+                        }) }
+                    </div>
+                    <div className="gallery-wall-right">
+                        { pics.right.map((src, index) => {
+                            return (
+                                <div key={ index * 2 + 1 } className="gallery-wall-item">
+                                    <LazyLoad { ...lazyloadProps }>
+                                        <LazyLoadImage
+                                            src={ src }
+                                            handlerLoaded={ this.handlerAddLoadedPics.bind(this, src, index * 2 + 1) }
+                                            handlerClick={ this.handlerShowPhotosCarousel.bind(this) }
+                                            />
+                                    </LazyLoad>
+                                </div>
+                            )
+                        }) }
+                    </div>
                 </div>
-                <div className="gallery-wall-right">
-                    { pics.right.map((src, index) => {
-                        return (
-                            <div key={ index * 2 + 1 } className="gallery-wall-item">
-                                <LazyLoad { ...lazyloadProps }>
-                                    <LazyLoadImage
-                                        src={ src }
-                                        handlerLoaded={ this.handlerAddLoadedPics.bind(this, src, index * 2 + 1) }
-                                        handlerClick={ this.handlerShowPhotosCarousel.bind(this) }
-                                        />
-                                </LazyLoad>
-                            </div>
-                        )
-                    }) }
-                </div>
-            </div>
-        )
+            )
+        } else {
+            return (
+                <EmptyList tip="该老师暂未上传图片" />
+            )
+        }
     }
 }
 

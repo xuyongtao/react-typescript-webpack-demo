@@ -9,6 +9,8 @@ import {
     ReceiveCourseListPost,
     RequestBasicInfoPost,
     ReceiveBasicInfoPost,
+    RequestPhotoListPost,
+    ReceivePhotoListPost,
     RequestRecommendListPost,
     ReceiveRecommendListPost,
     RequestHotListPost,
@@ -29,6 +31,7 @@ import reducers from "../reducers/index";
 import {
     fetchBasicInfoPost,
     fetchCourseListPost,
+    fetchPhotoList,
     fetchRecommendList,
     fetchHotList,
     searchList,
@@ -42,6 +45,7 @@ import {
 interface stateBasic {
     basicInfo: ReceiveBasicInfoPost,
     courseList: ReceiveCourseListPost,
+    photoList: ReceivePhotoListPost,
     recommendList: ReceiveRecommendListPost,
     hotList: ReceiveHotListPost,
     searchList: ReceiveSearchListPost,
@@ -132,10 +136,16 @@ export function getStudioIndexPageInfo(id: number): Promise<ReceiveStudioIndexPa
 }
 
 export function getStudioTeacherList(data: RequestTeacherListPost): Promise<ReceiveTeacherListPost> {
-    return store.
-        dispatch(fetchStudioTeacherList({
+    return store
+        .dispatch(fetchStudioTeacherList({
             url: apis.getStudioTeacherList,
             data
         }))
         .then(() => (store.getState() as stateBasic).studioTeacherList);
+}
+
+export function getPhotoList(data: RequestPhotoListPost): Promise<ReceivePhotoListPost> {
+    return store
+        .dispatch(fetchPhotoList(apis.getPhotoList, data))
+        .then(() => (store.getState() as stateBasic).photoList);
 }

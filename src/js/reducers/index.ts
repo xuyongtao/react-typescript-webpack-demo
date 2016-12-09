@@ -8,6 +8,8 @@ import {
     ReceiveCourseListPost,
     RequestBasicInfoPost,
     ReceiveBasicInfoPost,
+    RequestPhotoListPost,
+    ReceivePhotoListPost,
     RequestRecommendListPost,
     ReceiveRecommendListPost,
     RequestHotListPost,
@@ -27,6 +29,8 @@ import {
     RECEIVE_SEARCH_LIST_POST,
     REQUEST_COURSE_LIST_POST,
     RECEIVE_COURSE_LIST_POST,
+    REQUEST_PHOTO_LIST_POST,
+    RECEIVE_PHOTO_LIST_POST,
 } from "../actions/common";
 
 import {
@@ -41,6 +45,9 @@ import {
     REQUEST_TEACHER_LIST_POST,
     RECEIVE_TEACHER_LIST_POST,
 } from "../actions/studio";
+
+const DEFAULT_PAGE_SIZE = 8;
+const DEFAULT_START_PAGE = 1;
 
 function postBasicInfo(state = {
     isFetching: false,
@@ -77,8 +84,8 @@ function postBasicInfo(state = {
 
 function postRecommendList(state = {
     isFetching: false,
-    page: 0,
-    pageSize: 0,
+    page: DEFAULT_START_PAGE,
+    pageSize: DEFAULT_PAGE_SIZE,
 }, action: {
     type: string;
     responseData?: ReceiveRecommendListPost;
@@ -105,8 +112,8 @@ function postRecommendList(state = {
 
 function postHotList(state = {
     isFetching: false,
-    page: 0,
-    pageSize: 0,
+    page: DEFAULT_START_PAGE,
+    pageSize: DEFAULT_PAGE_SIZE,
 }, action: {
     type: string;
     responseData?: ReceiveRecommendListPost;
@@ -135,8 +142,8 @@ function postCourseList(state = {
     isFetching: false,
     id: 0,
     role: Role.teacher,
-    perPage: 8,
-    page: 0,
+    perPage: DEFAULT_PAGE_SIZE,
+    page: DEFAULT_START_PAGE,
 }, action: {
     type: string,
     responseData?: ReceiveCourseListPost,
@@ -164,10 +171,36 @@ function postCourseList(state = {
     }
 }
 
+function postPhotoList(state = {
+    isFetching: false,
+    page: DEFAULT_START_PAGE,
+    pageSize: DEFAULT_PAGE_SIZE,
+}, action: {
+    type: string;
+    requestData: RequestPhotoListPost;
+    responseData: ReceivePhotoListPost;
+}) {
+    switch (action.type) {
+        case REQUEST_PHOTO_LIST_POST:
+            return Lodash.assign({}, state, {
+                isFetching: true,
+                id: action.requestData.id,
+                role: action.requestData.role,
+            });
+        case RECEIVE_PHOTO_LIST_POST:
+            return Lodash.assign({}, state, {
+                isFetching: false,
+                photos: action.responseData.photos,
+            });
+        default:
+            return state;
+    }
+}
+
 function postSearchList(state = {
     isFetching: false,
-    page: 0,
-    pageSize: 0,
+    page: 1,
+    pageSize: 8,
 }, action: {
     type: string;
     responseData?: ReceiveSearchListPost;
@@ -252,6 +285,7 @@ function postStudioTeacherList(state = {
 const reducers = combineReducers({
     basicInfo: postBasicInfo,
     courseList: postCourseList,
+    photoList: postPhotoList,
     recommendList: postRecommendList,
     hotList: postHotList,
     searchList: postSearchList,

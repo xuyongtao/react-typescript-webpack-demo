@@ -22,6 +22,20 @@ export interface ReceiveCourseListPost {
     courses: CourseBasic[];
 }
 
+export interface PhotoBasic {
+    mediumSrc: string;
+    originalSrc: string;
+}
+
+export interface RequestPhotoListPost {
+    id: number;
+    role: number;
+}
+
+export interface ReceivePhotoListPost {
+    photos: PhotoBasic[];
+}
+
 export interface CourseBasic {
     cid: number;
     title: string;

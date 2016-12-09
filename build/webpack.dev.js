@@ -361,6 +361,40 @@ app.use('/apis/mobile/getStudioInfo/teacherList', function (req, res) {
         }
     })
 })
+app.use('/apis/mobile/getPhotoList', function (req, res) {
+    return res.send({
+        "meta": {
+            "code": 0,
+            "msg": ""
+        },
+        "data": {
+            "photos": [
+                {
+                    "mediumSrc": "http://st.qmin91.com/file/f2gbVVWW5769fdeac7ba7",
+                    "originalSrc": "",
+                }, {
+                    "mediumSrc": "http://st.qmin91.com/file/BjClyLiU576b919ecfb2b",
+                    "originalSrc": "",
+                }, {
+                    "mediumSrc": "http://st.qmin91.com/file/ncJWCPzR583bd174b124e",
+                    "originalSrc": "",
+                }, {
+                    "mediumSrc": "http://st.qmin91.com/file/jcde8bsy577474d228a48",
+                    "originalSrc": "",
+                }, {
+                    "mediumSrc": "http://st.qmin91.com/file/JbSIH4rJ577474d2704b6",
+                    "originalSrc": "",
+                }, {
+                    "mediumSrc": "http://st.qmin91.com/file/FQBdbvVM577481a480618",
+                    "originalSrc": "",
+                }, {
+                    "mediumSrc": "http://st.qmin91.com/file/NgqZ8kyR5769fcbf0f59f",
+                    "originalSrc": ""
+                }
+            ]
+        }
+    })
+})
 
 app.listen(PORT, HOST, function () {
     console.log(localPublicPath);

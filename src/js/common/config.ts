@@ -7,6 +7,7 @@ export const apis = {
     getSearchRoleList: `${publicPath}apis/mobile/getSearchRoleList`,
     getBasicInfo: `${publicPath}apis/mobile/getBasicInfo`,
     getCourseList: `${publicPath}apis/mobile/getCourseList`,
+    getPhotoList: `${publicPath}apis/mobile/getPhotoList`,
     getStudioIndexPageInfo: `${publicPath}apis/mobile/getStudioInfo/studioInfoIndex`,
     getStudioTeacherList: `${publicPath}apis/mobile/getStudioInfo/teacherList`,
 };
