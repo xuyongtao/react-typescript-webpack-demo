@@ -36,6 +36,8 @@ import {
 import {
     REQUEST_INDEX_PAGE_INFO_POST as REQUEST_STUDIO_INDEX_PAGE_INFO_POST,
     RECEIVE_INDEX_PAGE_INFO_POST as RECEIVE_STUDIO_INDEX_PAGE_INFO_POST,
+    REQUEST_TEACHER_LIST_POST,
+    RECEIVE_TEACHER_LIST_POST,
 } from "../actions/studio";
 
 function postBasicInfo(state = {
@@ -215,6 +217,22 @@ function postStudioIndexPageInfo(state = {
     }
 }
 
+function postStudioTeacherList(state = {
+    isFetching: false,
+    id: 0,
+}, action: {
+    type: string;
+    requestData?: any;
+    responseData?: any;
+}) {
+    switch (action.type) {
+        // case 1:
+        //     return;
+        default:
+            return state;
+    }
+}
+
 const reducers = combineReducers({
     basicInfo: postBasicInfo,
     courseList: postCourseList,
@@ -222,6 +240,7 @@ const reducers = combineReducers({
     hotList: postHotList,
     searchList: postSearchList,
     studioIndexPageInfo: postStudioIndexPageInfo,
+    studioTeacherList: postStudioTeacherList,
 })
 
 export default reducers;  

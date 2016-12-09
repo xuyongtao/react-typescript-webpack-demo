@@ -15,6 +15,13 @@ import { getCourseList } from "../../../js/store/index";
 import { CourseBasic, ReceiveCourseListPost } from "../../../js/interface/common";
 import { Role } from "../../../js/common/config";
 
+interface StudioCourseListProps {
+    params: {
+        sid: string;
+        [key: string]: any;
+    }
+}
+
 interface StudioCourseListState {
     loading?: boolean;
     loadMore?: boolean;
@@ -23,8 +30,8 @@ interface StudioCourseListState {
     totalPage?: number;
 }
 
-export default class StudioCourseList extends React.Component<any, StudioCourseListState> {
-    constructor(props: any, context: StudioCourseListState) {
+export default class StudioCourseList extends React.Component<StudioCourseListProps, StudioCourseListState> {
+    constructor(props: StudioCourseListProps, context: StudioCourseListState) {
         super(props, context);
         this.state = {
             loading: false,
@@ -43,7 +50,7 @@ export default class StudioCourseList extends React.Component<any, StudioCourseL
         })
 
         getCourseList({
-            id: this.props.tid,
+            id: Number(this.props.params.sid),
             role: Role.studio,
             page: this.state.currentPage + 1,
         })
@@ -71,7 +78,7 @@ export default class StudioCourseList extends React.Component<any, StudioCourseL
             })
 
             getCourseList({
-                id: this.props.tid,
+                id: Number(this.props.params.sid),
                 role: Role.studio,
                 page: this.state.currentPage + 1,
             })

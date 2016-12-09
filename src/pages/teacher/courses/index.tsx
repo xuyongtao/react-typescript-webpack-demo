@@ -17,7 +17,7 @@ import { ReceiveCourseListPost, CourseBasic } from "../../../js/interface/common
 
 interface TeacherCourseListProps {
     params: {
-        tid: number;
+        tid: string;
         [key: string]: any;
     }
 }
@@ -50,7 +50,7 @@ export default class TeacherCourseList extends React.Component<TeacherCourseList
         })
 
         getCourseList({
-            id: this.props.params.tid,
+            id: Number(this.props.params.tid),
             role: Role.teacher,
             page: this.state.currentPage + 1,
         })
@@ -78,7 +78,7 @@ export default class TeacherCourseList extends React.Component<TeacherCourseList
             })
 
             getCourseList({
-                id: this.props.params.tid,
+                id: Number(this.props.params.tid),
                 role: Role.teacher,
                 page: this.state.currentPage + 1,
             })

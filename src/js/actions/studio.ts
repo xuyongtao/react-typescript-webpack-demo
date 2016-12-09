@@ -4,10 +4,14 @@ import { api } from "../common/utils";
 
 export const REQUEST_INDEX_PAGE_INFO_POST = "REQUEST_INDEX_PAGE_INFO_POST";
 export const RECEIVE_INDEX_PAGE_INFO_POST = "RECEIVE_INDEX_PAGE_INFO_POST";
+export const REQUEST_TEACHER_LIST_POST = "REQUEST_TEACHER_LIST_POST";
+export const RECEIVE_TEACHER_LIST_POST = "RECEIVE_TEACHER_LIST_POST";
 
 import {
     RequestIndexPageInfoPost,
     ReceiveIndexPageInfoPost,
+    RequestTeacherList,
+    ReceiveTeacherList,
 } from "../interface/studio";
 
 function requestIndexPageInfoPost(data: RequestIndexPageInfoPost) {
@@ -38,4 +42,14 @@ export function fetchIndexPageInfo({
                 dispatch(receiveIndexPageInfoPost(<ReceiveIndexPageInfoPost>res.data));
             })
     }
+}
+
+function requestTeacherList(data: RequestTeacherList) {
+    return {
+        type: REQUEST_TEACHER_LIST_POST,
+        responseData: data,
+    }
+}
+function receiveTeacherList(data: ReceiveTeacherList) {
+
 }
