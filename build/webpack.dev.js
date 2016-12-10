@@ -406,6 +406,64 @@ app.use('/apis/mobile/getStudioInfo/introInfo', function (req, res) {
         }
     })
 })
+app.use('/apis/mobile/getTeacherInfo/introInfo', function (req, res) {
+    return res.send({
+        "meta": {
+            "code": 0,
+            "msg": ""
+        },
+        "data": {
+            "id": 1,
+            "seniority": "最高学历，本科",
+            "graduatedSchool": "毕业学校",
+            "role": "身份",
+            "studio": "单位机构",
+            "intro": "个人介绍",
+            "teachingCases": [{
+                "startTime": "2015年9月",
+                "endTime": "至今",
+                "cont": "带领学生参加长江杯钢琴比赛；参加西安市高陵县建党90周年文艺演出，排演西安市高陵县国土局，交通局、建设局等单位。参加带领第四军",
+            }, {
+                    "startTime": "2015年9月",
+                    "endTime": "至今",
+                    "cont": "带领学生参加长江杯钢琴比赛；参加西安市高陵县建党90周年文艺演出，排演西安市高陵县国土局，交通局、建设局等单位。参加带领第四军",
+                }, {
+                    "startTime": "2015年9月",
+                    "endTime": "至今",
+                    "cont": "带领学生参加长江杯钢琴比赛；参加西安市高陵县建党90周年文艺演出，排演西安市高陵县国土局，交通局、建设局等单位。参加带领第四军",
+                }]
+        }
+    })
+})
+app.use('/apis/mobile/getCourseInfo/detail', function (req, res) {
+    return res.send({
+        "meta": {
+            "code": 0,
+            "msg": ""
+        },
+        "data": {
+            id: 1,
+            title: "钢琴一对一私教",
+            cover: "http://192.168.2.55:8080/images/default-course-cover.png",
+            cont: "钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教",
+            prices: {
+                unit: "学期",
+                inDoor: 120,
+                online: 130,
+                outDoor: 140,
+                other: 120,
+            }
+        }
+    })
+})
+app.use('/apis/mobile/booking', function (req, res) {
+    return res.send({
+        "meta": {
+            "code": 0,
+            "msg": ""
+        },
+    })
+})
 
 app.listen(PORT, HOST, function () {
     console.log(localPublicPath);

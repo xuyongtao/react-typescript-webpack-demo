@@ -17,6 +17,10 @@ import {
     ReceiveHotListPost,
     RequestSearchListPost,
     ReceiveSearchListPost,
+    RequestCourseDetailPost,
+    ReceiveCourseDetailPost,
+    RequestBookingPost,
+    ReceiveBookingPost,
 } from "../interface/common";
 import {
     RequestIndexPageInfoPost as RequestStudioIndexPageInfoPost,
@@ -37,6 +41,8 @@ import {
     fetchRecommendList,
     fetchHotList,
     searchList,
+    fetchCourseDetail,
+    postBooking,
 } from "../actions/common";
 
 import {
@@ -55,6 +61,8 @@ interface stateBasic {
     studioIndexPageInfo: ReceiveStudioIndexPageInfoPost,
     studioTeacherList: ReceiveTeacherListPost,
     studioIntro: ReceiveIntroPost,
+    courseDetail: ReceiveCourseDetailPost,
+    bookingResult: ReceiveBookingPost,
 }
 
 
@@ -161,4 +169,32 @@ export function getStudioIntro(id: number): Promise<ReceiveIntroPost> {
             data: { id }
         }))
         .then(() => (store.getState() as stateBasic).studioIntro);
+}
+
+export function getCourseDetail(id: number): Promise<ReceiveCourseDetailPost> {
+    return store
+        .dispatch(fetchCourseDetail({
+            url: apis.getCourseDetailInfo,
+            data: { id }
+        }))
+        .then(() => (store.getState() as stateBasic).courseDetail);
+}
+
+export function booking({
+    id,
+    name,
+    mobile,
+    mark,
+}: {
+        id: number;
+        name: string;
+        mobile: string;
+        mark: string;
+    }): Promise<ReceiveBookingPost> {
+    return store
+        .dispatch(postBooking({
+            url: apis.booking,
+            data: { id, name, mobile, mark }
+        }))
+        .then(() => (store.getState() as stateBasic).bookingResult);
 }

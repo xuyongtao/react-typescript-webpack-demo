@@ -6,8 +6,8 @@ import * as Modal from "react-modal";
 
 interface ToastProps {
     isOpen: boolean;
-    tip: string;
-    iconClassName: string;
+    tip?: string;
+    iconClassName?: string;
     style?: {
         content?: {
             [key: string]: any;
@@ -25,6 +25,8 @@ export default class Toast extends React.Component<ToastProps, any> {
         iconClassName: React.PropTypes.string.isRequired,
     }
     static defaultProps = {
+        tip: "加载中...",
+        iconClassName: "icon-loading",
         style: {
             overlay: {
 

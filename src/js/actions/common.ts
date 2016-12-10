@@ -15,6 +15,10 @@ import {
     ReceiveHotListPost,
     RequestSearchListPost,
     ReceiveSearchListPost,
+    RequestCourseDetailPost,
+    ReceiveCourseDetailPost,
+    RequestBookingPost,
+    ReceiveBookingPost,
 } from "../interface/common";
 
 export const REQUEST_BASIC_INFO_POST = "REQUEST_BASIC_INFO_POST";
@@ -29,6 +33,10 @@ export const REQUEST_HOT_LIST_POST = 'REQUEST_HOT_LIST_POST';
 export const RECEIVE_HOT_LIST_POST = 'RECEIVE_HOT_LIST_POST';
 export const REQUEST_SEARCH_LIST_POST = 'REQUEST_SEARCH_LIST_POST';
 export const RECEIVE_SEARCH_LIST_POST = 'RECEIVE_SEARCH_LIST_POST';
+export const REQUEST_COURSE_DETAIL_POST = 'REQUEST_COURSE_DETAIL_POST';
+export const RECEIVE_COURSE_DETAIL_POST = 'RECEIVE_COURSE_DETAIL_POST';
+export const REQUEST_BOOKING_POST = 'REQUEST_BOOKING_POST';
+export const RECEIVE_BOOKING_POST = 'RECEIVE_BOOKING_POST';
 
 function requestBasicInfoPost(data: RequestBasicInfoPost) {
     return {
@@ -198,3 +206,62 @@ export function searchList({
     }
 }
 
+function requestCourseDetailPost(data: RequestCourseDetailPost) {
+    return {
+        type: REQUEST_COURSE_DETAIL_POST,
+        requestData: data,
+    }
+}
+function receiveCourseDetailPost(data: ReceiveCourseDetailPost) {
+    return {
+        type: RECEIVE_COURSE_DETAIL_POST,
+        responseData: data,
+    }
+}
+export function fetchCourseDetail({
+    url,
+    data,
+}: {
+        url: string;
+        data: RequestCourseDetailPost;
+    }) {
+    return (dispatch: Dispatch<any>) => {
+        dispatch(requestCourseDetailPost(data));
+
+        return api
+            .post(url, data)
+            .then(res => {
+                dispatch(receiveCourseDetailPost(<ReceiveCourseDetailPost>res.data));
+            })
+    }
+}
+
+function requestBookingPost(data: RequestBookingPost) {
+    return {
+        type: REQUEST_BOOKING_POST,
+        requestData: data,
+    }
+}
+function receiveBookingPost(data: ReceiveBookingPost) {
+    return {
+        type: RECEIVE_BOOKING_POST,
+        responseData: data,
+    }
+}
+export function postBooking({
+    url,
+    data
+}: {
+        url: string;
+        data: RequestBookingPost;
+    }) {
+    return (dispatch: Dispatch<any>) => {
+        dispatch(requestBookingPost(data));
+
+        return api
+            .post(url, data)
+            .then(res => {
+                dispatch(receiveBookingPost(<ReceiveBookingPost>res.data));
+            })
+    }
+}

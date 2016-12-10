@@ -22,17 +22,16 @@ class TeachingCase extends React.Component<TeachingCaseProps, any> {
     static propTypes = {
         startTime: React.PropTypes.string,
         endTime: React.PropTypes.string,
-        cont: React.PropTypes.string,
+        cont: React.PropTypes.string.isRequired,
     }
 
-
     render() {
-        const {  } = this.props;
+        const { startTime, endTime, cont } = this.props;
 
         return (
             <li>
-                <div className="case-time"><time>{ this.props.startTime }</time> - <time>{ this.props.endTime }</time></div>
-                <div className="case-content">{ this.props.cont }</div>
+                <div className="case-time"><time>{ startTime }</time> - <time>{ endTime }</time></div>
+                <div className="case-content">{ cont }</div>
             </li>
         )
     }
@@ -44,13 +43,16 @@ interface TeacherIntroState {
     role?: string;
     studio?: string;
     intro?: string;
-    teachingCases?: {}[];
+    teachingCases?: TeachingCaseProps[];
 }
 
-export default class TeacherIntro extends React.Component<any, any> {
+export default class TeacherIntro extends React.Component<any, TeacherIntroState> {
     constructor(props: any, context: any) {
         super(props, context);
 
+        this.state = {
+            
+        }
     }
 
     componentDidMount() {

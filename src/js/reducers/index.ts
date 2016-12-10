@@ -16,6 +16,10 @@ import {
     ReceiveHotListPost,
     RequestSearchListPost,
     ReceiveSearchListPost,
+    RequestCourseDetailPost,
+    ReceiveCourseDetailPost,
+    RequestBookingPost,
+    ReceiveBookingPost,
 } from "../interface/common";
 
 import {
@@ -31,6 +35,10 @@ import {
     RECEIVE_COURSE_LIST_POST,
     REQUEST_PHOTO_LIST_POST,
     RECEIVE_PHOTO_LIST_POST,
+    REQUEST_COURSE_DETAIL_POST,
+    RECEIVE_COURSE_DETAIL_POST,
+    REQUEST_BOOKING_POST,
+    RECEIVE_BOOKING_POST,
 } from "../actions/common";
 
 import {
@@ -310,6 +318,65 @@ function postStudioIntro(state = {
     }
 }
 
+function postCourseDetail(state = {
+    isFetching: false,
+    id: 0,
+}, action: {
+    type: string;
+    requestData?: RequestCourseDetailPost;
+    responseData?: ReceiveCourseDetailPost;
+}) {
+    switch (action.type) {
+        case REQUEST_COURSE_DETAIL_POST:
+            return Lodash.assign({}, state, {
+                isFetching: true,
+                id: action.requestData.id,
+            })
+        case RECEIVE_COURSE_DETAIL_POST:
+            return Lodash.assign({}, state, {
+                isFetching: false,
+                id: action.responseData.id,
+                title: action.responseData.title,
+                cover: action.responseData.cover,
+                cont: action.responseData.cont,
+                prices: {
+                    unit: action.responseData.prices.unit,
+                    inDoor: action.responseData.prices.inDoor,
+                    outDoor: action.responseData.prices.outDoor,
+                    online: action.responseData.prices.online,
+                    other: action.responseData.prices.other,
+                }
+            })
+        default:
+            return state;
+    }
+}
+
+function postBooking(state = {
+    isFetching: false,
+}, action: {
+    type: string;
+    requestData?: RequestBookingPost;
+    responseData?: ReceiveBookingPost;
+}) {
+    switch (action.type) {
+        case REQUEST_BOOKING_POST:
+            return Lodash.assign({}, state, {
+                isFetching: true,
+                id: action.requestData.id,
+                name: action.requestData.name,
+                mobile: action.requestData.mobile,
+                mark: action.requestData.mark,
+            })
+        case RECEIVE_BOOKING_POST:
+            return Lodash.assign({}, state, {
+                isFetching: false,
+            })
+        default:
+            return state;
+    }
+}
+
 const reducers = combineReducers({
     basicInfo: postBasicInfo,
     courseList: postCourseList,
@@ -320,6 +387,8 @@ const reducers = combineReducers({
     studioIndexPageInfo: postStudioIndexPageInfo,
     studioTeacherList: postStudioTeacherList,
     studioIntro: postStudioIntro,
+    courseDetail: postCourseDetail,
+    booking: postBooking,
 })
 
 export default reducers;  

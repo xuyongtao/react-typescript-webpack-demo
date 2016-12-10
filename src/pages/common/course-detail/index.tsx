@@ -7,12 +7,16 @@ import SwipeableViews from "react-swipeable-views";
 import * as ClassNames from "classnames";
 
 import NarBar from "../../../components/nav-bar";
-import Loading from "../../../components/loading/index";
+import LoadingToast from "../../../components/toast/index";
 import SuccessModal from "../../../components/toast/index";
-import { PriceUnitMap, ModalOverlayBackgroundColor } from "../../../js/common/config";
+import { PriceUnitMap, ModalOverlayBackgroundColor, defaultCourseCover } from "../../../js/common/config";
+import { getCourseDetail, booking } from "../../../js/store/index";
 
 interface CourseDetailProps {
-
+    params: {
+        cid: string;
+        [key: string]: any;
+    }
 }
 interface CourseDetailStates {
     isOpenConsultModal?: boolean;
@@ -26,7 +30,7 @@ interface CourseDetailStates {
     indoorPrice?: number;
     outdoorPrice?: number;
     otherPrice?: number;
-    priceUnitId?: number;
+    priceUnit?: string;
 }
 
 export default class CourseDetail extends React.Component<CourseDetailProps, CourseDetailStates> {
@@ -38,14 +42,14 @@ export default class CourseDetail extends React.Component<CourseDetailProps, Cou
             isOpenSuccessModal: false,
             isSubmitSuccess: false,
             loading: true,
-            title: "钢琴一对一私教",
-            detail: "钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教",
-            cover: require("../../../img/default-course-cover.png"),
-            onlinePrice: 120,
-            indoorPrice: 120,
-            outdoorPrice: 120,
-            otherPrice: 120,
-            priceUnitId: 1,
+            title: "",
+            detail: "",
+            cover: "",
+            onlinePrice: 0,
+            indoorPrice: 0,
+            outdoorPrice: 0,
+            otherPrice: 0,
+            priceUnit: "课时",
         }
     }
 
@@ -62,6 +66,8 @@ export default class CourseDetail extends React.Component<CourseDetailProps, Cou
     }
 
     onSubmit() {
+
+
         this.setState({
             isOpenSuccessModal: true,
             isOpenConsultModal: false,
@@ -75,31 +81,54 @@ export default class CourseDetail extends React.Component<CourseDetailProps, Cou
     }
 
     componentDidMount() {
-        // 请求course数据
         this.setState({
-            loading: false,
+            loading: true,
         })
+
+        getCourseDetail(Number(this.props.params.cid))
+            .then(res => {
+                this.setState({
+                    loading: false,
+                    title: res.title,
+                    detail: res.cont,
+                    cover: res.cover || defaultCourseCover,
+                    onlinePrice: res.prices.online,
+                    indoorPrice: res.prices.inDoor,
+                    outdoorPrice: res.prices.outDoor,
+                    otherPrice: res.prices.other,
+                    priceUnit: res.prices.unit,
+                })
+            }, () => {
+                this.setState({
+                    loading: false,
+                })
+            })
+
     }
 
     render() {
-        const { loading, title, cover, detail, onlinePrice, indoorPrice, otherPrice, outdoorPrice, priceUnitId } = this.state;
+        const { loading, title, cover, detail, onlinePrice, indoorPrice, otherPrice, outdoorPrice, priceUnit } = this.state;
         const ConsultModalProps = {
+            cid: Number(this.props.params.cid),
             isOpen: this.state.isOpenConsultModal,
             onRequestClose: this.onCloseModal.bind(this),
             onSubmit: this.onSubmit.bind(this),
-        }
+        };
         const SuccessModalProps = {
             isOpen: this.state.isOpenSuccessModal,
             tip: "已完成",
             iconClassName: "icon-complete",
-        }
+        };
+        const loadingToastProps = {
+            isOpen: this.state.loading,
+        };
 
         return (
             <div id="course-detail-page">
                 <NarBar pageTitle="课程详情" />
                 {
                     loading ?
-                        <Loading /> :
+                        <LoadingToast { ...loadingToastProps } /> :
                         <div>
                             <div className="course-cover">
                                 <img src={ cover } alt={ title }/>
@@ -111,25 +140,26 @@ export default class CourseDetail extends React.Component<CourseDetailProps, Cou
                             <div className="course-prices">
                                 <h2>课程价格</h2>
                                 <ul>
-                                    <li>在线教学 <strong>￥{ onlinePrice }</strong>/{ PriceUnitMap[priceUnitId]}</li>
-                                    <li>老师上门 <strong>￥{ indoorPrice }</strong>/{ PriceUnitMap[priceUnitId]}</li>
-                                    <li>地点协商 <strong>￥{ otherPrice }</strong>/{ PriceUnitMap[priceUnitId]}</li>
-                                    <li>学生上门 <strong>￥{ outdoorPrice }</strong>/{ PriceUnitMap[priceUnitId]}</li>
+                                    <li>在线教学 <strong>￥{ onlinePrice }</strong>/{ priceUnit }</li>
+                                    <li>老师上门 <strong>￥{ indoorPrice }</strong>/{ priceUnit }</li>
+                                    <li>地点协商 <strong>￥{ otherPrice }</strong>/{ priceUnit }</li>
+                                    <li>学生上门 <strong>￥{ outdoorPrice }</strong>/{ priceUnit }</li>
                                 </ul>
                             </div>
                             <div className="btn-phone">
                                 { this.state.isSubmitSuccess ? <span className="disabled">已成功填写信息</span> : <span onClick={ this.onOpenModal.bind(this) }>填写咨询信息，预约老师</span>}
                             </div>
+                            <ConsultModal { ...ConsultModalProps } />
+                            <SuccessModal { ...SuccessModalProps } />
                         </div>
                 }
-                <ConsultModal { ...ConsultModalProps } />
-                <SuccessModal { ...SuccessModalProps } />
             </div>
         )
     }
 }
 
 interface ConsultModalProps {
+    cid?: number;
     isOpen?: boolean;
     onAfterOpen?(): void;
     onRequestClose?(): void;
@@ -148,9 +178,11 @@ interface ConsultModalProps {
 interface ConsultModalState {
     tabIndex?: number;
     isOpen?: boolean;
+    submiting?: boolean;
 }
 class ConsultModal extends React.Component<ConsultModalProps, ConsultModalState> {
     static propTypes = {
+        cid: React.PropTypes.number.isRequired,
         isOpen: React.PropTypes.bool,
         onAfterOpen: React.PropTypes.func,
         onRequestClose: React.PropTypes.func,
@@ -170,7 +202,7 @@ class ConsultModal extends React.Component<ConsultModalProps, ConsultModalState>
                 backgroundColor: ModalOverlayBackgroundColor,
             }
         },
-        tabs: ["填写信息", "老师微信"],
+        tabs: ["填写信息", "全民教育公众号"],
     }
 
     onSwipe(index: number) {
@@ -189,12 +221,36 @@ class ConsultModal extends React.Component<ConsultModalProps, ConsultModalState>
         })
     }
     onSubmit() {
-        this.props.onSubmit();
+        if (this.state.submiting) return;
+
+        const id = this.props.cid;
+        const name = (this.refs["name"] as any).value.trim();
+        const mobile = (this.refs["mobile"] as any).value.trim();
+        const mark = (this.refs["mark"] as any).value.trim();
+
+        if (!name || !mobile || !mark) {
+            alert("请完成所有信息");
+            return;
+        }
+
+        this.setState({
+            submiting: true,
+        })
+
+        booking({ id, name, mobile, mark })
+            .then(res => {
+                this.props.onSubmit();
+            }, () => {
+                this.setState({
+                    submiting: true,
+                })
+            })
     }
     constructor(props: ConsultModalProps, state: ConsultModalState) {
         super(props, state);
-        console.log(this.props.isOpen)
+
         this.state = {
+            submiting: false,
             tabIndex: 0,
             isOpen: this.props.isOpen,
         }
@@ -202,6 +258,7 @@ class ConsultModal extends React.Component<ConsultModalProps, ConsultModalState>
 
     render() {
         const { tabs, isOpen, onRequestClose, closeTimeoutMS, customStyle } = this.props;
+        const { submiting } = this.state;
         const swipeableViewsProps = {
             index: this.state.tabIndex,
             onChangeIndex: this.onChangeIndex.bind(this),
@@ -229,14 +286,16 @@ class ConsultModal extends React.Component<ConsultModalProps, ConsultModalState>
                 </ul>
                 <SwipeableViews { ...swipeableViewsProps }>
                     <div className="consult-form">
-                        <input type="text" placeholder="您的姓名"/>
-                        <input type="text" placeholder="您的联系方式（手机）"/>
-                        <textarea name="" id="" rows="3" placeholder="请输入您想了解的信息，方便老师电话回访沟通"></textarea>
-                        <span onClick={ this.onSubmit.bind(this) } className="btn-submit">确定提交</span>
+                        <input ref="name" type="text" placeholder="您的姓名"/>
+                        <input ref="mobile" type="text" placeholder="您的联系方式（手机）"/>
+                        <textarea ref="mark" name="" id="" rows="3" placeholder="请输入您想了解的信息，方便老师电话回访沟通"></textarea>
+                        <span onClick={ this.onSubmit.bind(this) } className={ClassNames("btn-submit", {
+                            "btn-disabled": submiting,
+                        }) }>{ submiting ? "提交中..." : "确定提交" }</span>
                     </div>
                     <div className="qr-code">
-                        <img src={ require("./qr-code1.png") } alt="二维码"/>
-                        <p>扫一扫上面的二维码图片，加老师微信进行咨询</p>
+                        <img src={ require("./qr-code.jpg") } alt="二维码"/>
+                        <p>扫一扫上面的二维码图片，关注“全民教育网”获取更多教育资讯</p>
                     </div>
                 </SwipeableViews>
 

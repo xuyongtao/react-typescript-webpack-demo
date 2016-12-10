@@ -127,4 +127,29 @@ export interface SearchListBasic extends ProfileCardBasic {
 
 }
 
+export interface RequestCourseDetailPost {
+    id: number;
+}
+export interface ReceiveCourseDetailPost {
+    id: number;
+    title: string;
+    cover: string;
+    cont: string;
+    prices: {
+        unit: string;
+        inDoor: number;
+        outDoor: number;
+        online: number;
+        other: number;
+    }
+}
 
+export interface RequestBookingPost {
+    id: number;
+    name: string;
+    mobile: string;
+    mark: string;
+}
+export interface ReceiveBookingPost {
+
+}

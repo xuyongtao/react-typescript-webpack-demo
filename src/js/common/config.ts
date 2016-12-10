@@ -1,5 +1,7 @@
 export const defaultAvatar = require("../../img/default-avatar.png");
 
+export const defaultCourseCover = require("../../img/default-course-cover.png");
+
 export const publicPath = "http://192.168.2.55:8080/";
 
 export const apis = {
@@ -11,6 +13,9 @@ export const apis = {
     getStudioIndexPageInfo: `${publicPath}apis/mobile/getStudioInfo/studioInfoIndex`,
     getStudioTeacherList: `${publicPath}apis/mobile/getStudioInfo/teacherList`,
     getStudioIntro: `${publicPath}apis/mobile/getStudioInfo/introInfo`,
+    getTeacherIntro: `${publicPath}apis/mobile/getTeacherInfo/introInfo`,
+    getCourseDetailInfo: `${publicPath}apis/mobile/getCourseInfo/detail`,
+    booking: `${publicPath}apis/mobile/booking`,
 };
 
 export enum Role { teacher = 3, studio };// 这里对应的是数据库的role表
