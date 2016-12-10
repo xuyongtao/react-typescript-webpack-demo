@@ -87,29 +87,35 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
 
     render() {
         const { loading, loadingMore, list, currentPage, totalPage } = this.state;
+        const loadingToastProps = {
+            tip: "加载中...",
+            iconClassName: "icon-loading",
+            isOpen: this.state.loading || this.state.loadingMore,
+        };
 
-        if (list.length) {
-            const loadingToastProps = {
-                tip: "加载中...",
-                iconClassName: "icon-loading",
-                isOpen: this.state.loading || this.state.loadingMore,
-            };
-
+        if (loading) {
             return (
-                <div className="recommend-list">
-                    <LoadingToast { ...loadingToastProps }/>
-
-                    { list.map((teacher, index) => {
-                        return (
-                            <ProfileCard { ...teacher } key={ index } />
-                        )
-                    }) }
-                    { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loadingMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.loadMore.bind(this) }>点击加载更多</div>) }
-                </div>
+                <LoadingToast { ...loadingToastProps }/>
             )
         } else {
             return (
-                <EmptyList tip="暂无推荐的机构和老师" />
+                <div>
+                    <LoadingToast { ...loadingToastProps }/>
+
+                    {
+                        list.length ?
+                            <div className="recommend-list">
+
+                                { list.map((teacher, index) => {
+                                    return (
+                                        <ProfileCard { ...teacher } key={ index } />
+                                    )
+                                }) }
+                                { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loadingMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.loadMore.bind(this) }>点击加载更多</div>) }
+                            </div> :
+                            <EmptyList tip="暂无推荐的机构和老师" />
+                    }
+                </div>
             )
         }
     }

@@ -371,25 +371,25 @@ app.use('/apis/mobile/getPhotoList', function (req, res) {
             "photos": [
                 {
                     "mediumSrc": "http://st.qmin91.com/file/f2gbVVWW5769fdeac7ba7",
-                    "originalSrc": "",
+                    "originalSrc": "http://st.qmin91.com/file/f2gbVVWW5769fdeac7ba7",
                 }, {
                     "mediumSrc": "http://st.qmin91.com/file/BjClyLiU576b919ecfb2b",
-                    "originalSrc": "",
+                    "originalSrc": "http://st.qmin91.com/file/f2gbVVWW5769fdeac7ba7",
                 }, {
                     "mediumSrc": "http://st.qmin91.com/file/ncJWCPzR583bd174b124e",
-                    "originalSrc": "",
+                    "originalSrc": "http://st.qmin91.com/file/f2gbVVWW5769fdeac7ba7",
                 }, {
                     "mediumSrc": "http://st.qmin91.com/file/jcde8bsy577474d228a48",
-                    "originalSrc": "",
+                    "originalSrc": "http://st.qmin91.com/file/f2gbVVWW5769fdeac7ba7",
                 }, {
                     "mediumSrc": "http://st.qmin91.com/file/JbSIH4rJ577474d2704b6",
-                    "originalSrc": "",
+                    "originalSrc": "http://st.qmin91.com/file/f2gbVVWW5769fdeac7ba7",
                 }, {
                     "mediumSrc": "http://st.qmin91.com/file/FQBdbvVM577481a480618",
-                    "originalSrc": "",
+                    "originalSrc": "http://st.qmin91.com/file/f2gbVVWW5769fdeac7ba7",
                 }, {
                     "mediumSrc": "http://st.qmin91.com/file/NgqZ8kyR5769fcbf0f59f",
-                    "originalSrc": ""
+                    "originalSrc": "http://st.qmin91.com/file/f2gbVVWW5769fdeac7ba7"
                 }
             ]
         }

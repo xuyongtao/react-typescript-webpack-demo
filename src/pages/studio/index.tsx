@@ -27,9 +27,9 @@ export default class StudioIndex extends React.Component<StudioIndexProps, any> 
         this.state = {
             id: 0,
             role: Role.studio,
-            name: "机构名称",
+            name: "未设置机构名称",
             avatar: defaultAvatar,
-            selfIntro: "机构简介",
+            selfIntro: "未设置机构简介",
         }
     }
 

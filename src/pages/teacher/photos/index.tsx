@@ -59,8 +59,8 @@ interface TeacherPhotosStates {
     loading?: boolean;
     hiddenCarousel?: boolean;
     pics?: PhotoBasic[];
-    picsOfLeftPart?: string[];
-    picsOfRightPart?: string[];
+    picsOfLeftPart?: PhotoBasic[];
+    picsOfRightPart?: PhotoBasic[];
     loadedPics?: string[];
     slideIndex?: number;
 }
@@ -115,14 +115,14 @@ export default class TeacherPhotos extends React.Component<TeacherPhotosProps, T
         })
             .then(res => {
                 let pics = res.photos;
-                let picsOfLeftPart: string[] = [];
-                let picsOfRightPart: string[] = [];
+                let picsOfLeftPart: PhotoBasic[] = [];
+                let picsOfRightPart: PhotoBasic[] = [];
 
-                pics.forEach((item, index) => {
+                pics.forEach((pic, index) => {
                     if (index % 2 === 0) {
-                        picsOfLeftPart.push(item.mediumSrc);
+                        picsOfLeftPart.push(pic);
                     } else {
-                        picsOfRightPart.push(item.mediumSrc);
+                        picsOfRightPart.push(pic);
                     }
                 })
 
@@ -140,12 +140,9 @@ export default class TeacherPhotos extends React.Component<TeacherPhotosProps, T
     }
 
     render() {
+        const { pics, picsOfLeftPart, picsOfRightPart, loadedPics, slideIndex, hiddenCarousel, loading } = this.state;
         const lazyloadProps = {
             height: 200,
-        };
-        const pics = {
-            left: this.state.picsOfLeftPart,
-            right: this.state.picsOfRightPart,
         };
         const carouselProps = {
             pics: this.state.loadedPics,
@@ -159,46 +156,52 @@ export default class TeacherPhotos extends React.Component<TeacherPhotosProps, T
             isOpen: this.state.loading,
         };
 
-        if (this.state.pics.length) {
+        if (loading) {
             return (
-                <div id="gallery-wall">
-                    <LoadingToast { ...loadingToastProps } />
-                    { this.state.hiddenCarousel ? null : <PhotosCarousel ref="carousel" { ...carouselProps } /> }
-                    <div className="gallery-wall-left">
-                        { pics.left.map((src, index) => {
-                            return (
-                                <div key={ index * 2 } className="gallery-wall-item">
-                                    <LazyLoad { ...lazyloadProps }>
-                                        <LazyLoadImage
-                                            src={ src }
-                                            handlerLoaded={ this.handlerAddLoadedPics.bind(this, src, index * 2) }
-                                            handlerClick={ this.handlerShowPhotosCarousel.bind(this) }
-                                            />
-                                    </LazyLoad>
-                                </div>
-                            )
-                        }) }
-                    </div>
-                    <div className="gallery-wall-right">
-                        { pics.right.map((src, index) => {
-                            return (
-                                <div key={ index * 2 + 1 } className="gallery-wall-item">
-                                    <LazyLoad { ...lazyloadProps }>
-                                        <LazyLoadImage
-                                            src={ src }
-                                            handlerLoaded={ this.handlerAddLoadedPics.bind(this, src, index * 2 + 1) }
-                                            handlerClick={ this.handlerShowPhotosCarousel.bind(this) }
-                                            />
-                                    </LazyLoad>
-                                </div>
-                            )
-                        }) }
-                    </div>
-                </div>
+                <LoadingToast { ...loadingToastProps } />
             )
         } else {
             return (
-                <EmptyList tip="该老师暂未上传图片" />
+                <div>
+                    <LoadingToast { ...loadingToastProps } />
+                    { hiddenCarousel ? null : <PhotosCarousel ref="carousel" { ...carouselProps } /> }
+                    {
+                        pics.length ?
+                            <div id="gallery-wall">
+                                <div className="gallery-wall-left">
+                                    { picsOfLeftPart.map((pic, index) => {
+                                        return (
+                                            <div key={ index * 2 } className="gallery-wall-item">
+                                                <LazyLoad { ...lazyloadProps }>
+                                                    <LazyLoadImage
+                                                        src={ pic.mediumSrc }
+                                                        handlerLoaded={ this.handlerAddLoadedPics.bind(this, pic.originalSrc, index * 2) }
+                                                        handlerClick={ this.handlerShowPhotosCarousel.bind(this) }
+                                                        />
+                                                </LazyLoad>
+                                            </div>
+                                        )
+                                    }) }
+                                </div>
+                                <div className="gallery-wall-right">
+                                    { picsOfRightPart.map((pic, index) => {
+                                        return (
+                                            <div key={ index * 2 + 1 } className="gallery-wall-item">
+                                                <LazyLoad { ...lazyloadProps }>
+                                                    <LazyLoadImage
+                                                        src={ pic.mediumSrc }
+                                                        handlerLoaded={ this.handlerAddLoadedPics.bind(this, pic.originalSrc, index * 2 + 1) }
+                                                        handlerClick={ this.handlerShowPhotosCarousel.bind(this) }
+                                                        />
+                                                </LazyLoad>
+                                            </div>
+                                        )
+                                    }) }
+                                </div>
+                            </div> :
+                            <EmptyList tip="该机构暂未上传图片" />
+                    }
+                </div>
             )
         }
     }

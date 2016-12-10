@@ -9,17 +9,26 @@ interface teacherBasicInfo {
     avatar: string
 }
 
-class TeachingCase extends React.Component<any, any> {
+interface TeachingCaseProps {
+    startTime: string;
+    endTime: string;
+    cont: string;
+}
+
+class TeachingCase extends React.Component<TeachingCaseProps, any> {
+    constructor(props: any, context: any) {
+        super(props, context);
+    }
     static propTypes = {
         startTime: React.PropTypes.string,
         endTime: React.PropTypes.string,
         cont: React.PropTypes.string,
     }
-    constructor(props: any, context: any) {
-        super(props, context);
-    }
+
 
     render() {
+        const {  } = this.props;
+
         return (
             <li>
                 <div className="case-time"><time>{ this.props.startTime }</time> - <time>{ this.props.endTime }</time></div>
@@ -27,6 +36,15 @@ class TeachingCase extends React.Component<any, any> {
             </li>
         )
     }
+}
+
+interface TeacherIntroState {
+    seniority?: string;
+    graduatedSchool?: string;
+    role?: string;
+    studio?: string;
+    intro?: string;
+    teachingCases?: {}[];
 }
 
 export default class TeacherIntro extends React.Component<any, any> {
@@ -40,12 +58,11 @@ export default class TeacherIntro extends React.Component<any, any> {
     }
 
     render() {
-
-        console.log('构建自我介绍');
         return (
             <div>
                 <div id="intro-pannel">
                     <ul>
+
                         <li>
                             <span>最高学历</span>
                             <div>本科</div>

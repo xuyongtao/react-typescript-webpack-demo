@@ -53,17 +53,23 @@ export default class StudioIntro extends React.Component<StudioIntroProps, Studi
         const loadingToastProps = {
             tip: "加载中...",
             iconClassName: "icon-loading",
-            isOpen: this.state.loading,
+            isOpen: loading,
         };
 
-        return (
-            <div>
+        if (loading) {
+            return (
                 <LoadingToast { ...loadingToastProps } />
-                { intro ? <div className="intro-cont">
-                    { intro }
-                </div> : <EmptyList tip="该机构暂未填写介绍" /> }
-            </div>
-
-        )
+            )
+        } else {
+            return (
+                <div>
+                    {
+                        intro ?
+                            <div className="intro-cont">{ intro }</div> :
+                            <EmptyList tip="该机构暂未填写介绍" />
+                    }
+                </div>
+            )
+        }
     }
 }

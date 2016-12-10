@@ -99,31 +99,36 @@ export default class StudioCourseList extends React.Component<StudioCourseListPr
 
     render() {
         const { currentPage, totalPage, loading, loadMore, courses } = this.state;
+        const props = {
+            courses,
+            currentPage,
+            totalPage,
+            loadMore,
+            handlerLoadMore: this.handlerLoadMore.bind(this),
+        };
+        const loadingToastProps = {
+            tip: "加载中...",
+            iconClassName: "icon-loading",
+            isOpen: this.state.loading || this.state.loadMore,
+        };
 
-        if (courses.length) {
-            const props = {
-                courses,
-                currentPage,
-                totalPage,
-                loadMore,
-                handlerLoadMore: this.handlerLoadMore.bind(this),
-            };
-            const loadingToastProps = {
-                tip: "加载中...",
-                iconClassName: "icon-loading",
-                isOpen: this.state.loading || this.state.loadMore,
-            };
-
+        if (loading) {
             return (
-                <CourseList { ...props } >
-                    <LoadingToast { ...loadingToastProps } />
-                </CourseList>
+                <LoadingToast { ...loadingToastProps } />
             )
         } else {
             return (
-                <EmptyList tip="该机构暂无课程信息" />
+                <div>
+                    <LoadingToast { ...loadingToastProps } />
+                    {
+                        courses.length ?
+                            <CourseList { ...props } /> :
+                            <EmptyList tip="该机构暂无课程信息" />
+                    }
+                </div>
             )
         }
+
     }
 }
 

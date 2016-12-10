@@ -35,7 +35,6 @@ export default class CourseList extends React.Component<CourseListProps, any> {
 
         return (
             <div className={ wrapperClassName }>
-                { this.props.children }
                 <ul className="course-list">
                     { courses.map((course: CourseBasic, index: number) => {
                         return (

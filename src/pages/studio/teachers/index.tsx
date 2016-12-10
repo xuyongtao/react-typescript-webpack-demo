@@ -101,48 +101,54 @@ export default class StudioTeacherList extends React.Component<StudioTeacherList
 
     render() {
         const { currentPage, totalPage, loading, loadMore, teachers } = this.state;
+        const props = {
+            teachers,
+            currentPage,
+            totalPage,
+            loadMore,
+            handlerLoadMore: this.handlerLoadMore.bind(this),
+        };
+        const loadingToastProps = {
+            tip: "加载中...",
+            iconClassName: "icon-loading",
+            isOpen: this.state.loading || this.state.loadMore,
+        };
 
-        if (teachers.length) {
-            const props = {
-                teachers,
-                currentPage,
-                totalPage,
-                loadMore,
-                handlerLoadMore: this.handlerLoadMore.bind(this),
-            };
-            const loadingToastProps = {
-                tip: "加载中...",
-                iconClassName: "icon-loading",
-                isOpen: this.state.loading || this.state.loadMore,
-            };
-
+        if (loading) {
             return (
-                <div className="studio-teachers-page">
-                    <LoadingToast { ...loadingToastProps } />
-                    <ul className="teacher-list">
-                        { teachers.map((teacher, index) => {
-                            let teacherProps = {
-                                id: teacher.id,
-                                role: Role.teacher,
-                                avatar: teacher.avatar,
-                                name: teacher.name,
-                                teachingAge: teacher.teachingAge,
-                                selfIntro: teacher.selfIntro,
-                            }
-
-                            return (
-                                <li key={ index }>
-                                    <BasicInfo { ...teacherProps } />
-                                </li>
-                            )
-                        }) }
-                    </ul>
-                    { currentPage == totalPage ? <div className="end-line">全部老师都在这里了</div> : (loadMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.handlerLoadMore.bind(this) }>点击加载更多</div>) }
-                </div>
+                <LoadingToast { ...loadingToastProps } />
             )
         } else {
             return (
-                <EmptyList tip="该机构暂无老师" />
+                <div>
+                    <LoadingToast { ...loadingToastProps } />
+                    {
+                        teachers.length ?
+                            <div className="studio-teachers-page">
+
+                                <ul className="teacher-list">
+                                    { teachers.map((teacher, index) => {
+                                        let teacherProps = {
+                                            id: teacher.id,
+                                            role: Role.teacher,
+                                            avatar: teacher.avatar,
+                                            name: teacher.name,
+                                            teachingAge: teacher.teachingAge,
+                                            selfIntro: teacher.selfIntro,
+                                        }
+
+                                        return (
+                                            <li key={ index }>
+                                                <BasicInfo { ...teacherProps } />
+                                            </li>
+                                        )
+                                    }) }
+                                </ul>
+                                { currentPage == totalPage ? <div className="end-line">全部老师都在这里了</div> : (loadMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.handlerLoadMore.bind(this) }>点击加载更多</div>) }
+                            </div> :
+                            <EmptyList tip="该机构暂无老师" />
+                    }
+                </div>
             )
         }
     }
