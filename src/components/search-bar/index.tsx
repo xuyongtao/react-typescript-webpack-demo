@@ -1,4 +1,4 @@
-require("./index.less");
+import "./index.less";
 
 import * as React from "react";
 import { SyntheticEvent, KeyboardEvent, FormEvent, ReactNode } from "react";
