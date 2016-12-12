@@ -1,4 +1,4 @@
-import "./index.less";
+require("./index.less");
 import * as React from "react";
 import { render } from "react-dom";
 
@@ -51,7 +51,7 @@ export default class TeacherIntro extends React.Component<any, TeacherIntroState
         super(props, context);
 
         this.state = {
-            
+
         }
     }
 

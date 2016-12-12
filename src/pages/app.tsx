@@ -1,4 +1,4 @@
-import "./app.less";
+require("./app.less");
 
 import * as React from "react";
 import { render } from "react-dom";

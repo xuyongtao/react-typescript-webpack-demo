@@ -1,4 +1,4 @@
-import "./index.less";
+require("./index.less");
 
 import * as Lodash from "lodash";
 import * as React from "react";
