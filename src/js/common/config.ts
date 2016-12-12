@@ -3,19 +3,22 @@ export const defaultAvatar = require("../../img/default-avatar.png");
 export const defaultCourseCover = require("../../img/default-course-cover.png");
 
 export const publicPath = "http://192.168.2.55:8080/";
+// export const publicPath = "http://m.qmin91.com/";
+// export const apiHost = "http://qmin91.com/";
+export const apiHost = "http://192.168.2.55:8080/";
 
 export const apis = {
-    getIndexRoleList: `${publicPath}apis/mobile/getIndexRoleList`,
-    getSearchRoleList: `${publicPath}apis/mobile/getSearchRoleList`,
-    getBasicInfo: `${publicPath}apis/mobile/getBasicInfo`,
-    getCourseList: `${publicPath}apis/mobile/getCourseList`,
-    getPhotoList: `${publicPath}apis/mobile/getPhotoList`,
-    getStudioIndexPageInfo: `${publicPath}apis/mobile/getStudioInfo/studioInfoIndex`,
-    getStudioTeacherList: `${publicPath}apis/mobile/getStudioInfo/teacherList`,
-    getStudioIntro: `${publicPath}apis/mobile/getStudioInfo/introInfo`,
-    getTeacherIntro: `${publicPath}apis/mobile/getTeacherInfo/introInfo`,
-    getCourseDetailInfo: `${publicPath}apis/mobile/getCourseInfo/detail`,
-    booking: `${publicPath}apis/mobile/booking`,
+    getIndexRoleList: `${apiHost}apis/mobile/getIndexRoleList`,
+    getSearchRoleList: `${apiHost}apis/mobile/getSearchRoleList`,
+    getBasicInfo: `${apiHost}apis/mobile/getBasicInfo`,
+    getCourseList: `${apiHost}apis/mobile/getCourseList`,
+    getPhotoList: `${apiHost}apis/mobile/getPhotoList`,
+    getStudioIndexPageInfo: `${apiHost}apis/mobile/getStudioInfo/studioInfoIndex`,
+    getStudioTeacherList: `${apiHost}apis/mobile/getStudioInfo/teacherList`,
+    getStudioIntro: `${apiHost}apis/mobile/getStudioInfo/introInfo`,
+    getTeacherIntro: `${apiHost}apis/mobile/getTeacherInfo/introInfo`,
+    getCourseDetailInfo: `${apiHost}apis/mobile/getCourseInfo/detail`,
+    booking: `${apiHost}apis/mobile/booking`,
 };
 
 export enum Role { teacher = 3, studio };// 这里对应的是数据库的role表

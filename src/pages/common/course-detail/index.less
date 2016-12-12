@@ -127,29 +127,48 @@
         }
     }
     .consult-form {
-        input, textarea, span.btn-submit {
-            display: block;
+        input, textarea, .btn-group span {
             margin: 0 auto;
             margin-top: 20/@REM;
             padding: 10/@REM 30/@REM;
-            width: 90%;
             line-height: 60/@REM;
             border: 1px solid #e7e7e7;
             border-radius: 5/@REM;
             font-size: 24/@REM;
         }
+        input, textarea {
+            display: block;  
+            width: 90%;                      
+        }
         input {
             height: 80/@REM;
         }
-        span.btn-submit {
-            color: #fff;
-            background-color: @WARN_COLOR;  
-            border-color: @WARN_COLOR; 
-            text-align: center;
-            &.btn-disabled {
+        div.btn-group {
+            margin: 0 @GAP_WIDTH*2;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            span {
+                margin-right: @GAP_WIDTH;
+                -webkit-box-flex: 1;
+                -webkit-flex: 1;
+                flex: 1;
                 color: rgba(0, 0, 0, 0.3);
                 background-color: #ececec;
                 border: none;
+                text-align: center;                
+                &.btn-submit {
+                    margin-left: @GAP_WIDTH;
+                    margin-right: 0;
+                    color: #fff;
+                    background-color: @WARN_COLOR;  
+                    border-color: @WARN_COLOR; 
+                    &.btn-disabled {
+                        color: rgba(0, 0, 0, 0.3);
+                        background-color: #ececec;
+                        border: none;
+                    }
+                }
             }
         }
     }

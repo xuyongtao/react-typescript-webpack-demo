@@ -113,6 +113,11 @@ export default class CourseDetail extends React.Component<CourseDetailProps, Cou
             isOpen: this.state.isOpenConsultModal,
             onRequestClose: this.onCloseModal.bind(this),
             onSubmit: this.onSubmit.bind(this),
+            handlerCancel: () => {
+                this.setState({
+                    isOpenConsultModal: false,
+                })
+            }
         };
         const SuccessModalProps = {
             isOpen: this.state.isOpenSuccessModal,
@@ -140,10 +145,26 @@ export default class CourseDetail extends React.Component<CourseDetailProps, Cou
                             <div className="course-prices">
                                 <h2>课程价格</h2>
                                 <ul>
-                                    <li>在线教学 <strong>￥{ onlinePrice }</strong>/{ priceUnit }</li>
-                                    <li>老师上门 <strong>￥{ indoorPrice }</strong>/{ priceUnit }</li>
-                                    <li>地点协商 <strong>￥{ otherPrice }</strong>/{ priceUnit }</li>
-                                    <li>学生上门 <strong>￥{ outdoorPrice }</strong>/{ priceUnit }</li>
+                                    {
+                                        onlinePrice ?
+                                            <li>在线教学 <strong>￥{ onlinePrice }</strong>/{ priceUnit }</li> :
+                                            <li>在线教学 <strong>价格面议</strong></li>
+                                    }
+                                    {
+                                        indoorPrice ?
+                                            <li>老师上门 <strong>￥{ indoorPrice }</strong>/{ priceUnit }</li> :
+                                            <li>老师上门 <strong>价格面议</strong></li>
+                                    }
+                                    {
+                                        otherPrice ?
+                                            <li>地点协商 <strong>￥{ otherPrice }</strong>/{ priceUnit }</li> :
+                                            <li>地点协商 <strong>价格面议</strong></li>
+                                    }
+                                    {
+                                        outdoorPrice ?
+                                            <li>学生上门 <strong>￥{ outdoorPrice }</strong>/{ priceUnit }</li> :
+                                            <li>学生上门 <strong>价格面议</strong></li>
+                                    }
                                 </ul>
                             </div>
                             <div className="btn-phone">
@@ -174,6 +195,7 @@ interface ConsultModalProps {
     };
     tabs?: string[];
     onSubmit?(): void;
+    handlerCancel?(): void;
 }
 interface ConsultModalState {
     tabIndex?: number;
@@ -188,6 +210,7 @@ class ConsultModal extends React.Component<ConsultModalProps, ConsultModalState>
         onRequestClose: React.PropTypes.func,
         closeTimeoutMS: React.PropTypes.number,
         customStyle: React.PropTypes.object,
+        handlerCancel: React.PropTypes.func,
     }
     static defaultProps = {
         isOpen: false,
@@ -196,6 +219,9 @@ class ConsultModal extends React.Component<ConsultModalProps, ConsultModalState>
         },
         onRequestClose: () => {
             console.log("request function");
+        },
+        handlerCancel: () => {
+            console.log("取消事件");
         },
         customStyle: {
             overlay: {
@@ -257,7 +283,7 @@ class ConsultModal extends React.Component<ConsultModalProps, ConsultModalState>
     }
 
     render() {
-        const { tabs, isOpen, onRequestClose, closeTimeoutMS, customStyle } = this.props;
+        const { tabs, isOpen, onRequestClose, handlerCancel, closeTimeoutMS, customStyle } = this.props;
         const { submiting } = this.state;
         const swipeableViewsProps = {
             index: this.state.tabIndex,
@@ -289,9 +315,12 @@ class ConsultModal extends React.Component<ConsultModalProps, ConsultModalState>
                         <input ref="name" type="text" placeholder="您的姓名"/>
                         <input ref="mobile" type="text" placeholder="您的联系方式（手机）"/>
                         <textarea ref="mark" name="" id="" rows="3" placeholder="请输入您想了解的信息，方便老师电话回访沟通"></textarea>
-                        <span onClick={ this.onSubmit.bind(this) } className={ClassNames("btn-submit", {
-                            "btn-disabled": submiting,
-                        }) }>{ submiting ? "提交中..." : "确定提交" }</span>
+                        <div className="btn-group">
+                            <span onClick={ handlerCancel }>取消预约</span>
+                            <span onClick={ this.onSubmit.bind(this) } className={ClassNames("btn-submit", {
+                                "btn-disabled": submiting,
+                            }) }>{ submiting ? "提交中..." : "确定提交" }</span>
+                        </div>
                     </div>
                     <div className="qr-code">
                         <img src={ require("./qr-code.jpg") } alt="二维码"/>

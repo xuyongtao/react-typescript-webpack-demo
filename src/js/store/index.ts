@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
 
 import { Promise } from "thenfail";
-import { apis, publicPath, Role } from "../common/config";
+import { apis, Role } from "../common/config";
 
 // interface
 import {

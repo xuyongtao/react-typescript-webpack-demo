@@ -318,6 +318,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         let floorCount = this.state.currentCat.length;
         let currentCat = new Array<CatBasic>(floorCount);
         let floorCat: CatSingleDataBasic;
+        let searchCat: CatBasic;
 
         catIds && catIds.split("-").map((catId, index) => {
             if (!index) {
@@ -335,16 +336,17 @@ export default class Search extends React.Component<SearchProps, SearchState> {
                 id: catId,
                 label: floorCat.label,
             }
+            searchCat = currentCat[index];
         })
 
         this.setState({
             loading: true,
             currentCat
         });
-
         search({
             page: 1,
             pageSize: this.PageSize,
+            catId: Number(searchCat.id),
             keyword: this.props.location.query.keyword || "",
         }).then(data => {
             this.setState({
@@ -352,6 +354,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
                 teachers: data.list,
                 currentPage: data.page,
                 totalPage: data.totalPage,
+                currentCat,
             })
         }, () => {
             this.setState({

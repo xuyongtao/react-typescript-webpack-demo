@@ -108,11 +108,22 @@ export default class FilterBar extends React.Component<FilterBarProps, FilterBar
     }
 
     render() {
+        let displayCat: CatBasic = {
+            id: 0,
+            label: "科目",
+        };
+
+        this.props.currentCat.map((cat, index) => {
+            if (cat.id) {
+                displayCat = cat;
+            }
+        })
+
         return (
             <div className="filter-bar">
                 <div onClick={ this.onClickCatLabel.bind(this) }><span className={classNames({
                     up: this.props.showCatsFilter && this.state.showCatsFilter,
-                }) }>{ this.props.currentCat[this.props.currentCat.length - 1] ? this.props.currentCat[this.props.currentCat.length - 1].label : "科目" }</span></div>
+                }) }>{ displayCat.label }</span></div>
                 <div onClick={ this.onOrderByFav.bind(this) }><span className={classNames({
                     active: this.props.orderByFavAscActive && this.state.orderByFavAsc,
                 }) }>收藏优先</span></div>

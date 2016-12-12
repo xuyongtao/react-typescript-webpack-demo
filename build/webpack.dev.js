@@ -451,7 +451,7 @@ app.use('/apis/mobile/getCourseInfo/detail', function (req, res) {
                 inDoor: 120,
                 online: 130,
                 outDoor: 140,
-                other: 120,
+                other: 0,
             }
         }
     })

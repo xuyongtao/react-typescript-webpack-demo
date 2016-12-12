@@ -22,7 +22,7 @@ config.plugins.push(
 //线上发布时需要改为线上的域名
 // config.output.publicPath = "http://m.qmjy91.com/";
 // config.output.publicPath = "http://m.qmjy.dev/";
-config.output.publicPath = "http://127.0.0.1:8888/";
+// config.output.publicPath = "http://127.0.0.1:8888/";
 
 webpack(config, function (err, status) {
     if (err) {
