@@ -93,7 +93,6 @@ interface SyntheticalFilterProps {
     onClose(): void;
     currentFilterOptions: number[];
     onConfirmSyntheticalFilterOptions?(options: number[]): void;
-    handlerAnimEnd?(): void;
     visible: boolean;
 }
 
@@ -109,7 +108,6 @@ export default class SyntheticalFilter extends React.Component<SyntheticalFilter
         currentFilterOptions: React.PropTypes.array,
         onConfirmSyntheticalFilterOptions: React.PropTypes.func,
         visible: React.PropTypes.bool,
-        handlerAnimEnd: React.PropTypes.func,
     }
     static defaultProps = {
         visible: false,

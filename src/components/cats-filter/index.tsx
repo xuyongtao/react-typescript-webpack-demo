@@ -7,8 +7,6 @@ import * as QueueAnim from 'rc-queue-anim';
 import * as classNames from "classnames";
 import * as Lodash from "lodash";
 
-console.log("load cats filter")
-
 import FilterMask from "../filter-mask/index";
 
 interface CatBasicInfo {
@@ -54,13 +52,9 @@ class CatOption extends React.Component<CatOptionProp, any> {
         super(props);
     }
 
-    onClickHandler() {
-        this.props.onClick();
-    }
-
     render() {
         return (
-            <span onClick={ this.onClickHandler.bind(this) } className={ classNames("cats-filter-label-level3", {
+            <span onClick={ this.props.onClick } className={ classNames("cats-filter-label-level3", {
                 active: this.props.active,
             }) }>{ this.props.label }</span>
         )
@@ -143,10 +137,6 @@ interface CatsFilterProps {
     visible: boolean;
     initCat?: CatBasicInfo[];// 初始化最后一级的科目
     onChooseCat?(cats: CatBasicInfo[]): void;
-    handlerAnimEnd?(options: {
-        key: string;
-        type: string;
-    }): void;
 }
 interface CatsFilterState {
     maskVisible?: boolean;
@@ -162,7 +152,7 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
         initCat: React.PropTypes.array,
     }
     static defaultProps = {
-        visible: false,
+
     }
 
     initState: any;
@@ -186,11 +176,6 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
     }
 
     handlerAnimEnd({ key, type }: { key: string; type: string }) {
-        // this.props.handlerAnimEnd({
-        //     key,
-        //     type,
-        // });
-
         this.setState({
             maskVisible: type === "enter",
         })
@@ -204,9 +189,11 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
             onChooseCat: this.props.onChooseCat,
         }
 
+        console.log("cats filter visible: ", this.props.visible);
+
         return (
             <div className="cats-filter-wrapper">
-                { this.props.visible || this.state.maskVisible ? <FilterMask classNames={["cats-filter-mask"]}/> : null }
+                { this.state.maskVisible || this.props.visible ? <FilterMask classNames={["cats-filter-mask"]}/> : null }
                 <QueueAnim
                     duration={ 450 }
                     type={ "top" }
@@ -217,18 +204,22 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
                     }}
                     onEnd={ this.handlerAnimEnd.bind(this) }
                     >
-                    { this.props.visible ? <div key="filter" className="cats-filter">
-                        <ul className="cats-filter-left">
-                            { Lodash.map(catsData, (cat, key) => {
-                                return (
-                                    <li key={ key } onClick={ this.onClickHandler.bind(this, key, cat.label) } className={classNames({
-                                        active: key == this.state.currentLevel1Cat.id
-                                    }) }>{ cat.label }</li>
-                                )
-                            }) }
-                        </ul>
-                        <CatPannel { ...CatPannelsProps } />
-                    </div> : null }
+                    {
+                        this.props.visible ?
+                            <div key="filter" className="cats-filter">
+                                <ul className="cats-filter-left">
+                                    { Lodash.map(catsData, (cat, key) => {
+                                        return (
+                                            <li key={ key } onClick={ this.onClickHandler.bind(this, key, cat.label) } className={classNames({
+                                                active: key == this.state.currentLevel1Cat.id
+                                            }) }>{ cat.label }</li>
+                                        )
+                                    }) }
+                                </ul>
+                                <CatPannel { ...CatPannelsProps } />
+                            </div> :
+                            null
+                    }
                 </QueueAnim>
             </div>
         )

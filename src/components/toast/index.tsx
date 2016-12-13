@@ -57,3 +57,4 @@ export default class Toast extends React.Component<ToastProps, any> {
     }
 }
 
+// ps：react-modal打开时会加outline聚焦样式，可看https://github.com/reactjs/react-modal/pull/222

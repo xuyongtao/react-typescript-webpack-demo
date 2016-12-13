@@ -136,7 +136,6 @@ interface SearchProps {
 }
 interface SearchState {
     teachers?: RecommendListBasic[];
-    showFilterMask?: boolean;
     showSyntheticalFilter?: boolean;
     showCatsFilter?: boolean;
     currentCat?: CatBasic[];
@@ -155,7 +154,6 @@ export default class Search extends React.Component<SearchProps, SearchState> {
 
         this.state = {
             teachers: [],
-            showFilterMask: false,
             showSyntheticalFilter: false,
             showCatsFilter: false,
             currentCat: new Array<CatBasic>(3),
@@ -172,7 +170,6 @@ export default class Search extends React.Component<SearchProps, SearchState> {
 
     onShowSyntheticalFilter(show: boolean) {
         this.setState({
-            showFilterMask: true,
             showSyntheticalFilter: show,
             showCatsFilter: false,
         })
@@ -186,15 +183,8 @@ export default class Search extends React.Component<SearchProps, SearchState> {
 
     onShowCatsFilter(show: boolean) {
         this.setState({
-            showFilterMask: true,
             showSyntheticalFilter: false,
             showCatsFilter: show,
-        })
-    }
-
-    onCloseCatsFilter() {
-        this.setState({
-            showCatsFilter: false,
         })
     }
 
@@ -213,7 +203,11 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             orderByViewAscActive: false,
             currentSyntheticalFilterOptions: new Array<number>(4),
         })
-        this.getNameList({ cat });
+
+        // 加这个半秒延时是为了让queue-anim这个效果结束
+        setTimeout(() => {
+            this.getNameList({ cat });
+        }, 500)
     }
 
     onConfirmSyntheticalFilterOptions(options: number[]) {
@@ -221,13 +215,16 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             showSyntheticalFilter: false,
             currentSyntheticalFilterOptions: options,
         })
-        // 请求数据
-        this.getNameList({
-            cat: this.state.currentCat,
-            orderByFavAscActive: this.state.orderByFavAscActive,
-            orderByViewAscActive: this.state.orderByViewAscActive,
-            syntheticalFilterConditions: options,
-        });
+        // 加这个半秒延时是为了让queue-anim这个效果结束
+        setTimeout(() => {
+            // 请求数据
+            this.getNameList({
+                cat: this.state.currentCat,
+                orderByFavAscActive: this.state.orderByFavAscActive,
+                orderByViewAscActive: this.state.orderByViewAscActive,
+                syntheticalFilterConditions: options,
+            });
+        }, 500)
     }
 
     onOrderByFavAscActive(active: boolean) {
@@ -252,16 +249,6 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             orderByViewAscActive: active,
             syntheticalFilterConditions: this.state.currentSyntheticalFilterOptions,
         })
-    }
-
-    handlerCloseFilterMask({
-        key,
-        type
-    }: {
-            key: string;
-            type: string;
-        }) {
-        type === "leave" && this.setState({ showFilterMask: false });
     }
 
     handlerFocus() {
@@ -374,7 +361,6 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             conditions: syntheticalFilterConditions,
             currentFilterOptions: this.state.currentSyntheticalFilterOptions,
             onConfirmSyntheticalFilterOptions: this.onConfirmSyntheticalFilterOptions.bind(this),
-            handlerAnimEnd: this.handlerCloseFilterMask.bind(this),
         }
         const filterBarProps = {
             orderByFavAscActive: this.state.orderByFavAscActive,
@@ -399,7 +385,6 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             visible: this.state.showCatsFilter,
             initCat: this.state.currentCat,
             onChooseCat: this.onChooseCat.bind(this),
-            handlerAnimEnd: this.handlerCloseFilterMask.bind(this),
         }
 
         return (

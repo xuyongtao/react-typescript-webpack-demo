@@ -318,11 +318,11 @@ app.use('/apis/mobile/getStudioInfo/studioInfoIndex', function (req, res) {
             "msg": ""
         },
         "data": {
-            banners: [`${localPublicPath}images/banner.png`, `${localPublicPath}images/banner.png`],
+            banners: [localPublicPath + 'images/banner.png`, `${localPublicPath}images/banner.png'],
             courses: [{
                 cid: 1,
                 title: "物理",
-                cover: `${localPublicPath}images/default-course-cover.png`,
+                cover: localPublicPath + 'images/default-course-cover.png',
                 detail: "课程详情"
             }],
             teachers: [{
