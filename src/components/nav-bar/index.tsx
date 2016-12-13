@@ -33,7 +33,7 @@ export default class NavBar extends React.Component<NavBarProps, any> {
             <div className="nav-bar">
                 <span className="iconfont btn-back" onClick={ this.handlerJump.bind(this) }>{ String.fromCharCode(parseInt("e600", 16)) }</span>
                 <span className="index-entrance">
-                    <Link to="/">首页</Link>
+                    <Link to="/search">搜索</Link>
                 </span>
                 <h1>{ this.props.pageTitle }</h1>
             </div>

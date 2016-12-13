@@ -78,8 +78,6 @@ export default class TeacherIntro extends React.Component<TeacherIntroProps, Tea
 
         getTeacherIntro(Number(this.props.params.tid))
             .then(res => {
-                console.log(res);
-
                 this.setState({
                     loading: false,
                     seniority: res.seniority,
@@ -101,7 +99,9 @@ export default class TeacherIntro extends React.Component<TeacherIntroProps, Tea
 
         if (loading) {
             return (
-                <LoadingToast isOpen={ true } />
+                <div>
+                    <LoadingToast isOpen={ true } />
+                </div>
             )
         } else {
             return (
