@@ -203,11 +203,10 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             orderByViewAscActive: false,
             currentSyntheticalFilterOptions: new Array<number>(4),
         })
+    }
 
-        // 加这个半秒延时是为了让queue-anim这个效果结束
-        setTimeout(() => {
-            this.getNameList({ cat });
-        }, 500)
+    handlerCatFilterLeaveAnimEnd() {
+        this.getNameList({ cat: this.state.currentCat });
     }
 
     onConfirmSyntheticalFilterOptions(options: number[]) {
@@ -215,16 +214,15 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             showSyntheticalFilter: false,
             currentSyntheticalFilterOptions: options,
         })
-        // 加这个半秒延时是为了让queue-anim这个效果结束
-        setTimeout(() => {
-            // 请求数据
-            this.getNameList({
-                cat: this.state.currentCat,
-                orderByFavAscActive: this.state.orderByFavAscActive,
-                orderByViewAscActive: this.state.orderByViewAscActive,
-                syntheticalFilterConditions: options,
-            });
-        }, 500)
+    }
+
+    handlerSyntheticalFilterLeaveAnimEnd() {
+        this.getNameList({
+            cat: this.state.currentCat,
+            orderByFavAscActive: this.state.orderByFavAscActive,
+            orderByViewAscActive: this.state.orderByViewAscActive,
+            syntheticalFilterConditions: this.state.currentSyntheticalFilterOptions,
+        });
     }
 
     onOrderByFavAscActive(active: boolean) {
@@ -272,6 +270,9 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             syntheticalFilterConditions?: number[];
             loadMore?: boolean;
         }) {
+        let catId = cat[cat.length - 1] ? Number(cat[cat.length - 1].id) : 0;
+        if (!catId) return;
+
         // 根据给出的条件获取对应的数据
         this.setState({
             loading: true,
@@ -280,7 +281,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         return search({
             page: page || 1,
             pageSize: this.PageSize,
-            catId: cat[cat.length - 1] ? Number(cat[cat.length - 1].id) : 0,
+            catId,
             orderByFavCount: orderByFavAscActive || false,
             orderByViewedCount: orderByViewAscActive || false,
             teachingWay: syntheticalFilterConditions[0] || 0,
@@ -361,6 +362,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             conditions: syntheticalFilterConditions,
             currentFilterOptions: this.state.currentSyntheticalFilterOptions,
             onConfirmSyntheticalFilterOptions: this.onConfirmSyntheticalFilterOptions.bind(this),
+            handlerLeaveAnimEnd: this.handlerSyntheticalFilterLeaveAnimEnd.bind(this),
         }
         const filterBarProps = {
             orderByFavAscActive: this.state.orderByFavAscActive,
@@ -385,6 +387,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             visible: this.state.showCatsFilter,
             initCat: this.state.currentCat,
             onChooseCat: this.onChooseCat.bind(this),
+            handlerLeaveAnimEnd: this.handlerCatFilterLeaveAnimEnd.bind(this),
         }
 
         return (

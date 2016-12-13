@@ -94,6 +94,7 @@ interface SyntheticalFilterProps {
     currentFilterOptions: number[];
     onConfirmSyntheticalFilterOptions?(options: number[]): void;
     visible: boolean;
+    handlerLeaveAnimEnd?(): void;
 }
 
 interface SyntheticalFilterStates {
@@ -107,6 +108,7 @@ export default class SyntheticalFilter extends React.Component<SyntheticalFilter
         onClose: React.PropTypes.func,
         currentFilterOptions: React.PropTypes.array,
         onConfirmSyntheticalFilterOptions: React.PropTypes.func,
+        handlerLeaveAnimEnd: React.PropTypes.func,
         visible: React.PropTypes.bool,
     }
     static defaultProps = {
@@ -134,7 +136,6 @@ export default class SyntheticalFilter extends React.Component<SyntheticalFilter
         Lodash.each(this.refs, (ref: FilterCondition) => {
             optionIds.push(ref.onConfirm());
         })
-        console.log("综合筛选条件ids：", optionIds);
 
         if (this.props.onConfirmSyntheticalFilterOptions) {
             this.props.onConfirmSyntheticalFilterOptions(optionIds);
@@ -155,6 +156,9 @@ export default class SyntheticalFilter extends React.Component<SyntheticalFilter
         this.setState({
             maskVisible: type === "enter",
         })
+        if (type === "leave" && this.props.handlerLeaveAnimEnd) {
+            this.props.handlerLeaveAnimEnd();
+        }
     }
 
     render() {
