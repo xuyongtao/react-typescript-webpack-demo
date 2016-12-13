@@ -2,10 +2,10 @@ export const defaultAvatar = require("../../img/default-avatar.png");
 
 export const defaultCourseCover = require("../../img/default-course-cover.png");
 
-export const publicPath = "http://192.168.2.55:8080/";
-// export const publicPath = "http://m.qmin91.com/";
-// export const apiHost = "http://qmin91.com/";
-export const apiHost = "http://192.168.2.55:8080/";
+// export const publicPath = "http://192.168.2.55:8080/";
+export const publicPath = "http://m.qmin91.com/";
+export const apiHost = "http://qmin91.com/";
+// export const apiHost = "http://192.168.2.55:8080/";
 
 export const apis = {
     getIndexRoleList: `${apiHost}apis/mobile/getIndexRoleList`,
