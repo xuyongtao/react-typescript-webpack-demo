@@ -8,6 +8,7 @@
         line-height: 90/@REM;
         border-bottom: 1px solid @BORDER_COLOR;
         font-size: 28/@REM;
+        overflow: hidden;
         span {
             float: left;
             color: @SECOND_COLOR;   
@@ -15,6 +16,9 @@
         div {
             margin-left: 170/@REM;
             color: @MAIN_CONTENT_COLOR;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         &:last-child {
             border-bottom: none;

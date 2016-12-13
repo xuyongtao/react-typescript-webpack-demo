@@ -50,6 +50,10 @@ import {
     ReceiveIntroPost as ReceiveStudioIntroPost,
 } from "../interface/studio";
 import {
+    RequestTeacherIntroPost,
+    ReceiveTeacherIntroPost,
+} from "../interface/teacher";
+import {
     REQUEST_INDEX_PAGE_INFO_POST as REQUEST_STUDIO_INDEX_PAGE_INFO_POST,
     RECEIVE_INDEX_PAGE_INFO_POST as RECEIVE_STUDIO_INDEX_PAGE_INFO_POST,
     REQUEST_TEACHER_LIST_POST,
@@ -57,6 +61,10 @@ import {
     REQUEST_INTRO_POST as REQUEST_STUDIO_INTRO_POST,
     RECEIVE_INTRO_POST as RECEIVE_STUDIO_INTRO_POST,
 } from "../actions/studio";
+import {
+    REQUEST_TEACHER_INTRO_POST,
+    RECEIVE_TEACHER_INTRO_POST,
+} from "../actions/teacher";
 
 const DEFAULT_PAGE_SIZE = 8;
 const DEFAULT_START_PAGE = 1;
@@ -318,6 +326,36 @@ function postStudioIntro(state = {
     }
 }
 
+function postTeacherIntro(state = {
+    isFetching: false,
+    id: 0,
+}, action: {
+    type: string;
+    requestData?: RequestTeacherIntroPost;
+    responseData?: ReceiveTeacherIntroPost;
+}) {
+    switch (action.type) {
+        case REQUEST_TEACHER_INTRO_POST:
+            return Lodash.assign({}, state, {
+                isFetching: true,
+                id: action.requestData.id,
+            });
+        case RECEIVE_TEACHER_INTRO_POST:
+            return Lodash.assign({}, state, {
+                isFetching: false,
+                id: action.responseData.id,
+                seniority: action.responseData.seniority,
+                graduatedSchool: action.responseData.graduatedSchool,
+                role: action.responseData.role,
+                studio: action.responseData.studio,
+                intro: action.responseData.intro,
+                teachingCases: action.responseData.teachingCases,
+            })
+        default:
+            return state;
+    }
+}
+
 function postCourseDetail(state = {
     isFetching: false,
     id: 0,
@@ -387,6 +425,7 @@ const reducers = combineReducers({
     studioIndexPageInfo: postStudioIndexPageInfo,
     studioTeacherList: postStudioTeacherList,
     studioIntro: postStudioIntro,
+    teacherIntro: postTeacherIntro,
     courseDetail: postCourseDetail,
     booking: postBooking,
 })

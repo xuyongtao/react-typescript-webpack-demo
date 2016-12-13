@@ -2,6 +2,8 @@ import "./index.less";
 import * as React from "react";
 import { render } from "react-dom";
 
+import LoadingToast from "../../../components/toast/index";
+import { getTeacherIntro } from "../../../js/store/index";
 
 interface teacherBasicInfo {
     name: string,
@@ -37,7 +39,15 @@ class TeachingCase extends React.Component<TeachingCaseProps, any> {
     }
 }
 
+interface TeacherIntroProps {
+    params: {
+        tid: string;
+        [key: string]: any;
+    }
+}
+
 interface TeacherIntroState {
+    loading?: boolean;
     seniority?: string;
     graduatedSchool?: string;
     role?: string;
@@ -46,69 +56,106 @@ interface TeacherIntroState {
     teachingCases?: TeachingCaseProps[];
 }
 
-export default class TeacherIntro extends React.Component<any, TeacherIntroState> {
+export default class TeacherIntro extends React.Component<TeacherIntroProps, TeacherIntroState> {
     constructor(props: any, context: any) {
         super(props, context);
 
         this.state = {
-
+            loading: false,
+            seniority: "",
+            graduatedSchool: "",
+            role: "",
+            studio: "",
+            intro: "",
+            teachingCases: [],
         }
     }
 
     componentDidMount() {
+        this.setState({
+            loading: true,
+        })
 
+        getTeacherIntro(Number(this.props.params.tid))
+            .then(res => {
+                console.log(res);
+
+                this.setState({
+                    loading: false,
+                    seniority: res.seniority,
+                    graduatedSchool: res.graduatedSchool,
+                    role: res.role,
+                    studio: res.studio,
+                    intro: res.intro,
+                    teachingCases: res.teachingCases,
+                })
+            }, () => {
+                this.setState({
+                    loading: false,
+                })
+            })
     }
 
     render() {
-        return (
-            <div>
-                <div id="intro-pannel">
-                    <ul>
+        const { loading, seniority, graduatedSchool, role, studio, intro, teachingCases } = this.state;
 
-                        <li>
-                            <span>最高学历</span>
-                            <div>本科</div>
-                        </li>
-                        <li>
-                            <span>毕业学校</span>
-                            <div>广州美术学院</div>
-                        </li>
-                        <li>
-                            <span>身&nbsp; &nbsp; &nbsp; &nbsp; 份</span>
-                            <div>在校生</div>
-                        </li>
-                        <li>
-                            <span>单位机构</span>
-                            <div>广州美术学院</div>
-                        </li>
-                        <li>
-                            <span>个人介绍</span>
-                            <div>本人爱好广州美术学院本人爱好广州美术学院本人爱好广州美术学院本人爱好广州美术学院...</div>
-                        </li>
-                    </ul>
-                </div>
-                <div id="teaching-case">
-                    <div className="title">
-                        <i></i>
-                        <h2>历史授课</h2>
+        if (loading) {
+            return (
+                <LoadingToast isOpen={ true } />
+            )
+        } else {
+            return (
+                <div>
+                    <div id="intro-pannel">
+                        <ul>
+                            <li>
+                                <span>最高学历</span>
+                                <div>{ seniority }</div>
+                            </li>
+                            <li>
+                                <span>毕业学校</span>
+                                <div>{ graduatedSchool }</div>
+                            </li>
+                            <li>
+                                <span>身&nbsp; &nbsp; &nbsp; &nbsp; 份</span>
+                                <div>{ role }</div>
+                            </li>
+                            <li>
+                                <span>单位机构</span>
+                                <div>{ studio }</div>
+                            </li>
+                            <li>
+                                <span>个人介绍</span>
+                                <div>{ intro }</div>
+                            </li>
+                        </ul>
                     </div>
-                    <ul>
-                        <li>
-                            <div className="case-time"><time>2015年9月</time> - <time>至今</time></div>
-                            <div className="case-content">带领学生参加长江杯钢琴比赛；参加西安市高陵县建党90周年文艺演出，排演西安市高陵县国土局，交通局、建设局等单位。参加带领第四军</div>
-                        </li>
-                        <li>
-                            <div className="case-time"><time>2015年9月</time> - <time>至今</time></div>
-                            <div className="case-content">带领学生参加长江杯钢琴比赛；参加西安市高陵县建党90周年文艺演出，排演西安市高陵县国土局，交通局、建设局等单位。参加带领第四军</div>
-                        </li>
-                        <li>
-                            <div className="case-time"><time>2015年9月</time> - <time>至今</time></div>
-                            <div className="case-content">带领学生参加长江杯钢琴比赛；参加西安市高陵县建党90周年文艺演出，排演西安市高陵县国土局，交通局、建设局等单位。参加带领第四军</div>
-                        </li>
-                    </ul>
+                    {
+                        teachingCases && teachingCases.length ?
+                            <div id="teaching-case">
+                                <div className="title">
+                                    <i></i>
+                                    <h2>历史授课</h2>
+                                </div>
+                                <ul>
+                                    {
+                                        teachingCases.map((teachingCase, index) => {
+                                            return (
+                                                <li key={ index }>
+                                                    <div className="case-time"><time>{ teachingCase.startTime }</time> - <time>{ teachingCase.endTime }</time></div>
+                                                    <div className="case-content">{ teachingCase.cont }</div>
+                                                </li>
+                                            )
+                                        })
+                                    }
+                                </ul>
+                            </div> :
+                            null
+                    }
+
                 </div>
-            </div>
-        )
+            )
+        }
     }
 }
 

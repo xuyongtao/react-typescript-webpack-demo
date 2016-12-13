@@ -22,6 +22,7 @@ import {
     RequestBookingPost,
     ReceiveBookingPost,
 } from "../interface/common";
+
 import {
     RequestIndexPageInfoPost as RequestStudioIndexPageInfoPost,
     ReceiveIndexPageInfoPost as ReceiveStudioIndexPageInfoPost,
@@ -30,6 +31,11 @@ import {
     RequestIntroPost,
     ReceiveIntroPost,
 } from "../interface/studio";
+
+import {
+    RequestTeacherIntroPost,
+    ReceiveTeacherIntroPost
+} from "../interface/teacher";
 
 // reducers
 import reducers from "../reducers/index";
@@ -51,6 +57,10 @@ import {
     fetchStudioIntro,
 } from "../actions/studio";
 
+import {
+    fetchTeacherIntro,
+} from "../actions/teacher";
+
 interface stateBasic {
     basicInfo: ReceiveBasicInfoPost,
     courseList: ReceiveCourseListPost,
@@ -63,6 +73,7 @@ interface stateBasic {
     studioIntro: ReceiveIntroPost,
     courseDetail: ReceiveCourseDetailPost,
     bookingResult: ReceiveBookingPost,
+    teacherIntro: ReceiveTeacherIntroPost,
 }
 
 
@@ -169,6 +180,15 @@ export function getStudioIntro(id: number): Promise<ReceiveIntroPost> {
             data: { id }
         }))
         .then(() => (store.getState() as stateBasic).studioIntro);
+}
+
+export function getTeacherIntro(id: number): Promise<ReceiveTeacherIntroPost> {
+    return store
+        .dispatch(fetchTeacherIntro({
+            url: apis.getTeacherIntro,
+            data: { id }
+        }))
+        .then(() => (store.getState() as stateBasic).teacherIntro);
 }
 
 export function getCourseDetail(id: number): Promise<ReceiveCourseDetailPost> {
