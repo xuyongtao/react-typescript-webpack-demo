@@ -61,7 +61,7 @@ export default class TeacherCourseList extends React.Component<TeacherCourseList
                     loadMore: false,
                     courses: this.state.courses.concat(data.courses),
                     currentPage: data.page,
-                    totalPage: data.total,
+                    totalPage: Math.ceil(data.total / data.perPage),
                 })
             }, () => {
                 this.setState({
@@ -89,7 +89,7 @@ export default class TeacherCourseList extends React.Component<TeacherCourseList
                         loading: false,
                         courses: data.courses,
                         currentPage: data.page,
-                        totalPage: data.total,
+                        totalPage: Math.ceil(data.total / data.perPage),
                     })
                 }, () => {
                     this.setState({

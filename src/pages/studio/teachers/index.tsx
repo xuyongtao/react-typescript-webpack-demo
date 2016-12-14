@@ -60,7 +60,7 @@ export default class StudioTeacherList extends React.Component<StudioTeacherList
                     loadMore: false,
                     teachers: this.state.teachers.concat(data.teachers),
                     currentPage: data.page,
-                    totalPage: data.total,
+                    totalPage: Math.ceil(data.total / data.perPage),
                 })
             }, () => {
                 this.setState({
@@ -89,7 +89,7 @@ export default class StudioTeacherList extends React.Component<StudioTeacherList
                         loading: false,
                         teachers: data.teachers,
                         currentPage: data.page,
-                        totalPage: data.total,
+                        totalPage: Math.ceil(data.total / data.perPage),
                     })
                 }, () => {
                     this.setState({

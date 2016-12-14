@@ -69,7 +69,7 @@ app.use('/apis/mobile/getCourseList', function (req, res) {
         return res.send({
             data: {
                 page: totalPage,
-                total: totalPage,
+                total: totalPage * pageCount,
                 perPage: pageCount,
             },
             meta: {
@@ -94,7 +94,7 @@ app.use('/apis/mobile/getCourseList', function (req, res) {
         return res.send({
             data: {
                 page: postPage,
-                total: totalPage,
+                total: totalPage * pageCount,
                 perPage: pageCount,
                 courses: courses
             },
@@ -114,7 +114,8 @@ app.use('/api/get-recommend-teachers', function (req, res) {
     if (postPage > totalPage) {
         return res.send({
             page: totalPage,
-            totalPage: totalPage
+            total: totalPage * pageCount,
+            perPage: pageCount,
         });
     } else {
         var list = [];
@@ -148,7 +149,8 @@ app.use('/api/get-recommend-teachers', function (req, res) {
         return res.send({
             data: {
                 page: postPage,
-                totalPage: totalPage,
+                total: totalPage * pageCount,
+                perPage: pageCount,
                 list: list
             },
             meta: {
@@ -161,13 +163,14 @@ app.use('/api/get-recommend-teachers', function (req, res) {
 })
 app.use('/apis/mobile/getIndexRoleList', function (req, res) {
     var postPage = req.body.page || 1;// 请求页码
-    var totalPage = 3;// 分页总数
     var pageCount = 6;// 每页条数
+    var totalPage = 3;// 分页总数
 
     if (postPage > totalPage) {
         return res.send({
             page: totalPage,
-            totalPage: totalPage
+            total: totalPage * pageCount,
+            perPage: pageCount,
         });
     } else {
         var list = [];
@@ -201,7 +204,8 @@ app.use('/apis/mobile/getIndexRoleList', function (req, res) {
         return res.send({
             data: {
                 page: postPage,
-                totalPage: totalPage,
+                total: totalPage * pageCount,
+                perPage: pageCount,
                 list: list
             },
             meta: {
@@ -220,7 +224,8 @@ app.use('/apis/mobile/getSearchRoleList', function (req, res) {
     if (postPage > totalPage) {
         return res.send({
             page: totalPage,
-            totalPage: totalPage
+            total: totalPage * pageCount,
+            perPage: pageCount,
         });
     } else {
         var list = [];
@@ -254,7 +259,8 @@ app.use('/apis/mobile/getSearchRoleList', function (req, res) {
         return res.send({
             data: {
                 page: postPage,
-                totalPage: totalPage,
+                totalPage: totalPage * pageCount,
+                perPage: pageCount,
                 list: list
             },
             meta: {
@@ -273,7 +279,8 @@ app.use('/api/get-hot-teachers', function (req, res) {
     if (postPage > totalPage) {
         return res.send({
             page: totalPage,
-            totalPage: totalPage
+            total: totalPage * pageCount,
+            perPage: pageCount,
         });
     } else {
         var teachers = [];
@@ -305,7 +312,8 @@ app.use('/api/get-hot-teachers', function (req, res) {
 
         return res.send({
             page: postPage,
-            totalPage: totalPage,
+            total: totalPage * pageCount,
+            perPage: pageCount,
             teachers: teachers
         });
     }

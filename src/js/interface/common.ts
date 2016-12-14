@@ -83,7 +83,8 @@ export interface RequestRecommendListPost {
 }
 export interface ReceiveRecommendListPost {
     page: number;
-    totalPage: number;
+    total: number;
+    perPage: number;
     list: RecommendListBasic[];
     isFetching?: boolean;
 }
@@ -98,7 +99,8 @@ export interface RequestHotListPost {
 }
 export interface ReceiveHotListPost {
     page: number;
-    totalPage: number;
+    total: number;
+    perPage: number;
     list: HotListBasic[];
     isFetching?: boolean;
 }
@@ -119,7 +121,8 @@ export interface RequestSearchListPost {
 }
 export interface ReceiveSearchListPost {
     page: number;
-    totalPage: number;
+    total: number;
+    perPage: number;
     list: SearchListBasic[];
     isFetching?: boolean;
 }

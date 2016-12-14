@@ -42,7 +42,7 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
                     this.setState({
                         list: this.state.list.concat(data.list),
                         currentPage: data.page,
-                        totalPage: data.totalPage,
+                        totalPage: Math.ceil(data.total / data.perPage),
                     })
                 }
 
@@ -75,7 +75,7 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
                 this.setState({
                     loading: false,
                     list: data.list,
-                    totalPage: data.totalPage,
+                    totalPage: Math.ceil(data.total / data.perPage),
                     currentPage: data.page,
                 })
             }, () => {

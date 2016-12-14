@@ -292,7 +292,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
                 loading: false,
                 teachers: loadMore ? this.state.teachers.concat(data.list) : data.list,
                 currentPage: data.page,
-                totalPage: data.totalPage,
+                totalPage: Math.ceil(data.total / data.perPage),
             })
         }, () => {
             this.setState({
@@ -341,7 +341,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
                 loading: false,
                 teachers: data.list,
                 currentPage: data.page,
-                totalPage: data.totalPage,
+                totalPage: Math.ceil(data.total / data.perPage),
                 currentCat,
             })
         }, () => {

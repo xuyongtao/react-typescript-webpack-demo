@@ -59,7 +59,7 @@ export default class StudioCourseList extends React.Component<StudioCourseListPr
                     loadMore: false,
                     courses: this.state.courses.concat(data.courses),
                     currentPage: data.page,
-                    totalPage: data.total,
+                    totalPage: Math.ceil(data.total / data.perPage),
                 })
             }, () => {
                 this.setState({
@@ -87,7 +87,7 @@ export default class StudioCourseList extends React.Component<StudioCourseListPr
                         loading: false,
                         courses: data.courses,
                         currentPage: data.page,
-                        totalPage: data.total,
+                        totalPage: Math.ceil(data.total / data.perPage),
                     })
                 }, () => {
                     this.setState({

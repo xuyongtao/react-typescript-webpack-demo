@@ -42,7 +42,7 @@ export default class HotPannel extends React.Component<any, HotPannelState> {
                     this.setState({
                         list: this.state.list.concat(data.list),
                         currentPage: data.page,
-                        totalPage: data.totalPage,
+                        totalPage: Math.ceil(data.total / data.perPage),
                     })
                 }
 
@@ -67,7 +67,7 @@ export default class HotPannel extends React.Component<any, HotPannelState> {
                 this.setState({
                     loading: false,
                     list: data.list,
-                    totalPage: data.totalPage,
+                    totalPage: Math.ceil(data.total / data.perPage),
                     currentPage: data.page,
                 })
             }, () => {

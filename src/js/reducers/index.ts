@@ -122,7 +122,8 @@ function postRecommendList(state = {
             return Lodash.assign({}, state, {
                 isFetching: false,
                 page: action.responseData.page,
-                totalPage: action.responseData.totalPage,
+                total: action.responseData.total,
+                perPage: action.responseData.perPage,
                 list: action.responseData.list,
             })
         default:
@@ -136,8 +137,8 @@ function postHotList(state = {
     pageSize: DEFAULT_PAGE_SIZE,
 }, action: {
     type: string;
-    responseData?: ReceiveRecommendListPost;
-    requestData?: RequestRecommendListPost;
+    responseData?: ReceiveHotListPost;
+    requestData?: RequestHotListPost;
 }) {
     switch (action.type) {
         case REQUEST_HOT_LIST_POST:
@@ -150,7 +151,8 @@ function postHotList(state = {
             return Lodash.assign({}, state, {
                 isFetching: false,
                 page: action.responseData.page,
-                totalPage: action.responseData.totalPage,
+                total: action.responseData.total,
+                perPage: action.responseData.perPage,
                 list: action.responseData.list,
             })
         default:
@@ -237,7 +239,8 @@ function postSearchList(state = {
             return Lodash.assign({}, state, {
                 isFetching: false,
                 page: action.responseData.page,
-                totalPage: action.responseData.totalPage,
+                total: action.responseData.total,
+                perPage: action.responseData.perPage,
                 list: action.responseData.list,
             })
         default:
