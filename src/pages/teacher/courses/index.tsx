@@ -125,7 +125,7 @@ export default class TeacherCourseList extends React.Component<TeacherCourseList
                     {
                         courses.length ?
                             <CourseList { ...props } /> :
-                            <EmptyList tip="该机构暂无课程信息" />
+                            <EmptyList tip="该老师暂无课程信息" />
                     }
                 </div>
             )

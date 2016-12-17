@@ -254,7 +254,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
                     <input
                         className="search-bar-input"
                         name={ this.props.inputName }
-                        type="text"
+                        type="search"
                         maxLength="100"
                         autoCapitalize="none"
                         autoComplete="off"

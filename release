@@ -17,22 +17,22 @@ do
         esac
 done
 
-# git fetch origin
-# git checkout master
-# git diff master origin/master
-# for ((;;))
-# do
-#     echo '请确保更新内容是否可被发布.'
-#     echo -n '你确定要拉取并发布  origin/master 分支的内容吗? (y/n) '
-#     read result
-#     if [[ "$result" == [yY] ]]
-#     then
-#     	break
-#     elif [[ "$result" == [nN] ]]
-#     then
-#     	exit
-#     fi
-# done
+git fetch origin
+git checkout master
+git diff master origin/master
+for ((;;))
+do
+    echo '请确保更新内容是否可被发布.'
+    echo -n '你确定要拉取并发布  origin/master 分支的内容吗? (y/n) '
+    read result
+    if [[ "$result" == [yY] ]]
+    then
+    	break
+    elif [[ "$result" == [nN] ]]
+    then
+    	exit
+    fi
+done
 
 if [[ "$dist" == "" ]]
 then
@@ -46,7 +46,7 @@ fi
  
 echo '正在拉取 origin/master...'
  
-# git pull || exit
+git pull || exit
  
 echo '发布中...'
 

@@ -162,9 +162,14 @@ export default class SyntheticalFilter extends React.Component<SyntheticalFilter
     }
 
     render() {
+        let filterMaskProps = {
+            classNames: ["synthetical-filter-mask"],
+            handlerClose: this.props.onClose,
+        };
+
         return (
             <div className="synthetical-filter-wrapper">
-                { this.props.visible || this.state.maskVisible ? <FilterMask classNames={["synthetical-filter-mask"]}/> : null }
+                { this.props.visible || this.state.maskVisible ? <FilterMask { ...filterMaskProps } /> : null }
                 <QueueAnim
                     duration={ 450 }
                     type={ "right" }

@@ -137,6 +137,7 @@ interface CatsFilterProps {
     visible: boolean;
     initCat?: CatBasicInfo[];// 初始化最后一级的科目
     onChooseCat?(cats: CatBasicInfo[]): void;
+    onCloseCatFilter?(): void;
     handlerLeaveAnimEnd?(): void;
 }
 interface CatsFilterState {
@@ -152,6 +153,7 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
         visible: React.PropTypes.bool,
         initCat: React.PropTypes.array,
         onChooseCat: React.PropTypes.func,
+        onCloseCatFilter: React.PropTypes.func,
         handlerLeaveAnimEnd: React.PropTypes.func,
     }
     static defaultProps = {
@@ -188,16 +190,20 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
     }
 
     render() {
+        let filterMaskProps = {
+            classNames: ["cats-filter-mask"],
+            handlerClose: this.props.onCloseCatFilter,
+        };
         let CatPannelsProps = {
             level1Cat: this.state.currentLevel1Cat,
             cats: catsData[this.state.currentLevel1Cat.id].cats,
             initCat: this.props.initCat,
             onChooseCat: this.props.onChooseCat,
-        }
+        };
 
         return (
             <div className="cats-filter-wrapper">
-                { this.state.maskVisible || this.props.visible ? <FilterMask classNames={["cats-filter-mask"]}/> : null }
+                { this.state.maskVisible || this.props.visible ? <FilterMask { ...filterMaskProps } /> : null }
                 <QueueAnim
                     duration={ 450 }
                     type={ "top" }

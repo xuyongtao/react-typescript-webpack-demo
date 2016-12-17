@@ -7,6 +7,7 @@ import * as classNames from "classnames";
 
 interface FilterMaskProps {
     classNames?: string[];
+    handlerClose?(): void;
 }
 
 export default class FilterMask extends React.Component<FilterMaskProps, any> {
@@ -17,9 +18,15 @@ export default class FilterMask extends React.Component<FilterMaskProps, any> {
         super();
     }
 
+    handlerClose() {
+        if (this.props.handlerClose) {
+            this.props.handlerClose();
+        }
+    }
+
     render() {
         return (
-            <div className={classNames(["filter-mask"].concat(this.props.classNames)) }></div>
+            <div onClick={ this.handlerClose.bind(this) } className={classNames(["filter-mask"].concat(this.props.classNames)) }></div>
         )
     }
 }

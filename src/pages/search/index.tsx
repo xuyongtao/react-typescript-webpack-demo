@@ -92,33 +92,34 @@ class NameList extends React.Component<NameListProps, NameListState> {
     render() {
         const { teachers, currentPage, totalPage, loading } = this.props;
         const { loadMore } = this.state;
+        const loadingToastProps = {
+            tip: "加载中...",
+            iconClassName: "icon-loading",
+            isOpen: loading || loadMore,
+        };
 
-        if (teachers.length) {
-            const loadingToastProps = {
-                tip: "加载中...",
-                iconClassName: "icon-loading",
-                isOpen: loading || loadMore,
-            };
-
+        if (loading) {
             return (
-                <div className="name-list">
-                    <LoadingToast { ...loadingToastProps }/>
-
-                    { teachers.map((teacher, index) => {
-                        return (
-                            <ProfileCard { ...teacher } key={ index } />
-                        )
-                    }) }
-                    { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loadMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.loadMore.bind(this) }>点击加载更多</div>) }
-                </div>
+                <LoadingToast { ...loadingToastProps }/>
             )
         } else {
-            return (
-                <EmptyList tip="暂无匹配的机构和老师" />
-            )
+            if (teachers.length) {
+                return (
+                    <div className="name-list">
+                        { teachers.map((teacher, index) => {
+                            return (
+                                <ProfileCard { ...teacher } key={ index } />
+                            )
+                        }) }
+                        { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loadMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.loadMore.bind(this) }>点击加载更多</div>) }
+                    </div>
+                )
+            } else {
+                return (
+                    <EmptyList tip="暂无匹配的机构和老师" />
+                )
+            }
         }
-
-
     }
 }
 
@@ -185,6 +186,12 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         this.setState({
             showSyntheticalFilter: false,
             showCatsFilter: show,
+        })
+    }
+
+    onCloseCatFilter() {
+        this.setState({
+            showCatsFilter: false,
         })
     }
 
@@ -271,7 +278,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             loadMore?: boolean;
         }) {
         let catId = cat[cat.length - 1] ? Number(cat[cat.length - 1].id) : 0;
-        if (!catId) return;
+        // if (!catId) return;
 
         // 根据给出的条件获取对应的数据
         this.setState({
@@ -334,7 +341,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         search({
             page: 1,
             pageSize: this.PageSize,
-            catId: Number(searchCat.id),
+            catId: searchCat ? Number(searchCat.id) : 0,
             keyword: this.props.location.query.keyword || "",
         }).then(data => {
             this.setState({
@@ -387,6 +394,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             visible: this.state.showCatsFilter,
             initCat: this.state.currentCat,
             onChooseCat: this.onChooseCat.bind(this),
+            onCloseCatFilter: this.onCloseCatFilter.bind(this),
             handlerLeaveAnimEnd: this.handlerCatFilterLeaveAnimEnd.bind(this),
         }
 

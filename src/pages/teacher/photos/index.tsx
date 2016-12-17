@@ -199,7 +199,7 @@ export default class TeacherPhotos extends React.Component<TeacherPhotosProps, T
                                     }) }
                                 </div>
                             </div> :
-                            <EmptyList tip="该机构暂未上传图片" />
+                            <EmptyList tip="该老师暂未上传图片" />
                     }
                 </div>
             )
