@@ -8,7 +8,10 @@ var __PRD__ = process.env.NODE_ENV == "production";
 console.log("webpack working");
 
 if (process.argv[2]) {
-    distPath = fullPath("../../" + process.argv[2].split("/").shift().join("/"));
+    var args = process.argv[2].split("/");
+    args.shift();
+
+    distPath = fullPath("../../" + args.join("/"));
 } else {
     distPath = fullPath("../") + "/dist";
 }
