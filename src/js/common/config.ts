@@ -2,10 +2,24 @@ export const defaultAvatar = require("../../img/default-avatar.png");
 
 export const defaultCourseCover = require("../../img/default-course-cover.png");
 
-// export const publicPath = "http://192.168.2.55:8080/";
-export const publicPath = "http://m.qmin91.com/";
-export const apiHost = "http://qmin91.com/";
-// export const apiHost = "http://192.168.2.55:8080/";
+let args = require("./node-args.js");
+
+let path: string;
+let apiPath: string;
+
+if (args.nodeEnv === "production") {
+    if (args.publicPath) {
+        apiPath = args.publicPath;
+    } else {
+        apiPath = "http://qmin91.com/";
+    }
+} else {
+    apiPath = 'http://127.0.0.1:8080/';
+}
+
+export const apiHost = apiPath;
+
+console.log("apiHost: ", apiHost);
 
 export const apis = {
     getIndexRoleList: `${apiHost}apis/mobile/getIndexRoleList`,

@@ -1,13 +1,13 @@
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
 var config = require('./webpack.config');
-var utils = require('./utils');
+// var utils = require('./utils');
 
 var PORT = 8080;
-var HOST = utils.getIP();
+// var HOST = utils.getIP();
+var HOST = "127.0.0.1";
 var args = process.argv;
 var hot = args.indexOf('--hot') > -1;
-var deploy = args.indexOf('--deploy') > -1;
 
 // 本地环境静态资源路径
 var localPublicPath = 'http://' + HOST + ':' + PORT + '/';
