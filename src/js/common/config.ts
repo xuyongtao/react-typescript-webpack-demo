@@ -31,7 +31,7 @@ export const apis = {
     getTeacherIntro: `${apiHost}apis/mobile/getTeacherInfo/introInfo`,
     getCourseDetailInfo: `${apiHost}apis/mobile/getCourseInfo/detail`,
     booking: `${apiHost}apis/mobile/booking`,
-    getSuggestion: `${apiHost}apis/mobile/getSuggestion`,
+    getSuggestion: `${apiHost}apis/mobile/getKeyWordInputList`,
 };
 
 export enum Role { teacher = 3, studio };// 这里对应的是数据库的role表

@@ -472,7 +472,7 @@ app.use('/apis/mobile/booking', function (req, res) {
         },
     })
 })
-app.use('/apis/mobile/getSuggestion', function (req, res) {
+app.use('/apis/mobile/getKeyWordInputList', function (req, res) {
     return res.send({
         "meta": {
             "code": 0,

@@ -116,8 +116,8 @@ export default class ProfileCard extends React.Component<ProfileCardProps, any> 
                         </div>
                         <p className="intro">{ selfIntro }</p>
                         <div className="counts">
-                            <span><i className="iconfont iconstar"></i>{ favCount }</span>
-                            <span><i className="iconfont iconviewed"></i>{ viewedCount }</span>
+                            { favCount ? <span><i className="iconfont iconstar"></i>{ favCount }</span> : null }
+                            { viewedCount ? <span><i className="iconfont iconviewed"></i>{ viewedCount }</span> : null }
                         </div>
                     </div>
                 </div>

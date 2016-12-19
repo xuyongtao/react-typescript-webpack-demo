@@ -424,10 +424,10 @@ post
 
 
 
-## 搜索框关键字推荐 getSuggestion
+## 搜索框关键字推荐 getKeyWordInputList
 
 ### 接口地址
-http://qmjy.dev/apis/mobile/getSuggestion
+http://qmjy.dev/apis/mobile/getKeyWordInputList
 
 ### 请求方式
 post
