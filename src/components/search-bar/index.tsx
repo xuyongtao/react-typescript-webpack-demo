@@ -394,7 +394,7 @@ export default class NavBarWithSearch extends React.Component<NavBarWithSearchPr
                     onChange={ this.onChange.bind(this) }
                     onSearch={ this.onSearch.bind(this) }
                     onFocus={ this.props.onFocus.bind(this) }
-                    initValue={ this.props.keyword} />
+                    initValue={ this.props.keyword } />
             </div>
         );
     }

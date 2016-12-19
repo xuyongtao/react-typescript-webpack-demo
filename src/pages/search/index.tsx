@@ -415,31 +415,32 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             loading: true,
             currentCat,
             keyword,
-        });
-        search({
-            page: 1,
-            pageSize: this.PageSize,
-            catId: searchCat ? Number(searchCat.id) : 0,
-            keyword,
-        }).then(data => {
-            this.setState({
-                loading: false,
-                teachers: data.list,
-                currentPage: data.page,
-                totalPage: Math.ceil(data.total / data.perPage),
-                currentCat,
-            })
         }, () => {
-            this.setState({
-                loading: false,
+            search({
+                page: 1,
+                pageSize: this.PageSize,
+                catId: searchCat ? Number(searchCat.id) : 0,
+                keyword,
+            }).then(data => {
+                this.setState({
+                    loading: false,
+                    teachers: data.list,
+                    currentPage: data.page,
+                    totalPage: Math.ceil(data.total / data.perPage),
+                    currentCat,
+                })
+            }, () => {
+                this.setState({
+                    loading: false,
+                })
             })
-        })
+        });
     }
 
     render() {
         const navBarProps = {
             onFocus: this.handlerFocus.bind(this),
-            keyword: this.state.keyword,
+            keyword: this.state.keyword || this.props.location.query.keyword,
             onSearchKeyword: this.onSearchKeyword.bind(this),
             onSearchCat: this.onSearchCat.bind(this),
         };
