@@ -360,10 +360,9 @@ export default class NavBarWithSearch extends React.Component<NavBarWithSearchPr
         if (!suggestion) return;
 
         if (typeof suggestion === "string") {
-            // browserHistory.push(`/search?keyword=${suggestion}`);
             this.props.onSearchKeyword && this.props.onSearchKeyword(suggestion);
         } else {
-            if (suggestion.path.indexOf("search")) {
+            if (suggestion.path.indexOf("search") > 0) {
                 let catLabels = suggestion.label.split("-");
                 let catIds = suggestion.path.match(/\d+-\d+-\d+/)[0].split("-");
 

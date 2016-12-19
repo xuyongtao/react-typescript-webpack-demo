@@ -114,7 +114,7 @@ export default class ProfileCard extends React.Component<ProfileCardProps, any> 
                             { certified ? <UserLabel classname="label-certified" label="机构认证" /> : null }
                             <strong>{ name }</strong>
                         </div>
-                        <p className="intro">{ selfIntro }</p>
+                        <p className="intro">{ selfIntro || "暂未完善个人简介（找老师上全民教育网）" }</p>
                         <div className="counts">
                             { favCount ? <span><i className="iconfont iconstar"></i>{ favCount }</span> : null }
                             { viewedCount ? <span><i className="iconfont iconviewed"></i>{ viewedCount }</span> : null }

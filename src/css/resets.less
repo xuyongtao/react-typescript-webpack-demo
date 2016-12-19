@@ -242,8 +242,14 @@ html [type=button],
 
 [type=search] {
   // Correct the odd appearance in Chrome and Safari.
-  -webkit-appearance: textfield;
+  -webkit-appearance: none;
 }
+
+/* 隐藏取消按钮 */
+::-webkit-search-cancel-button { -webkit-appearance: none; }
+
+/* 隐藏放大镜 */
+::-webkit-search-results-button { -webkit-appearance: none; }
 
 [type="date"],
 [type="time"],

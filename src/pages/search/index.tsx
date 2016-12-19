@@ -335,7 +335,12 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             syntheticalFilterConditions?: number[];
             loadMore?: boolean;
         }) {
-        let catId = cat[cat.length - 1] ? Number(cat[cat.length - 1].id) : 0;
+        let catId = 0;
+        cat.map(c => {
+            if (c.id) {
+                catId = Number(c.id);
+            }
+        })
         // if (!catId) return;
 
         // 根据给出的条件获取对应的数据
