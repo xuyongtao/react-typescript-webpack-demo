@@ -110,23 +110,23 @@ export default class TeacherIntro extends React.Component<TeacherIntroProps, Tea
                         <ul>
                             <li>
                                 <span>最高学历</span>
-                                <div>{ seniority }</div>
+                                <div>{ seniority || "暂未填写" }</div>
                             </li>
                             <li>
                                 <span>毕业学校</span>
-                                <div>{ graduatedSchool }</div>
+                                <div>{ graduatedSchool || "暂未填写" }</div>
                             </li>
                             <li>
                                 <span>身&nbsp; &nbsp; &nbsp; &nbsp; 份</span>
-                                <div>{ role }</div>
+                                <div>{ role || "暂未填写" }</div>
                             </li>
                             <li>
                                 <span>单位机构</span>
-                                <div>{ studio }</div>
+                                <div>{ studio || "暂未加入任何机构" }</div>
                             </li>
                             <li>
                                 <span>个人介绍</span>
-                                <div>{ intro }</div>
+                                <div>{ intro || "暂未填写" }</div>
                             </li>
                         </ul>
                     </div>
