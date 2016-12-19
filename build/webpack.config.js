@@ -63,7 +63,7 @@ var config = {
                 test: /\.json$/,
                 loader: "json-loader"
             }, {
-                test: /\.png|jpeg|jpg|gif$/,
+                test: /\.png|jpeg|jpg|gif|ico$/,
                 loaders: [
                     "file?name=images/[name].[ext]",
                     // "image-webpack?{optimizationLevel: 7, interlaced: false, pngquant:{quality: '65-90', speed: 4}, mozjpeg: {quality: 65}}"

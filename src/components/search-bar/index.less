@@ -80,12 +80,13 @@
 .search-bar-suggestions {
     position: fixed;
     top: @NAV_BAR_HEIGHT;
+    bottom: 0;
     width: 100%;
-    height: 100%;
     background-color: @SEARCH_BAR_SUGGESTIONS_BG_COLOR;
     font-size: 24/@REM;
     line-height: 80/@REM;
     color: @MAIN_COLOR;
+    overflow-y: scroll;
     li {
         padding: 0 30/@REM;
         border-bottom: 1px solid @BORDER_COLOR;

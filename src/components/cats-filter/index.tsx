@@ -221,7 +221,7 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
                                     { Lodash.map(catsData, (cat, key) => {
                                         return (
                                             <li key={ key } onClick={ this.onClickHandler.bind(this, key, cat.label) } className={classNames({
-                                                active: key == this.state.currentLevel1Cat.id
+                                                active: key == this.state.currentLevel1Cat.id || key == this.props.initCat[0].id
                                             }) }>{ cat.label }</li>
                                         )
                                     }) }

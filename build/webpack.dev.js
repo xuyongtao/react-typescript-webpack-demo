@@ -326,7 +326,10 @@ app.use('/apis/mobile/getStudioInfo/studioInfoIndex', function (req, res) {
             "msg": ""
         },
         "data": {
-            banners: [localPublicPath + 'images/banner.png`, `${localPublicPath}images/banner.png'],
+            banners: [
+                localPublicPath + 'images/banner.png',
+                localPublicPath + 'images/banner.png'
+            ],
             courses: [{
                 cid: 1,
                 title: "物理",
