@@ -19,8 +19,6 @@ if (args.nodeEnv === "production") {
 
 export const apiHost = apiPath;
 
-console.log("apiHost: ", apiHost);
-
 export const apis = {
     getIndexRoleList: `${apiHost}apis/mobile/getIndexRoleList`,
     getSearchRoleList: `${apiHost}apis/mobile/getSearchRoleList`,
@@ -33,6 +31,7 @@ export const apis = {
     getTeacherIntro: `${apiHost}apis/mobile/getTeacherInfo/introInfo`,
     getCourseDetailInfo: `${apiHost}apis/mobile/getCourseInfo/detail`,
     booking: `${apiHost}apis/mobile/booking`,
+    getSuggestion: `${apiHost}apis/mobile/getSuggestion`,
 };
 
 export enum Role { teacher = 3, studio };// 这里对应的是数据库的role表

@@ -19,6 +19,8 @@ import {
     ReceiveCourseDetailPost,
     RequestBookingPost,
     ReceiveBookingPost,
+    RequestSuggestionPost,
+    ReceiveSuggestionPost,
 } from "../interface/common";
 
 export const REQUEST_BASIC_INFO_POST = "REQUEST_BASIC_INFO_POST";
@@ -37,6 +39,8 @@ export const REQUEST_COURSE_DETAIL_POST = 'REQUEST_COURSE_DETAIL_POST';
 export const RECEIVE_COURSE_DETAIL_POST = 'RECEIVE_COURSE_DETAIL_POST';
 export const REQUEST_BOOKING_POST = 'REQUEST_BOOKING_POST';
 export const RECEIVE_BOOKING_POST = 'RECEIVE_BOOKING_POST';
+export const REQUEST_SUGGESTION_POST = 'REQUEST_SUGGESTION_POST';
+export const RECEIVE_SUGGESTION_POST = 'RECEIVE_SUGGESTION_POST';
 
 function requestBasicInfoPost(data: RequestBasicInfoPost) {
     return {
@@ -262,6 +266,36 @@ export function postBooking({
             .post(url, data)
             .then(res => {
                 dispatch(receiveBookingPost(<ReceiveBookingPost>res.data));
+            })
+    }
+}
+
+function requestSuggestionPost(data: RequestSuggestionPost) {
+    return {
+        type: REQUEST_SUGGESTION_POST,
+        requestData: data,
+    }
+}
+function receiveSuggestionPost(data: ReceiveSuggestionPost) {
+    return {
+        type: RECEIVE_SUGGESTION_POST,
+        responseData: data,
+    }
+}
+export function postSuggestion({
+    url,
+    data
+}: {
+        url: string;
+        data: RequestSuggestionPost;
+    }) {
+    return (dispatch: Dispatch<any>) => {
+        dispatch(requestSuggestionPost(data));
+
+        return api
+            .post(url, data)
+            .then(res => {
+                dispatch(receiveSuggestionPost(<ReceiveSuggestionPost>res.data));
             })
     }
 }

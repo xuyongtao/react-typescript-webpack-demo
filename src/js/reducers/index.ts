@@ -20,6 +20,8 @@ import {
     ReceiveCourseDetailPost,
     RequestBookingPost,
     ReceiveBookingPost,
+    RequestSuggestionPost,
+    ReceiveSuggestionPost,
 } from "../interface/common";
 
 import {
@@ -39,6 +41,8 @@ import {
     RECEIVE_COURSE_DETAIL_POST,
     REQUEST_BOOKING_POST,
     RECEIVE_BOOKING_POST,
+    REQUEST_SUGGESTION_POST,
+    RECEIVE_SUGGESTION_POST,
 } from "../actions/common";
 
 import {
@@ -418,6 +422,30 @@ function postBooking(state = {
     }
 }
 
+function postSuggestion(state = {
+    isFetching: false,
+}, action: {
+    type: string;
+    requestData?: RequestSuggestionPost;
+    responseData?: ReceiveSuggestionPost;
+}) {
+    switch (action.type) {
+        case REQUEST_SUGGESTION_POST:
+            return Lodash.assign({}, state, {
+                isFetching: true,
+                keyword: action.requestData.keyword,
+            })
+        case RECEIVE_SUGGESTION_POST:
+            return Lodash.assign({}, state, {
+                isFetching: false,
+                cats: action.responseData.cats,
+                users: action.responseData.users,
+            })
+        default:
+            return state;
+    }
+}
+
 const reducers = combineReducers({
     basicInfo: postBasicInfo,
     courseList: postCourseList,
@@ -428,9 +456,10 @@ const reducers = combineReducers({
     studioIndexPageInfo: postStudioIndexPageInfo,
     studioTeacherList: postStudioTeacherList,
     studioIntro: postStudioIntro,
-    teacherIntro: postTeacherIntro,
     courseDetail: postCourseDetail,
-    booking: postBooking,
+    bookingResult: postBooking,
+    teacherIntro: postTeacherIntro,
+    suggestionResult: postSuggestion,
 })
 
 export default reducers;  

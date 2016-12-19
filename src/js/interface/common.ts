@@ -1,3 +1,8 @@
+export interface CatBasic {
+    label: string;
+    id: string;
+}
+
 export interface BasicInfo {
     id?: number;
     role?: number;
@@ -155,4 +160,20 @@ export interface RequestBookingPost {
 }
 export interface ReceiveBookingPost {
 
+}
+
+export interface RequestSuggestionPost {
+    keyword: string;
+}
+export interface ReceiveSuggestionPost {
+    cats: {
+        cat_id: number;
+        cat_ids: string;
+        cat_labels: string;
+    }[];
+    users: {
+        id: number;
+        role: number;
+        name: string;
+    }[];
 }

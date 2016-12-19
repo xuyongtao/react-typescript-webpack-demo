@@ -8,14 +8,24 @@ import { Link, browserHistory } from "react-router";
 import * as classNames from "classnames";
 import * as Lodash from "lodash";
 
+import { getSuggestion } from "../../js/store/index";
+import { Role } from "../../js/common/config";
+
+import { CatBasic } from '../../js/interface/common';
+
+interface SuggestionBasic {
+    label: string;
+    path: string;
+}
+
 interface SuggestionsProps {
     highlightedItem: number;
     searchTerm: string;
-    suggestions: string[];
-    onSelection(suggestion: string): void;
+    suggestions: SuggestionBasic[];
+    onSelection(suggestion: SuggestionBasic): void;
 }
 interface SuggestionsStates {
-    activeItem?: number;
+    activeIndex?: number;
 }
 
 class Suggestions extends React.Component<SuggestionsProps, SuggestionsStates> {
@@ -31,53 +41,65 @@ class Suggestions extends React.Component<SuggestionsProps, SuggestionsStates> {
     constructor(props: SuggestionsProps, context: SuggestionsStates) {
         super(props, context);
         this.state = {
-            activeItem: -1
+            activeIndex: -1
         };
     }
 
     onTouchStart(index: number) {
-        this.timer = setTimeout(() => {
-            this.setState({ activeItem: index });
-        }, 200);
+        // this.timer = setTimeout(() => {
+        //     this.setState({ activeIndex: index });
+        // }, 200);
+        this.setState({ activeIndex: index });
     }
     onTouchMove() {
         clearTimeout(this.timer);
 
         this.touchedMoved = true;
-        this.setState({ activeItem: -1 });
+        this.setState({ activeIndex: -1 });
     }
-    onTouchEnd(suggestion: string) {
+    onTouchEnd(suggestion: SuggestionBasic) {
         if (!this.touchedMoved) {
-            setTimeout(() => {
-                this.props.onSelection && this.props.onSelection(suggestion);
-            }, 220);
+            // setTimeout(() => {
+            //     this.props.onSelection && this.props.onSelection(suggestion);
+            // }, 220);
+            this.props.onSelection && this.props.onSelection(suggestion);
         }
         this.touchedMoved = false;
     }
+    onMouseEnter(index: number) {
+        this.setState({
+            activeIndex: index,
+        })
+    }
+    onMouseLeave() {
+        this.setState({
+            activeIndex: -1,
+        })
+    }
+    onClick(suggestion: SuggestionBasic) {
+        this.props.onSelection(suggestion);
+    }
     render() {
         const { highlightedItem, searchTerm, suggestions } = this.props;
-        const { activeItem } = this.state;
+        const { activeIndex } = this.state;
 
         return (
             <ul
                 className="search-bar-suggestions"
-                onMouseLeave={ () => this.setState({ activeItem: -1 }) }>
+                onMouseLeave={ this.onMouseLeave.bind(this) }>
                 { suggestions.map((suggestion, index) =>
                     <li
                         className={ classNames({
-                            highlighted: highlightedItem === index || activeItem === index
+                            highlighted: highlightedItem === index || activeIndex === index
                         }) }
                         key={ index }
-                        onClick={ () => this.props.onSelection(suggestion) }
-                        onMouseEnter={ () => this.setState({ activeItem: index }) }
-                        onMouseDown={ (e) => e.preventDefault() }
-                        onTouchStart={ () => this.onTouchStart(index) }
-                        onTouchMove={ () => this.onTouchMove() }
-                        onTouchEnd={ () => this.onTouchEnd(suggestion) }>
-                        <span>
-                            { searchTerm }
-                            <strong>{ suggestion.substr(searchTerm.length) }</strong>
-                        </span>
+                        onClick={ this.onClick.bind(this, suggestion) }
+                        onMouseEnter={ this.onMouseEnter.bind(this, index) }
+                        onMouseDown={ (e) => { e.preventDefault(); } }
+                        onTouchStart={ this.onTouchStart.bind(this, index) }
+                        onTouchMove={ this.onTouchMove.bind(this) }
+                        onTouchEnd={ this.onTouchEnd.bind(this, suggestion) }>
+                        <span>{ suggestion.label }</span>
                     </li>
                 ) }
             </ul>
@@ -95,7 +117,7 @@ const keyCodes = {
 interface SearchBarState {
     highlightedItem?: number;
     searchTerm?: string;
-    suggestions?: any;
+    suggestions?: SuggestionBasic[];
     value?: string;
     isFocused?: boolean;
 }
@@ -104,7 +126,7 @@ interface SearchBarProps {
     delay?: number;
     inputName?: string;
     onChange(searchTerm: string, resolve: (value?: any | Thenable<any>) => void): void;
-    onSearch?(value: string): void;
+    onSearch?(suggestion: SuggestionBasic | string): void;
     onFocus?(): void;
     placeholder?: string;
     initValue?: string;
@@ -130,9 +152,6 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
     constructor(props: SearchBarProps) {
         super(props);
-        if (!props.onChange) {
-            throw new Error("You must supply a callback to `onChange`.");
-        }
         this.state = this.initialState = {
             highlightedItem: -1,
             searchTerm: "",
@@ -161,7 +180,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         if (!searchTerm) return;
         new Promise((resolve) => {
             this.props.onChange(searchTerm, resolve);
-        }).then((suggestions) => {
+        }).then((suggestions: SuggestionBasic[]) => {
             if (!this.state.value) return;
             this.setState({
                 highlightedItem: -1,
@@ -183,7 +202,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
         this.setState({
             highlightedItem: nextItem,
-            value: suggestions[nextItem]
+            value: suggestions[nextItem].label,
         });
     }
     search() {
@@ -197,8 +216,11 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         inputNode.blur();
 
         this.setState({ highlightedItem, suggestions });
+
         if (this.props.onSearch) {
-            this.props.onSearch(value);
+            const suggestion = Lodash.find(this.state.suggestions, { label: value }) as SuggestionBasic;
+
+            this.props.onSearch(suggestion || value);
         }
     }
     onChange(e: FormEvent) {
@@ -230,8 +252,8 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
                 break;
         }
     }
-    onSelection(suggestion: string) {
-        this.setState({ value: suggestion }, () => this.search());
+    onSelection(suggestion: SuggestionBasic) {
+        this.setState({ value: suggestion.label }, () => this.search());
     }
     onSearch(e: SyntheticEvent) {
         e.preventDefault();
@@ -263,7 +285,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
                         value={ this.state.value }
                         placeholder={ this.props.placeholder }
                         onChange={ this.onChange.bind(this) }
-                        onBlur={ () => this.setState({ isFocused: false, suggestions: [] }) }
+                        // onBlur={ () => this.setState({ isFocused: false, suggestions: [] }) }
                         onKeyDown={ this.state.suggestions && this.onKeyDown.bind(this) }
                         onFocus={ () => {
                             this.props.onFocus && this.props.onFocus();
@@ -291,25 +313,11 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
 }
 
-const matches: {
-    [key: string]: string[]
-} = {
-        "初一": [
-            "初一物理",
-            "初一数学",
-            "初一英语"
-        ],
-        "初二": [
-            "初二物理",
-            "初二数学",
-            "初二英语"
-        ]
-    };
-
-
 interface NavBarWithSearchProps {
     keyword?: string;
     onFocus?(): void;
+    onSearchKeyword?(keyword: string): void;
+    onSearchCat?(cat: CatBasic[]): void;
 }
 interface NavBarWithSearchState {
 
@@ -319,34 +327,60 @@ export default class NavBarWithSearch extends React.Component<NavBarWithSearchPr
     static propTypes = {
         keyword: React.PropTypes.string,
         handlerFocus: React.PropTypes.func,
+        onSearchKeyword: React.PropTypes.func,
     }
     constructor(props: NavBarWithSearchProps, context: NavBarWithSearchState) {
         super(props, context);
     }
 
     onChange(input: string, resolve: (value?: any | Thenable<any>) => void) {
-        console.log("input: ", input)
 
-        // Simulate AJAX request
-        setTimeout(() => {
+        getSuggestion(input)
+            .then(res => {
+                let suggestions: SuggestionBasic[] = [];
 
-            // const suggestions = matches[Lodash.find(Object.keys(matches), (partial: string) => {
-            //     return Boolean(input.match(new RegExp(partial, "i")));
-            // })] || ['初', '初一', '初二'];
+                res.cats.map((cat) => {
+                    suggestions.push({
+                        label: cat.cat_labels,
+                        path: `/search/${cat.cat_ids}`,
+                    })
+                })
+                res.users.map((user) => {
+                    suggestions.push({
+                        label: user.name,
+                        path: (user.role === Role.studio ? `/studio/${user.id}` : `/teacher/${user.id}`),
+                    })
+                })
 
-            // resolve(suggestions.filter((suggestion: string, index: number, array: string[]) => {
-            //     return Boolean(suggestion.match(new RegExp("^" + input.replace(/\W\s/g, ""), "i")));
-            // }));
-            resolve(["初一 - 物理", "初二 - 物理", "初三 - 物理"]);
-
-        }, 25);
+                resolve(suggestions);
+            })
     }
 
-    onSearch(input: string) {
-        if (!input) return;
-        console.info(`Searching "${input}"`);
-        // 发送请求，获取老师信息
+    onSearch(suggestion: SuggestionBasic | string) {
+        if (!suggestion) return;
 
+        if (typeof suggestion === "string") {
+            // browserHistory.push(`/search?keyword=${suggestion}`);
+            this.props.onSearchKeyword && this.props.onSearchKeyword(suggestion);
+        } else {
+            if (suggestion.path.indexOf("search")) {
+                let catLabels = suggestion.label.split("-");
+                let catIds = suggestion.path.match(/\d+-\d+-\d+/)[0].split("-");
+
+                this.props.onSearchCat && this.props.onSearchCat([{
+                    label: catLabels[0],
+                    id: catIds[0],
+                }, {
+                        label: catLabels[1],
+                        id: catIds[1],
+                    }, {
+                        label: catLabels[2],
+                        id: catIds[2],
+                    }]);
+            } else {
+                browserHistory.push(suggestion.path);
+            }
+        }
     }
 
     componentDidMount() {
@@ -358,9 +392,9 @@ export default class NavBarWithSearch extends React.Component<NavBarWithSearchPr
             <div className="nav-search-bar">
                 <SearchBar
                     placeholder="请输入想学的科目"
-                    onChange={ this.onChange }
-                    onSearch={ this.onSearch }
-                    onFocus={ this.props.onFocus }
+                    onChange={ this.onChange.bind(this) }
+                    onSearch={ this.onSearch.bind(this) }
+                    onFocus={ this.props.onFocus.bind(this) }
                     initValue={ this.props.keyword} />
             </div>
         );

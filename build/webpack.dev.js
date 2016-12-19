@@ -259,7 +259,7 @@ app.use('/apis/mobile/getSearchRoleList', function (req, res) {
         return res.send({
             data: {
                 page: postPage,
-                totalPage: totalPage * pageCount,
+                total: totalPage * pageCount,
                 perPage: pageCount,
                 list: list
             },
@@ -470,6 +470,66 @@ app.use('/apis/mobile/booking', function (req, res) {
             "code": 0,
             "msg": ""
         },
+    })
+})
+app.use('/apis/mobile/getSuggestion', function (req, res) {
+    return res.send({
+        "meta": {
+            "code": 0,
+            "msg": "成功"
+        },
+        "data": {
+            cats: [
+                {
+                    cat_id: 1,
+                    cat_ids: "1-2-5",
+                    cat_labels: "高中-高一-数学",
+                }, {
+                    cat_id: 1,
+                    cat_ids: "1-2-5",
+                    cat_labels: "高中-高二-数学",
+                }, {
+                    cat_id: 1,
+                    cat_ids: "1-2-5",
+                    cat_labels: "高中-高三-数学",
+                }, {
+                    cat_id: 1,
+                    cat_ids: "1-2-5",
+                    cat_labels: "初中-初一-数学",
+                }, {
+                    cat_id: 1,
+                    cat_ids: "1-2-5",
+                    cat_labels: "初中-初二-数学",
+                }, {
+                    cat_id: 1,
+                    cat_ids: "1-2-5",
+                    cat_labels: "初中-初三-数学",
+                }, {
+                    cat_id: 1,
+                    cat_ids: "1-2-5",
+                    cat_labels: "初中-初三-数学",
+                }, {
+                    cat_id: 1,
+                    cat_ids: "1-2-5",
+                    cat_labels: "初中-初三-数学",
+                }, {
+                    cat_id: 1,
+                    cat_ids: "1-2-5",
+                    cat_labels: "初中-初三-数学",
+                }
+            ],
+            users: [
+                {
+                    id: 90,
+                    role: 3,
+                    name: "许泳涛"
+                }, {
+                    id: 100,
+                    role: 4,
+                    name: "培优机构"
+                }
+            ]
+        }
     })
 })
 

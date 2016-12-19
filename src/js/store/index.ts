@@ -21,6 +21,8 @@ import {
     ReceiveCourseDetailPost,
     RequestBookingPost,
     ReceiveBookingPost,
+    RequestSuggestionPost,
+    ReceiveSuggestionPost,
 } from "../interface/common";
 
 import {
@@ -49,6 +51,7 @@ import {
     searchList,
     fetchCourseDetail,
     postBooking,
+    postSuggestion,
 } from "../actions/common";
 
 import {
@@ -74,6 +77,7 @@ interface stateBasic {
     courseDetail: ReceiveCourseDetailPost,
     bookingResult: ReceiveBookingPost,
     teacherIntro: ReceiveTeacherIntroPost,
+    suggestionResult: ReceiveSuggestionPost,
 }
 
 
@@ -217,4 +221,13 @@ export function booking({
             data: { id, name, mobile, mark }
         }))
         .then(() => (store.getState() as stateBasic).bookingResult);
+}
+
+export function getSuggestion(keyword: string): Promise<ReceiveSuggestionPost> {
+    return store
+        .dispatch(postSuggestion({
+            url: apis.getSuggestion,
+            data: { keyword }
+        }))
+        .then(() => (store.getState() as stateBasic).suggestionResult);
 }

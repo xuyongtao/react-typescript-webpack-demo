@@ -12,14 +12,10 @@ import ProfileCard from "../../components/profile-card/index";
 import LoadingToast from "../../components/toast/index";
 import EmptyList from "../../components/empty-list/index";
 
-import { RecommendListBasic } from '../../js/interface/common';
+import { CatBasic, RecommendListBasic } from '../../js/interface/common';
 import { search } from "../../js/store/index";
 import { syntheticalFilterConditions } from "../../js/common/config";
 
-interface CatBasic {
-    label: string;
-    id: string;
-}
 interface CatSingleDataBasic {
     label: string;
     cats?: {
@@ -50,7 +46,6 @@ interface NameListProps {
     currentPage: number;
     totalPage: number;
     handlerLoadMore?(options: any): Promise<void>;
-    loading: boolean;
 }
 interface NameListState {
     loadMore: boolean;
@@ -61,7 +56,6 @@ class NameList extends React.Component<NameListProps, NameListState> {
         currentPage: React.PropTypes.number.isRequired,
         totalPage: React.PropTypes.number.isRequired,
         handlerLoadMore: React.PropTypes.func.isRequired,
-        loading: React.PropTypes.bool.isRequired,
     }
 
     constructor(props: NameListProps, context: NameListState) {
@@ -90,36 +84,32 @@ class NameList extends React.Component<NameListProps, NameListState> {
     }
 
     render() {
-        const { teachers, currentPage, totalPage, loading } = this.props;
+        const { teachers, currentPage, totalPage } = this.props;
         const { loadMore } = this.state;
         const loadingToastProps = {
             tip: "加载中...",
             iconClassName: "icon-loading",
-            isOpen: loading || loadMore,
+            isOpen: loadMore,
         };
 
-        if (loading) {
-            return (
+        return (
+            <div>
                 <LoadingToast { ...loadingToastProps }/>
-            )
-        } else {
-            if (teachers.length) {
-                return (
-                    <div className="name-list">
-                        { teachers.map((teacher, index) => {
-                            return (
-                                <ProfileCard { ...teacher } key={ index } />
-                            )
-                        }) }
-                        { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loadMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.loadMore.bind(this) }>点击加载更多</div>) }
-                    </div>
-                )
-            } else {
-                return (
-                    <EmptyList tip="暂无匹配的机构和老师" />
-                )
-            }
-        }
+
+                {
+                    teachers.length ?
+                        <div className="name-list">
+                            { teachers.map((teacher, index) => {
+                                return (
+                                    <ProfileCard { ...teacher } key={ index } />
+                                )
+                            }) }
+                            { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loadMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.loadMore.bind(this) }>点击加载更多</div>) }
+                        </div> :
+                        <EmptyList tip="暂无匹配的机构和老师" />
+                }
+            </div>
+        )
     }
 }
 
@@ -146,6 +136,7 @@ interface SearchState {
     currentPage?: number;
     totalPage?: number;
     loading?: boolean;
+    keyword?: string;
 }
 
 export default class Search extends React.Component<SearchProps, SearchState> {
@@ -164,6 +155,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             currentPage: 0,
             totalPage: 0,
             loading: false,
+            keyword: "",
         }
     }
 
@@ -212,8 +204,71 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         })
     }
 
+    onSearchKeyword(keyword: string) {
+        this.setState({
+            loading: true,
+            currentCat: new Array<CatBasic>(3),
+            currentSyntheticalFilterOptions: new Array<number>(4),
+            showCatsFilter: false,
+            showSyntheticalFilter: false,
+            orderByFavAscActive: false,
+            orderByViewAscActive: false,
+            keyword,
+        }, () => {
+            search({
+                page: 1,
+                pageSize: this.PageSize,
+                keyword,
+            }).then(data => {
+                this.setState({
+                    loading: false,
+                    teachers: data.list,
+                    currentPage: data.page,
+                    totalPage: Math.ceil(data.total / data.perPage),
+                })
+            }, () => {
+                this.setState({
+                    loading: false,
+                })
+            })
+        })
+    }
+
+    onSearchCat(cat: CatBasic[]) {
+        this.setState({
+            loading: true,
+            currentCat: cat,
+            currentSyntheticalFilterOptions: new Array<number>(4),
+            showCatsFilter: false,
+            showSyntheticalFilter: false,
+            orderByFavAscActive: false,
+            orderByViewAscActive: false,
+            keyword: "",
+        }, () => {
+            search({
+                page: 1,
+                pageSize: this.PageSize,
+                catId: cat[cat.length - 1] ? Number(cat[cat.length - 1].id) : 0,
+            }).then(data => {
+                this.setState({
+                    loading: false,
+                    teachers: data.list,
+                    currentPage: data.page,
+                    totalPage: Math.ceil(data.total / data.perPage),
+                })
+            }, () => {
+                this.setState({
+                    loading: false,
+                })
+            })
+        })
+    }
+
     handlerCatFilterLeaveAnimEnd() {
-        this.getNameList({ cat: this.state.currentCat });
+        this.getNameList({
+            page: 1,
+            cat: this.state.currentCat
+        });
     }
 
     onConfirmSyntheticalFilterOptions(options: number[]) {
@@ -225,6 +280,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
 
     handlerSyntheticalFilterLeaveAnimEnd() {
         this.getNameList({
+            page: 1,
             cat: this.state.currentCat,
             orderByFavAscActive: this.state.orderByFavAscActive,
             orderByViewAscActive: this.state.orderByViewAscActive,
@@ -237,6 +293,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             orderByFavAscActive: active,
         })
         this.getNameList({
+            page: 1,
             cat: this.state.currentCat,
             orderByFavAscActive: active,
             orderByViewAscActive: false,
@@ -249,6 +306,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             orderByViewAscActive: active,
         })
         this.getNameList({
+            page: 1,
             cat: this.state.currentCat,
             orderByFavAscActive: false,
             orderByViewAscActive: active,
@@ -261,7 +319,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
     }
 
     getNameList({
-        page = this.state.currentPage,
+        page = this.state.currentPage + 1,
         totalPage = this.state.totalPage,
         cat = this.state.currentCat,
         orderByFavAscActive = this.state.orderByFavAscActive,
@@ -281,9 +339,11 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         // if (!catId) return;
 
         // 根据给出的条件获取对应的数据
-        this.setState({
-            loading: true,
-        })
+        if (!loadMore) {
+            this.setState({
+                loading: true,
+            })
+        }
 
         return search({
             page: page || 1,
@@ -295,21 +355,33 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             teachingAge: syntheticalFilterConditions[1] || 0,
             role: syntheticalFilterConditions[2] || 0,
         }).then(data => {
-            this.setState({
-                loading: false,
-                teachers: loadMore ? this.state.teachers.concat(data.list) : data.list,
-                currentPage: data.page,
-                totalPage: Math.ceil(data.total / data.perPage),
-            })
+            if (!loadMore) {
+                this.setState({
+                    loading: false,
+                    teachers: loadMore ? this.state.teachers.concat(data.list) : data.list,
+                    currentPage: data.page,
+                    totalPage: Math.ceil(data.total / data.perPage),
+                })
+            } else {
+                this.setState({
+                    teachers: loadMore ? this.state.teachers.concat(data.list) : data.list,
+                    currentPage: data.page,
+                    totalPage: Math.ceil(data.total / data.perPage),
+                })
+            }
+
         }, () => {
-            this.setState({
-                loading: false,
-            })
+            if (!loadMore) {
+                this.setState({
+                    loading: false,
+                })
+            }
         })
     }
 
     componentDidMount() {
         let catIds = this.props.params.cids;
+        let keyword = this.props.location.query.keyword || "";
         let floorCount = this.state.currentCat.length;
         let currentCat = new Array<CatBasic>(floorCount);
         let floorCat: CatSingleDataBasic;
@@ -336,13 +408,14 @@ export default class Search extends React.Component<SearchProps, SearchState> {
 
         this.setState({
             loading: true,
-            currentCat
+            currentCat,
+            keyword,
         });
         search({
             page: 1,
             pageSize: this.PageSize,
             catId: searchCat ? Number(searchCat.id) : 0,
-            keyword: this.props.location.query.keyword || "",
+            keyword,
         }).then(data => {
             this.setState({
                 loading: false,
@@ -361,7 +434,9 @@ export default class Search extends React.Component<SearchProps, SearchState> {
     render() {
         const navBarProps = {
             onFocus: this.handlerFocus.bind(this),
-            keyword: this.props.location.query.keyword,
+            keyword: this.state.keyword,
+            onSearchKeyword: this.onSearchKeyword.bind(this),
+            onSearchCat: this.onSearchCat.bind(this),
         };
         const filterProps = {
             visible: this.state.showSyntheticalFilter,
@@ -370,7 +445,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             currentFilterOptions: this.state.currentSyntheticalFilterOptions,
             onConfirmSyntheticalFilterOptions: this.onConfirmSyntheticalFilterOptions.bind(this),
             handlerLeaveAnimEnd: this.handlerSyntheticalFilterLeaveAnimEnd.bind(this),
-        }
+        };
         const filterBarProps = {
             orderByFavAscActive: this.state.orderByFavAscActive,
             orderByViewAscActive: this.state.orderByViewAscActive,
@@ -382,21 +457,26 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             onCloseAllFilter: this.onCloseAllFilter.bind(this),
             currentCat: this.state.currentCat,
             currentFilterOptions: this.state.currentSyntheticalFilterOptions,
-        }
+        };
         const nameListProps = {
             teachers: this.state.teachers,
             currentPage: this.state.currentPage,
             totalPage: this.state.totalPage,
             handlerLoadMore: this.getNameList.bind(this),
             loading: this.state.loading,
-        }
+        };
         const catsFilterProps = {
             visible: this.state.showCatsFilter,
             initCat: this.state.currentCat,
             onChooseCat: this.onChooseCat.bind(this),
             onCloseCatFilter: this.onCloseCatFilter.bind(this),
             handlerLeaveAnimEnd: this.handlerCatFilterLeaveAnimEnd.bind(this),
-        }
+        };
+        const loadingToastProps = {
+            tip: "加载中...",
+            iconClassName: "icon-loading",
+            isOpen: true,
+        };
 
         return (
             <div>
@@ -404,7 +484,12 @@ export default class Search extends React.Component<SearchProps, SearchState> {
                 <FilterBar { ...filterBarProps } />
                 <SyntheticalFilter { ...filterProps } />
                 <CatsFilter { ...catsFilterProps } />
-                <NameList { ...nameListProps } />
+
+                {
+                    this.state.loading ?
+                        <LoadingToast { ...loadingToastProps }/> :
+                        <NameList { ...nameListProps } />
+                }
             </div>
         )
     }

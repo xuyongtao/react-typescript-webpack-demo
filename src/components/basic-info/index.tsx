@@ -52,7 +52,7 @@ export default class BasicInfo extends React.Component<BasicInfoProps, any> {
                         { teachingAge ? <UserLabel classname="label-teaching-age" label={ teachingAge + "年教龄" } /> : null }
                         { certified ? <UserLabel classname="label-certified" label="机构认证" /> : null }
                     </div>
-                    <p>{ selfIntro }</p>
+                    <p>{ selfIntro || "暂未完善个人简介（找老师上全民教育网）" }</p>
                 </div>
             </Link>
         )
