@@ -33,21 +33,73 @@
     border-top: 1px solid @BORDER_COLOR;
     border-bottom: 1px solid @BORDER_COLOR;
     .title {
-        padding: 0 30/@REM;
+        position: relative;
+        padding: 0 30/@REM 0 90/@REM;
         line-height: 85/@REM;
         color: @MAIN_CONTENT_COLOR;
         border-bottom: 1px solid @BORDER_COLOR;
+        &:before {
+            position: absolute;
+            top: 50%;
+            left: 30/@REM;
+            margin-top: -20/@REM;
+            width: 40/@REM;
+            height: 40/@REM;
+            line-height: 40/@REM;
+            content: "\e651";
+            color: #f5613e;
+            font-family: "iconfont";
+            font-size: 30/@REM;
+            text-align: center;
+        }
     }
     h2 {
         font-size: 26/@REM;
     }
     li {
+        position: relative;
         margin: 0 30/@REM 0 90/@REM;
+        &:before {
+            position: absolute;
+            top: 40/@REM;
+            left: -40/@REM;
+            width: 1px;
+            height: 100%;
+            border-left: 1px dashed @BORDER_COLOR;
+            content: "";
+        }
+        &:first-child {
+            &:before {
+                border-left-color: #f5613e;
+            }
+            .case-time {
+                &:before {
+                    border-color: #f5613e;
+                }   
+            }
+        }
+        &:last-child {
+            &:before {
+                display: none;
+            }
+        }
         .case-time {
+            position: relative;
             margin-top: 20/@REM;
             line-height: 60/@REM;
             font-size: 26/@REM;
             color: @MAIN_CONTENT_COLOR;
+            &:before {
+                position: absolute;
+                top: 24/@REM;
+                left: -50/@REM;
+                content: "";
+                width: 20/@REM;
+                height: 20/@REM;
+                border: 2px solid @BORDER_COLOR;
+                border-radius: 10/@REM;
+                background-color: #fff;
+            }
         }
         .case-content {
             font-size: 24/@REM;

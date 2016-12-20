@@ -335,7 +335,17 @@ app.use('/apis/mobile/getStudioInfo/studioInfoIndex', function (req, res) {
                 title: "物理",
                 cover: localPublicPath + 'images/default-course-cover.png',
                 detail: "课程详情"
-            }],
+            }, {
+                    cid: 1,
+                    title: "物理",
+                    cover: localPublicPath + 'images/default-course-cover.png',
+                    detail: "课程详情"
+                }, {
+                    cid: 1,
+                    title: "物理",
+                    cover: localPublicPath + 'images/default-course-cover.png',
+                    detail: "课程详情"
+                }],
             teachers: [{
                 avatar: "http://qmin91.com/file/MxcgkDYS576f41617a4b9",
                 certified: true,
@@ -344,7 +354,31 @@ app.use('/apis/mobile/getStudioInfo/studioInfoIndex', function (req, res) {
                 role: 3,
                 selfIntro: "音乐是打开智慧之门的金钥匙，学习钢琴能陶冶情操，提高艺术修养，有助...",
                 teachingAge: 8
-            }],
+            }, {
+                    avatar: "http://qmin91.com/file/MxcgkDYS576f41617a4b9",
+                    certified: true,
+                    id: 1,
+                    name: "yota3",
+                    role: 3,
+                    selfIntro: "音乐是打开智慧之门的金钥匙，学习钢琴能陶冶情操，提高艺术修养，有助...",
+                    teachingAge: 8
+                }, {
+                    avatar: "http://qmin91.com/file/MxcgkDYS576f41617a4b9",
+                    certified: true,
+                    id: 1,
+                    name: "yota3",
+                    role: 3,
+                    selfIntro: "音乐是打开智慧之门的金钥匙，学习钢琴能陶冶情操，提高艺术修养，有助...",
+                    teachingAge: 8
+                }, {
+                    avatar: "http://qmin91.com/file/MxcgkDYS576f41617a4b9",
+                    certified: true,
+                    id: 1,
+                    name: "yota3",
+                    role: 3,
+                    selfIntro: "音乐是打开智慧之门的金钥匙，学习钢琴能陶冶情操，提高艺术修养，有助...",
+                    teachingAge: 8
+                }],
             intro: '全民教育致力于打造人人乐用的学习服务平台，聚焦本土优质师资，通过更高效、更智能、更精准地匹配师生资源，为老师及学生提供全而专的教育信息和增值服务，通过移动互联网，全力创建一个专业、高效、智能、安全的高品质教育信息平台，让教与学变得更便捷、平等、高效。',
         }
     });
@@ -367,7 +401,31 @@ app.use('/apis/mobile/getStudioInfo/teacherList', function (req, res) {
                 role: 3,
                 selfIntro: "音乐是打开智慧之门的金钥匙，学习钢琴能陶冶情操，提高艺术修养，有助...",
                 teachingAge: 8,
-            }]
+            }, {
+                    avatar: "http://qmin91.com/file/MxcgkDYS576f41617a4b9",
+                    certified: true,
+                    id: 1,
+                    name: "yota3",
+                    role: 3,
+                    selfIntro: "音乐是打开智慧之门的金钥匙，学习钢琴能陶冶情操，提高艺术修养，有助...",
+                    teachingAge: 8,
+                }, {
+                    avatar: "http://qmin91.com/file/MxcgkDYS576f41617a4b9",
+                    certified: true,
+                    id: 1,
+                    name: "yota3",
+                    role: 3,
+                    selfIntro: "音乐是打开智慧之门的金钥匙，学习钢琴能陶冶情操，提高艺术修养，有助...",
+                    teachingAge: 8,
+                }, {
+                    avatar: "http://qmin91.com/file/MxcgkDYS576f41617a4b9",
+                    certified: true,
+                    id: 1,
+                    name: "yota3",
+                    role: 3,
+                    selfIntro: "音乐是打开智慧之门的金钥匙，学习钢琴能陶冶情操，提高艺术修养，有助...",
+                    teachingAge: 8,
+                }]
 
         }
     })
