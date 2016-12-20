@@ -118,6 +118,7 @@ interface SearchBarState {
     highlightedItem?: number;
     searchTerm?: string;
     suggestions?: SuggestionBasic[];
+    activeSuggestion?: SuggestionBasic;
     value?: string;
     isFocused?: boolean;
 }
@@ -128,6 +129,7 @@ interface SearchBarProps {
     onChange(searchTerm: string, resolve: (value?: any | Thenable<any>) => void): void;
     onSearch?(suggestion: SuggestionBasic | string): void;
     onFocus?(): void;
+    onInput?(keyword: string): void;
     placeholder?: string;
     initValue?: string;
 }
@@ -140,6 +142,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         onChange: React.PropTypes.func.isRequired,
         onSearch: React.PropTypes.func,
         onFocus: React.PropTypes.func,
+        onInput: React.PropTypes.func,
         placeholder: React.PropTypes.string,
         initValue: React.PropTypes.string,
     };
@@ -156,6 +159,10 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
             highlightedItem: -1,
             searchTerm: "",
             suggestions: [],
+            activeSuggestion: {
+                label: "",
+                path: "",
+            },
             value: "",
         };
     }
@@ -202,7 +209,8 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
         this.setState({
             highlightedItem: nextItem,
-            value: suggestions[nextItem].label,
+            // value: suggestions[nextItem].label,
+            // activeSuggestion: suggestions[nextItem],
         });
     }
     search() {
@@ -218,9 +226,9 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         this.setState({ highlightedItem, suggestions });
 
         if (this.props.onSearch) {
-            const suggestion = Lodash.find(this.state.suggestions, { label: value }) as SuggestionBasic;
-
-            this.props.onSearch(suggestion || value);
+            // const suggestion = Lodash.find(this.state.suggestions, { label: value }) as SuggestionBasic;
+            // this.props.onSearch(suggestion || value);
+            this.props.onSearch(this.state.activeSuggestion.label ? this.state.activeSuggestion : value);
         }
     }
     onChange(e: FormEvent) {
@@ -253,11 +261,21 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         }
     }
     onSelection(suggestion: SuggestionBasic) {
-        this.setState({ value: suggestion.label }, () => this.search());
+        // this.setState({ value: suggestion.label }, () => this.search());
+        this.setState({
+            activeSuggestion: suggestion,
+        }, () => this.search());
     }
     onSearch(e: SyntheticEvent) {
         e.preventDefault();
-        this.search();
+        this.setState({
+            activeSuggestion: this.initialState.activeSuggestion,
+        }, () => this.search());
+    }
+    onClearInput() {
+        this.setState(this.initialState, () => {
+            this.props.onInput && this.props.onInput(this.initialState.value);
+        })
     }
     render() {
         /*eslint-disable quotes*/
@@ -294,7 +312,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
                     { this.state.value &&
                         <span
                             className="icon search-bar-clear"
-                            onClick={ () => this.setState(this.initialState) }>
+                            onClick={ this.onClearInput.bind(this) }>
                         </span> }
                     <span
                         className="icon search-bar-submit"
@@ -316,8 +334,9 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 interface NavBarWithSearchProps {
     keyword?: string;
     onFocus?(): void;
+    onInput?(keyword: string): void;
     onSearchKeyword?(keyword: string): void;
-    onSearchCat?(cat: CatBasic[]): void;
+    onSearchCat?(cat: CatBasic[], keyword: string): void;
 }
 interface NavBarWithSearchState {
 
@@ -334,6 +353,7 @@ export default class NavBarWithSearch extends React.Component<NavBarWithSearchPr
     }
 
     onChange(input: string, resolve: (value?: any | Thenable<any>) => void) {
+        this.props.onInput && this.props.onInput(input);
 
         getSuggestion(input)
             .then(res => {
@@ -368,14 +388,14 @@ export default class NavBarWithSearch extends React.Component<NavBarWithSearchPr
 
                 this.props.onSearchCat && this.props.onSearchCat([{
                     label: catLabels[0],
-                    id: catIds[0],
+                    id: Number(catIds[0]),
                 }, {
                         label: catLabels[1],
-                        id: catIds[1],
+                        id: Number(catIds[1]),
                     }, {
                         label: catLabels[2],
-                        id: catIds[2],
-                    }]);
+                        id: Number(catIds[2]),
+                    }], suggestion.label);
             } else {
                 browserHistory.push(suggestion.path);
             }
@@ -394,6 +414,7 @@ export default class NavBarWithSearch extends React.Component<NavBarWithSearchPr
                     onChange={ this.onChange.bind(this) }
                     onSearch={ this.onSearch.bind(this) }
                     onFocus={ this.props.onFocus.bind(this) }
+                    onInput= { this.props.onInput }
                     initValue={ this.props.keyword } />
             </div>
         );

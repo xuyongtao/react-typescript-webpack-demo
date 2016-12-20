@@ -144,18 +144,43 @@ export default class Search extends React.Component<SearchProps, SearchState> {
     constructor(props: SearchProps, context: SearchState) {
         super(props, context);
 
+        let catIds = this.props.params.cids;
+        let keyword = this.props.location.query.keyword || "";
+        let currentCat = new Array<CatBasic>(3);
+        let floorCat: CatSingleDataBasic;
+        let searchCat: CatBasic;
+
+        catIds && catIds.split("-").map((catId, index) => {
+            if (!index) {
+                floorCat = catsData[catId];
+            } else {
+                floorCat = floorCat.cats[catId];
+            }
+            if (!floorCat) {
+                throw new Error(`不存在${catId}对应的${index + 1}级科目，父级科目有：${currentCat.map((cat, index) => {
+                    return (index + 1) + "级：" + cat.label;
+                }).toString()}`);
+            }
+
+            currentCat[index] = {
+                id: Number(catId),
+                label: floorCat.label,
+            }
+            searchCat = currentCat[index];
+        })
+
         this.state = {
             teachers: [],
             showSyntheticalFilter: false,
             showCatsFilter: false,
-            currentCat: new Array<CatBasic>(3),
-            currentSyntheticalFilterOptions: new Array<number>(4),
+            currentCat,
+            currentSyntheticalFilterOptions: new Array<number>(3),
             orderByFavAscActive: false,
             orderByViewAscActive: false,
             currentPage: 0,
             totalPage: 0,
             loading: false,
-            keyword: "",
+            keyword,
         }
     }
 
@@ -200,25 +225,45 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             showCatsFilter: false,
             orderByFavAscActive: false,
             orderByViewAscActive: false,
-            currentSyntheticalFilterOptions: new Array<number>(4),
+            currentSyntheticalFilterOptions: new Array<number>(3),
         })
     }
 
     onSearchKeyword(keyword: string) {
         this.setState({
+            currentPage: 0,
             loading: true,
             currentCat: new Array<CatBasic>(3),
-            currentSyntheticalFilterOptions: new Array<number>(4),
+            currentSyntheticalFilterOptions: new Array<number>(3),
             showCatsFilter: false,
             showSyntheticalFilter: false,
             orderByFavAscActive: false,
             orderByViewAscActive: false,
             keyword,
+        })
+    }
+
+    onSearchCat(cat: CatBasic[], keyword: string) {
+        this.setState({
+            loading: true,
+            currentCat: cat,
+            currentSyntheticalFilterOptions: new Array<number>(3),
+            showCatsFilter: false,
+            showSyntheticalFilter: false,
+            orderByFavAscActive: false,
+            orderByViewAscActive: false,
+            // keyword,
         }, () => {
             search({
                 page: 1,
                 pageSize: this.PageSize,
-                keyword,
+                catId: cat[cat.length - 1] ? Number(cat[cat.length - 1].id) : 0,
+                keyword: this.state.keyword,
+                orderByFavCount: this.state.orderByFavAscActive,
+                orderByViewedCount: this.state.orderByViewAscActive,
+                teachingWay: 0,
+                teachingAge: 0,
+                role: 0,
             }).then(data => {
                 this.setState({
                     loading: false,
@@ -234,40 +279,15 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         })
     }
 
-    onSearchCat(cat: CatBasic[]) {
+    onInput(keyword: string) {
         this.setState({
-            loading: true,
-            currentCat: cat,
-            currentSyntheticalFilterOptions: new Array<number>(4),
-            showCatsFilter: false,
-            showSyntheticalFilter: false,
-            orderByFavAscActive: false,
-            orderByViewAscActive: false,
-            keyword: "",
-        }, () => {
-            search({
-                page: 1,
-                pageSize: this.PageSize,
-                catId: cat[cat.length - 1] ? Number(cat[cat.length - 1].id) : 0,
-            }).then(data => {
-                this.setState({
-                    loading: false,
-                    teachers: data.list,
-                    currentPage: data.page,
-                    totalPage: Math.ceil(data.total / data.perPage),
-                })
-            }, () => {
-                this.setState({
-                    loading: false,
-                })
-            })
+            keyword,
         })
     }
 
     handlerCatFilterLeaveAnimEnd() {
         this.getNameList({
             page: 1,
-            cat: this.state.currentCat
         });
     }
 
@@ -281,36 +301,28 @@ export default class Search extends React.Component<SearchProps, SearchState> {
     handlerSyntheticalFilterLeaveAnimEnd() {
         this.getNameList({
             page: 1,
-            cat: this.state.currentCat,
-            orderByFavAscActive: this.state.orderByFavAscActive,
-            orderByViewAscActive: this.state.orderByViewAscActive,
-            syntheticalFilterConditions: this.state.currentSyntheticalFilterOptions,
         });
     }
 
     onOrderByFavAscActive(active: boolean) {
         this.setState({
             orderByFavAscActive: active,
-        })
-        this.getNameList({
-            page: 1,
-            cat: this.state.currentCat,
-            orderByFavAscActive: active,
             orderByViewAscActive: false,
-            syntheticalFilterConditions: this.state.currentSyntheticalFilterOptions,
+        }, () => {
+            this.getNameList({
+                page: 1,
+            })
         })
     }
 
     onOrderByViewAscActive(active: boolean) {
         this.setState({
-            orderByViewAscActive: active,
-        })
-        this.getNameList({
-            page: 1,
-            cat: this.state.currentCat,
             orderByFavAscActive: false,
             orderByViewAscActive: active,
-            syntheticalFilterConditions: this.state.currentSyntheticalFilterOptions,
+        }, () => {
+            this.getNameList({
+                page: 1,
+            })
         })
     }
 
@@ -326,6 +338,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         orderByViewAscActive = this.state.orderByViewAscActive,
         syntheticalFilterConditions = this.state.currentSyntheticalFilterOptions,
         loadMore = false,
+        keyword = this.state.keyword,
     }: {
             page?: number;
             totalPage?: number;
@@ -334,6 +347,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             orderByViewAscActive?: boolean;
             syntheticalFilterConditions?: number[];
             loadMore?: boolean;
+            keyword?: string;
         }) {
         let catId = 0;
         cat.map(c => {
@@ -359,6 +373,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             teachingWay: syntheticalFilterConditions[0] || 0,
             teachingAge: syntheticalFilterConditions[1] || 0,
             role: syntheticalFilterConditions[2] || 0,
+            keyword,
         }).then(data => {
             if (!loadMore) {
                 this.setState({
@@ -385,49 +400,28 @@ export default class Search extends React.Component<SearchProps, SearchState> {
     }
 
     componentDidMount() {
-        let catIds = this.props.params.cids;
-        let keyword = this.props.location.query.keyword || "";
-        let floorCount = this.state.currentCat.length;
-        let currentCat = new Array<CatBasic>(floorCount);
-        let floorCat: CatSingleDataBasic;
         let searchCat: CatBasic;
 
-        catIds && catIds.split("-").map((catId, index) => {
-            if (!index) {
-                floorCat = catsData[catId];
-            } else {
-                floorCat = floorCat.cats[catId];
+        this.state.currentCat.map(cat => {
+            if (cat.id) {
+                searchCat = cat;
             }
-            if (!floorCat) {
-                throw new Error(`不存在${catId}对应的${index + 1}级科目，父级科目有：${currentCat.map((cat, index) => {
-                    return (index + 1) + "级：" + cat.label;
-                }).toString()}`);
-            }
-
-            currentCat[index] = {
-                id: catId,
-                label: floorCat.label,
-            }
-            searchCat = currentCat[index];
         })
 
         this.setState({
             loading: true,
-            currentCat,
-            keyword,
         }, () => {
             search({
                 page: 1,
                 pageSize: this.PageSize,
-                catId: searchCat ? Number(searchCat.id) : 0,
-                keyword,
+                catId: searchCat ? searchCat.id : 0,
+                keyword: this.state.keyword,
             }).then(data => {
                 this.setState({
                     loading: false,
                     teachers: data.list,
                     currentPage: data.page,
                     totalPage: Math.ceil(data.total / data.perPage),
-                    currentCat,
                 })
             }, () => {
                 this.setState({
@@ -443,6 +437,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             keyword: this.state.keyword || this.props.location.query.keyword,
             onSearchKeyword: this.onSearchKeyword.bind(this),
             onSearchCat: this.onSearchCat.bind(this),
+            onInput: this.onInput.bind(this),
         };
         const filterProps = {
             visible: this.state.showSyntheticalFilter,

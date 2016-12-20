@@ -10,18 +10,18 @@ import * as Lodash from "lodash";
 import FilterMask from "../filter-mask/index";
 
 interface CatBasicInfo {
-    id: string;
+    id: number;
     label: string;
 }
 
 interface CatBasic {
-    [key: string]: {
+    [key: number]: {
         label: string;
         cats: {
-            [key: string]: {
+            [key: number]: {
                 label: string;
                 cats: {
-                    [key: string]: {
+                    [key: number]: {
                         label: string;
                     }
                 }
@@ -64,17 +64,17 @@ class CatOption extends React.Component<CatOptionProp, any> {
 interface CatPannelProps {
     level1Cat: CatBasicInfo;
     cats: {
-        [key: string]: {
+        [key: number]: {
             label: string;
             cats: {
-                [key: string]: {
+                [key: number]: {
                     label: string;
                 }
             }
         }
     };
     initCat: CatBasicInfo[];
-    onChooseCat?(cats: CatBasicInfo[]): void;
+    onChooseCat(cats: CatBasicInfo[]): void;
 }
 class CatPannel extends React.Component<CatPannelProps, any> {
     static propTypes = {
@@ -107,14 +107,15 @@ class CatPannel extends React.Component<CatPannelProps, any> {
                                         id: Number(key),
                                         label: cat.label,
                                         onClick: this.onClickHandler.bind(this, {
-                                            id: pkey,
+                                            id: Number(pkey),
                                             label: pcat.label,
                                         }, {
-                                                id: key,
+                                                id: Number(key),
                                                 label: cat.label,
                                             }),
-                                        active: this.props.initCat[this.props.initCat.length - 1] && this.props.initCat[this.props.initCat.length - 1].id === key,
+                                        active: this.props.initCat[this.props.initCat.length - 1] && this.props.initCat[this.props.initCat.length - 1].id === Number(key),
                                     }
+
                                     return (
                                         <CatOption key={ key } { ...props } />
                                     )
@@ -136,14 +137,14 @@ interface Cats {
 interface CatsFilterProps {
     visible: boolean;
     initCat?: CatBasicInfo[];// 初始化最后一级的科目
-    onChooseCat?(cats: CatBasicInfo[]): void;
+    onChooseCat?(cats?: CatBasicInfo[]): void;
     onCloseCatFilter?(): void;
     handlerLeaveAnimEnd?(): void;
 }
 interface CatsFilterState {
     maskVisible?: boolean;
     currentLevel1Cat?: {
-        id: string;
+        id: number;
         label: string;
     };
 }
@@ -160,21 +161,23 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
 
     }
 
-    initState: any;
-
     constructor(props: CatsFilterProps, context: CatsFilterState) {
         super(props, context);
 
-        this.state = this.initState = {
+        this.state = {
             maskVisible: this.props.visible || false,
             currentLevel1Cat: {
-                id: this.props.initCat[0] ? this.props.initCat[0].id : "1",
+                id: this.props.initCat[0] ? this.props.initCat[0].id : 1,
                 label: this.props.initCat[0] ? this.props.initCat[0].label : "艺术",
             },
         }
     }
 
-    onClickHandler(id: string, label: string) {
+    componentDidMount() {
+
+    }
+
+    onClickHandler(id: number, label: string) {
         this.setState({
             currentLevel1Cat: { id, label },
         })
@@ -183,6 +186,7 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
     handlerAnimEnd({ key, type }: { key: string; type: string }) {
         this.setState({
             maskVisible: type === "enter",
+            currentLevel1Cat: this.props.initCat[0],
         })
         if (type === "leave" && this.props.handlerLeaveAnimEnd) {
             this.props.handlerLeaveAnimEnd();
@@ -190,16 +194,22 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
     }
 
     render() {
+        console.log("currentLevel1Cat: ", this.state.currentLevel1Cat);
+        console.log("this.props.initCat[0]: ", this.props.initCat[0]);
+
         let filterMaskProps = {
             classNames: ["cats-filter-mask"],
             handlerClose: this.props.onCloseCatFilter,
         };
-        let CatPannelsProps = {
-            level1Cat: this.state.currentLevel1Cat,
-            cats: catsData[this.state.currentLevel1Cat.id].cats,
+        let currentLevel1CatId = this.state.currentLevel1Cat ? this.state.currentLevel1Cat.id : (this.props.initCat[0] ? this.props.initCat[0].id : 1);
+
+        let catPannelsProps = {
+            level1Cat: this.state.currentLevel1Cat || this.props.initCat[0] || { id: currentLevel1CatId, label: catsData[currentLevel1CatId].label },
+            cats: catsData[currentLevel1CatId].cats,
             initCat: this.props.initCat,
             onChooseCat: this.props.onChooseCat,
         };
+
 
         return (
             <div className="cats-filter-wrapper">
@@ -221,12 +231,12 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
                                     { Lodash.map(catsData, (cat, key) => {
                                         return (
                                             <li key={ key } onClick={ this.onClickHandler.bind(this, key, cat.label) } className={classNames({
-                                                active: key == this.state.currentLevel1Cat.id || key == this.props.initCat[0].id
+                                                active: key == currentLevel1CatId
                                             }) }>{ cat.label }</li>
                                         )
                                     }) }
                                 </ul>
-                                <CatPannel { ...CatPannelsProps } />
+                                <CatPannel { ...catPannelsProps } />
                             </div> :
                             null
                     }

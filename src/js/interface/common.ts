@@ -1,6 +1,6 @@
 export interface CatBasic {
     label: string;
-    id: string;
+    id: number;
 }
 
 export interface BasicInfo {

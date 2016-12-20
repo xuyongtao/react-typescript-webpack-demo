@@ -37,7 +37,7 @@ class FilterCondition extends React.Component<FilterConditionProps, FilterCondit
     constructor(props: FilterConditionProps, context: FilterConditionState) {
         super(props, context);
         this.initState = {
-            choosedOid: 1,
+            choosedOid: 0,
         }
         this.state = {
             choosedOid: this.props.initOption || this.initState.choosedOid,

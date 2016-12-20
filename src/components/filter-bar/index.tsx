@@ -132,7 +132,7 @@ export default class FilterBar extends React.Component<FilterBarProps, FilterBar
                 }) }>查看优先</span></div>
                 <div onClick={ this.onShowSyntheticalFilter.bind(this) }><span className={classNames({
                     active: Lodash.some(this.props.currentFilterOptions, (optionId) => {
-                        return optionId > 1;
+                        return optionId > 0;
                     }),
                 }) }>筛选</span></div>
             </div>

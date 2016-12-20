@@ -96,57 +96,57 @@ export const syntheticalFilterConditions = [
         tid: 1,
         options: [{
             name: "不限",
-            oid: 1,
+            oid: 0,
         }, {
                 name: "在线教学",
-                oid: 2,
+                oid: 1,
             }, {
                 name: "老师上门",
-                oid: 3,
+                oid: 2,
             }, {
                 name: "学生上门",
-                oid: 4,
+                oid: 3,
             }, {
                 name: "协商地点",
-                oid: 5,
+                oid: 4,
             }]
     }, {
         type: "教龄",
         tid: 2,
         options: [{
             name: "不限",
-            oid: 1,
+            oid: 0,
         }, {
                 name: "1年",
-                oid: 2,
+                oid: 1,
             }, {
                 name: "2年",
-                oid: 3,
+                oid: 2,
             }, {
                 name: "3年",
-                oid: 4,
+                oid: 3,
             }, {
                 name: "4年",
-                oid: 5,
+                oid: 4,
             }]
     }, {
         type: "身份",
         tid: 3,
         options: [{
             name: "不限",
-            oid: 1,
+            oid: 0,
         }, {
                 name: "老师",
-                oid: 2,
+                oid: 1,
             }, {
                 name: "在校生",
-                oid: 3,
+                oid: 2,
             }, {
                 name: "机构",
-                oid: 4,
+                oid: 3,
             }, {
                 name: "其他",
-                oid: 5,
+                oid: 4,
             }]
     }];
 

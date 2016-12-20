@@ -484,41 +484,41 @@ app.use('/apis/mobile/getKeyWordInputList', function (req, res) {
         "data": {
             cats: [
                 {
-                    cat_id: 1,
+                    cat_id: 5,
                     cat_ids: "1-2-5",
-                    cat_labels: "高中-高一-数学",
+                    cat_labels: "艺术-器乐-古筝",
                 }, {
-                    cat_id: 1,
-                    cat_ids: "1-2-5",
-                    cat_labels: "高中-高二-数学",
+                    cat_id: 130,
+                    cat_ids: "128-129-130",
+                    cat_labels: "体育-运动-游泳",
                 }, {
-                    cat_id: 1,
-                    cat_ids: "1-2-5",
-                    cat_labels: "高中-高三-数学",
+                    cat_id: 187,
+                    cat_ids: "185-186-187",
+                    cat_labels: "生活-生活技能-化妆技巧",
                 }, {
-                    cat_id: 1,
-                    cat_ids: "1-2-5",
+                    cat_id: 216,
+                    cat_ids: "214-215-216",
+                    cat_labels: "出国-留学考试-托福",
+                }, {
+                    cat_id: 244,
+                    cat_ids: "242-243-244",
+                    cat_labels: "幼小-早教-益智",
+                }, {
+                    cat_id: 336,
+                    cat_ids: "334-335-336",
                     cat_labels: "初中-初一-数学",
                 }, {
-                    cat_id: 1,
-                    cat_ids: "1-2-5",
-                    cat_labels: "初中-初二-数学",
+                    cat_id: 458,
+                    cat_ids: "456-457-458",
+                    cat_labels: "大学-英语考级-四级",
                 }, {
-                    cat_id: 1,
-                    cat_ids: "1-2-5",
-                    cat_labels: "初中-初三-数学",
+                    cat_id: 405,
+                    cat_ids: "531-404-405",
+                    cat_labels: "高中-高一-数学",
                 }, {
-                    cat_id: 1,
-                    cat_ids: "1-2-5",
-                    cat_labels: "初中-初三-数学",
-                }, {
-                    cat_id: 1,
-                    cat_ids: "1-2-5",
-                    cat_labels: "初中-初三-数学",
-                }, {
-                    cat_id: 1,
-                    cat_ids: "1-2-5",
-                    cat_labels: "初中-初三-数学",
+                    cat_id: 522,
+                    cat_ids: "520-521-522",
+                    cat_labels: "其他-职业技能-网店运营",
                 }
             ],
             users: [
