@@ -13,7 +13,7 @@ var _hmt = _hmt || [];
             console.error('百度统计代码安装失败');
         };
 
-        hm.src = "//hm.baidu.com/hm.js?460e998a78fe70c2c54d2c3f41cc7466";
+        hm.src = "//hm.baidu.com/hm.js?c570243a99f2a83971ba06ac8db0fc72";
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
     }
