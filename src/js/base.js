@@ -1,5 +1,24 @@
 require('../css/base.less');
 
+var _hmt = _hmt || [];
+(function () {
+    if (/\.com|qmjy\.app/.test(location.host)) {
+        var hm = document.createElement("script");
+
+        hm.onload = function () {
+            console.info('baidu 统计代码已经安装');
+        };
+
+        hm.onerror = function () {
+            console.error('百度统计代码安装失败');
+        };
+
+        hm.src = "//hm.baidu.com/hm.js?460e998a78fe70c2c54d2c3f41cc7466";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    }
+})();
+
 var
     PAGE_MAX_WIDTH = 640,
     BASE_FONT_SIZE = 50

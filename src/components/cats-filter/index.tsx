@@ -194,9 +194,6 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
     }
 
     render() {
-        console.log("currentLevel1Cat: ", this.state.currentLevel1Cat);
-        console.log("this.props.initCat[0]: ", this.props.initCat[0]);
-
         let filterMaskProps = {
             classNames: ["cats-filter-mask"],
             handlerClose: this.props.onCloseCatFilter,
