@@ -151,9 +151,7 @@ export default class IndexPage extends React.Component<IndexPageProps, IndexPage
                                         <div className="title">
                                             <h2>机构介绍</h2>
                                         </div>
-                                        <div className="intro-cont">
-                                            { intro }
-                                        </div>
+                                        <div className="intro-cont" dangerouslySetInnerHTML={{ __html: intro }}></div>
                                     </div> :
                                     null
                                 }

@@ -126,7 +126,7 @@ export default class TeacherIntro extends React.Component<TeacherIntroProps, Tea
                             </li>
                             <li>
                                 <span>个人介绍</span>
-                                <div>{ intro || "暂未填写" }</div>
+                                <div dangerouslySetInnerHTML={{ __html: intro || "暂未填写" }}></div>
                             </li>
                         </ul>
                     </div>
