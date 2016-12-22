@@ -102,7 +102,7 @@ export function getCourseList({
         page: number;
         perPage?: number;
         role: number;
-    }): PromiseLike<ReceiveCourseListPost> {
+    }): Promise<ReceiveCourseListPost> {
     return store
         .dispatch(fetchCourseListPost(apis.getCourseList, { id, page, perPage, role }))
         .then(() => (store.getState() as stateBasic).courseList)

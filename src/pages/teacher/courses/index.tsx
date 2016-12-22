@@ -5,6 +5,8 @@ import { render } from "react-dom";
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { Link } from "react-router";
+import * as Notification from "rc-notification";
+const notification = Notification.newInstance();
 
 import CourseList from "../../../components/course-list/index";
 import LoadingToast from "../../../components/toast/index";
@@ -43,8 +45,6 @@ export default class TeacherCourseList extends React.Component<TeacherCourseList
     }
 
     handlerLoadMore() {
-        console.log('loading more...');
-
         this.setState({
             loadMore: true,
         })
@@ -58,20 +58,24 @@ export default class TeacherCourseList extends React.Component<TeacherCourseList
                 let data: ReceiveCourseListPost = res;
 
                 this.setState({
-                    loadMore: false,
                     courses: this.state.courses.concat(data.courses),
                     currentPage: data.page,
                     totalPage: Math.ceil(data.total / data.perPage),
                 })
-            }, () => {
+            })
+            .handle(() => {
                 this.setState({
                     loadMore: false,
                 })
             })
+            .fail((error: Error) => {
+                notification.notice({
+                    content: error.message || "请求课程数据失败",
+                });
+            })
     }
 
     componentDidMount() {
-        console.log(this.props.params.tid);
         if (!this.state.courses.length) {
             this.setState({
                 loading: true,
@@ -86,15 +90,20 @@ export default class TeacherCourseList extends React.Component<TeacherCourseList
                     let data: ReceiveCourseListPost = res;
 
                     this.setState({
-                        loading: false,
                         courses: data.courses,
                         currentPage: data.page,
                         totalPage: Math.ceil(data.total / data.perPage),
                     })
-                }, () => {
+                })
+                .handle(() => {
                     this.setState({
                         loading: false,
                     })
+                })
+                .fail((error: Error) => {
+                    notification.notice({
+                        content: error.message || "请求课程数据失败",
+                    });
                 })
         }
     }

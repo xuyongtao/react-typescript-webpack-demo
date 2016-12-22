@@ -10,6 +10,9 @@ import Carousel from "../../../components/carousel/index";
 import EmptyList from "../../../components/empty-list/index";
 import LoadingToast from "../../../components/toast/index";
 import IntroPanel from "../intro/index";
+import * as Notification from "rc-notification";
+const notification = Notification.newInstance();
+
 import { Role } from "../../../js/common/config";
 
 import { getStudioIndexPageInfo } from "../../../js/store/index";
@@ -51,16 +54,21 @@ export default class IndexPage extends React.Component<IndexPageProps, IndexPage
         getStudioIndexPageInfo(this.props.params.sid)
             .then(res => {
                 this.setState({
-                    loading: false,
                     banners: res.banners,
                     courses: res.courses,
                     teachers: res.teachers,
                     intro: res.intro,
                 })
-            }, () => {
+            })
+            .handle(() => {
                 this.setState({
                     loading: false,
                 })
+            })
+            .fail((error: Error) => {
+                notification.notice({
+                    content: error.message || "请求机构数据失败",
+                });
             })
     }
 

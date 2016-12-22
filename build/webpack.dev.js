@@ -191,12 +191,14 @@ app.use('/apis/mobile/getIndexRoleList', function (req, res) {
                     cid: 1000 + id,
                     name: '高一物理',
                     type: '1对1',
-                    floorPrice: '价格面议'
+                    floorPrice: '价格面议',
+                    priceUnit: 1,
                 }, {
                         cid: 2000 + id,
                         name: '高二物理',
                         type: '1对2',
-                        floorPrice: 130
+                        floorPrice: 130,
+                        priceUnit: 2,
                     }]
             })
         }
@@ -246,12 +248,14 @@ app.use('/apis/mobile/getSearchRoleList', function (req, res) {
                     cid: 1000 + id,
                     name: '高一物理',
                     type: '1对1',
-                    floorPrice: 120
+                    floorPrice: '价格面议',
+                    priceUnit: 1,
                 }, {
                         cid: 2000 + id,
                         name: '高二物理',
                         type: '1对2',
-                        floorPrice: 130
+                        floorPrice: 130,
+                        priceUnit: 2,
                     }]
             })
         }
@@ -300,12 +304,14 @@ app.use('/api/get-hot-teachers', function (req, res) {
                     cid: 1000 + tid,
                     name: '高一物理',
                     type: '1对1',
-                    floorPrice: 120
+                    floorPrice: '价格面议',
+                    priceUnit: 1,
                 }, {
-                        cid: 2000 + tid,
+                        cid: 2000 + id,
                         name: '高二物理',
                         type: '1对2',
-                        floorPrice: 130
+                        floorPrice: 130,
+                        priceUnit: 2,
                     }]
             })
         }
@@ -478,8 +484,8 @@ app.use('/apis/mobile/getStudioInfo/introInfo', function (req, res) {
 app.use('/apis/mobile/getTeacherInfo/introInfo', function (req, res) {
     return res.send({
         "meta": {
-            "code": 0,
-            "msg": ""
+            "code": 100,
+            "msg": "测试错误"
         },
         "data": {
             "id": 1,

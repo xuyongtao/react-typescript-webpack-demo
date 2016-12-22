@@ -38,10 +38,10 @@ export default class StudioIntro extends React.Component<StudioIntroProps, Studi
         getStudioIntro(Number(this.props.params.sid))
             .then(res => {
                 this.setState({
-                    loading: false,
                     intro: res.intro,
                 })
-            }, () => {
+            })
+            .handle(() => {
                 this.setState({
                     loading: false,
                 })

@@ -5,24 +5,25 @@ import { render } from "react-dom";
 import { Link } from "react-router";
 import UserLabel from "../user-label";
 
-import { defaultAvatar, Role } from "../../js/common/config";
+import { defaultAvatar, Role, PriceUnitId, PriceUnitMap } from "../../js/common/config";
 // interface
 import { RecommendListBasic } from "../../js/interface/common";
 
 interface ProfileBasic {
-    avatar?: string,
-    name: string,
-    selfIntro?: string,
-    certified: boolean,
-    starCount: number,
-    viewedCount: number,
-    teachingAge: number,
+    avatar?: string;
+    name: string;
+    selfIntro?: string;
+    certified: boolean;
+    starCount: number;
+    viewedCount: number;
+    teachingAge: number;
 }
 interface CourseBasic {
-    cid: number,
-    name: string,
-    type?: string,
-    floorPrice?: number | string,
+    cid: number;
+    name: string;
+    type?: string;
+    floorPrice?: number | string;
+    priceUnit?: number;
 }
 
 class Course extends React.Component<CourseBasic, any> {
@@ -31,19 +32,20 @@ class Course extends React.Component<CourseBasic, any> {
         name: React.PropTypes.string.isRequired,
         type: React.PropTypes.string,
         floorPrice: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
+        priceUnit: React.PropTypes.number,
     }
     constructor(props: CourseBasic, context: any) {
         super(props, context);
     }
 
     render() {
-        const { name, type, floorPrice } = this.props;
+        const { name, type, floorPrice, priceUnit } = this.props;
 
         return (
             <div className="course">
                 {
                     typeof floorPrice === "number" ?
-                        <span className="price"><strong>{ floorPrice }</strong>起/课时</span> :
+                        <span className="price"><strong>￥{ floorPrice }</strong>起/{ PriceUnitMap[priceUnit] || PriceUnitMap[PriceUnitId.hour]}</span> :
                         <span className="price">{ floorPrice }</span>
                 }
                 <span className="type">课程类型: { type }</span>

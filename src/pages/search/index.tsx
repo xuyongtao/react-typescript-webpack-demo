@@ -2,6 +2,7 @@ import "./index.less";
 
 import * as React from "react";
 import { render } from "react-dom";
+import { Promise } from "thenfail";
 
 import NavBarWithSearch from "../../components/search-bar/index";
 import FilterBar from "../../components/filter-bar/index";
@@ -11,6 +12,8 @@ import FilterMask from "../../components/filter-mask/index";
 import ProfileCard from "../../components/profile-card/index";
 import LoadingToast from "../../components/toast/index";
 import EmptyList from "../../components/empty-list/index";
+import * as Notification from "rc-notification";
+const notification = Notification.newInstance();
 
 import { CatBasic, RecommendListBasic } from '../../js/interface/common';
 import { search } from "../../js/store/index";
@@ -76,11 +79,11 @@ class NameList extends React.Component<NameListProps, NameListState> {
             .handlerLoadMore({
                 loadMore: true,
             })
-            .then(() => {
+            .handle(() => {
                 this.setState({
                     loadMore: false,
                 })
-            });
+            })
     }
 
     render() {
@@ -230,6 +233,8 @@ export default class Search extends React.Component<SearchProps, SearchState> {
     }
 
     onSearchKeyword(keyword: string) {
+        let showCatsFilter = this.state.showCatsFilter;
+
         this.setState({
             currentPage: 0,
             loading: true,
@@ -240,6 +245,12 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             orderByFavAscActive: false,
             orderByViewAscActive: false,
             keyword,
+        }, () => {
+            if (!showCatsFilter) {// 如已打开科目筛选面板，直接会调用动画后的回调函数handlerCatFilterLeaveAnimEnd
+                this.getNameList({
+                    page: 1,
+                })
+            }
         })
     }
 
@@ -252,29 +263,9 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             showSyntheticalFilter: false,
             orderByFavAscActive: false,
             orderByViewAscActive: false,
-            // keyword,
         }, () => {
-            search({
+            this.getNameList({
                 page: 1,
-                pageSize: this.PageSize,
-                catId: cat[cat.length - 1] ? Number(cat[cat.length - 1].id) : 0,
-                keyword: this.state.keyword,
-                orderByFavCount: this.state.orderByFavAscActive,
-                orderByViewedCount: this.state.orderByViewAscActive,
-                teachingWay: 0,
-                teachingAge: 0,
-                role: 0,
-            }).then(data => {
-                this.setState({
-                    loading: false,
-                    teachers: data.list,
-                    currentPage: data.page,
-                    totalPage: Math.ceil(data.total / data.perPage),
-                })
-            }, () => {
-                this.setState({
-                    loading: false,
-                })
             })
         })
     }
@@ -374,61 +365,41 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             teachingAge: syntheticalFilterConditions[1] || 0,
             role: syntheticalFilterConditions[2] || 0,
             keyword,
-        }).then(data => {
-            if (!loadMore) {
-                this.setState({
-                    loading: false,
-                    teachers: loadMore ? this.state.teachers.concat(data.list) : data.list,
-                    currentPage: data.page,
-                    totalPage: Math.ceil(data.total / data.perPage),
-                })
-            } else {
-                this.setState({
-                    teachers: loadMore ? this.state.teachers.concat(data.list) : data.list,
-                    currentPage: data.page,
-                    totalPage: Math.ceil(data.total / data.perPage),
-                })
-            }
-
-        }, () => {
-            if (!loadMore) {
-                this.setState({
-                    loading: false,
-                })
-            }
         })
+            .then(data => {
+                if (!loadMore) {
+                    this.setState({
+                        loading: false,
+                        teachers: loadMore ? this.state.teachers.concat(data.list) : data.list,
+                        currentPage: data.page,
+                        totalPage: Math.ceil(data.total / data.perPage),
+                    })
+                } else {
+                    this.setState({
+                        teachers: loadMore ? this.state.teachers.concat(data.list) : data.list,
+                        currentPage: data.page,
+                        totalPage: Math.ceil(data.total / data.perPage),
+                    })
+                }
+
+            })
+            .fail((error: Error) => {
+                if (!loadMore) {
+                    this.setState({
+                        loading: false,
+                    })
+                }
+
+                notification.notice({
+                    content: error.message || "请求数据失败",
+                });
+            })
     }
 
     componentDidMount() {
-        let searchCat: CatBasic;
-
-        this.state.currentCat.map(cat => {
-            if (cat.id) {
-                searchCat = cat;
-            }
+        this.getNameList({
+            page: 1,
         })
-
-        this.setState({
-            loading: true,
-        }, () => {
-            search({
-                page: 1,
-                pageSize: this.PageSize,
-                catId: searchCat ? searchCat.id : 0,
-                keyword: this.state.keyword,
-            }).then(data => {
-                this.setState({
-                    loading: false,
-                    teachers: data.list,
-                    currentPage: data.page,
-                    totalPage: Math.ceil(data.total / data.perPage),
-                })
-            }, () => {
-                this.setState({
-                    loading: false,
-                })
-            })
-        });
     }
 
     render() {

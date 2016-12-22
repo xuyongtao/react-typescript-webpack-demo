@@ -77,7 +77,8 @@ interface ProfileCardBasic {
         cid: number;
         name: string;
         type?: string;
-        floorPrice?: number;
+        floorPrice?: number | string;
+        priceUnit?: number;
     }[]
 }
 

@@ -10,6 +10,9 @@ import ProfileCard from "../../../components/profile-card/index";
 import { getRecommendList } from "../../../js/store/index";
 import { RecommendListBasic } from '../../../js/interface/common';
 
+import * as Notification from "rc-notification";
+const notification = Notification.newInstance();
+
 interface RecommendPannelState {
     loading?: boolean;
     loadingMore?: boolean;
@@ -45,24 +48,17 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
                         totalPage: Math.ceil(data.total / data.perPage),
                     })
                 }
-
+            })
+            .handle(() => {
                 this.setState({
-                    loadingMore: false
-                })
-            }, () => {
-                this.setState({
-                    loadingMore: false
+                    loadingMore: false,
                 })
             })
-
-    }
-
-    componentWillMount() {
-
-    }
-
-    componentWillUnmount() {
-
+            .fail((error: Error) => {
+                notification.notice({
+                    content: error.message || "请求数据失败",
+                });
+            })
     }
 
     componentDidMount() {
@@ -78,10 +74,16 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
                     totalPage: Math.ceil(data.total / data.perPage),
                     currentPage: data.page,
                 })
-            }, () => {
+            })
+            .handle(() => {
                 this.setState({
                     loading: false,
                 })
+            })
+            .fail((error: Error) => {
+                notification.notice({
+                    content: error.message || "请求数据失败",
+                });
             })
     }
 

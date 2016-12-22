@@ -6,6 +6,8 @@ import { render } from "react-dom";
 import BasicInfo from "../../../components/basic-info/index";
 import LoadingToast from "../../../components/toast/index";
 import EmptyList from "../../../components/empty-list/index";
+import * as Notification from "rc-notification";
+const notification = Notification.newInstance();
 
 import { Role } from "../../../js/common/config";
 import { getStudioTeacherList } from "../../../js/store/index";
@@ -57,15 +59,20 @@ export default class StudioTeacherList extends React.Component<StudioTeacherList
                 let data: ReceiveTeacherListPost = res;
 
                 this.setState({
-                    loadMore: false,
                     teachers: this.state.teachers.concat(data.teachers),
                     currentPage: data.page,
                     totalPage: Math.ceil(data.total / data.perPage),
                 })
-            }, () => {
+            })
+            .handle(() => {
                 this.setState({
                     loadMore: false,
                 })
+            })
+            .fail((error: Error) => {
+                notification.notice({
+                    content: error.message || "请求机构老师数据失败",
+                });
             })
     }
 
@@ -91,10 +98,16 @@ export default class StudioTeacherList extends React.Component<StudioTeacherList
                         currentPage: data.page,
                         totalPage: Math.ceil(data.total / data.perPage),
                     })
-                }, () => {
+                })
+                .handle(() => {
                     this.setState({
                         loading: false,
                     })
+                })
+                .fail((error: Error) => {
+                    notification.notice({
+                        content: error.message || "请求机构老师数据失败",
+                    });
                 })
         }
     }

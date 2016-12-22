@@ -8,7 +8,10 @@ import EmptyList from "../../../components/empty-list/index";
 import ProfileCard from "../../../components/profile-card/index";
 
 import { getHotList } from "../../../js/store/index";
-import { RecommendListBasic } from '../../../js/interface/common';
+import { RecommendListBasic, ReceiveHotListPost } from '../../../js/interface/common';
+
+import * as Notification from "rc-notification";
+const notification = Notification.newInstance();
 
 interface HotPannelState {
     loading?: boolean;
@@ -45,16 +48,17 @@ export default class HotPannel extends React.Component<any, HotPannelState> {
                         totalPage: Math.ceil(data.total / data.perPage),
                     })
                 }
-
-                this.setState({
-                    loadingMore: false
-                })
-            }, () => {
+            })
+            .handle(() => {
                 this.setState({
                     loadingMore: false
                 })
             })
-
+            .fail((error: Error) => {
+                notification.notice({
+                    content: error.message || "请求数据失败",
+                });
+            })
     }
 
     componentDidMount() {
@@ -70,10 +74,16 @@ export default class HotPannel extends React.Component<any, HotPannelState> {
                     totalPage: Math.ceil(data.total / data.perPage),
                     currentPage: data.page,
                 })
-            }, () => {
+            })
+            .handle(() => {
                 this.setState({
                     loading: false,
                 })
+            })
+            .fail((error: Error) => {
+                notification.notice({
+                    content: error.message || "请求数据失败",
+                });
             })
     }
 

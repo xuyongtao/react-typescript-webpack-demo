@@ -9,6 +9,8 @@ import { Link } from "react-router";
 import CourseList from "../../../components/course-list/index";
 import LoadingToast from "../../../components/toast/index";
 import EmptyList from "../../../components/empty-list/index";
+import * as Notification from "rc-notification";
+const notification = Notification.newInstance();
 // store
 import { getCourseList } from "../../../js/store/index";
 // interface
@@ -56,15 +58,20 @@ export default class StudioCourseList extends React.Component<StudioCourseListPr
                 let data: ReceiveCourseListPost = res;
 
                 this.setState({
-                    loadMore: false,
                     courses: this.state.courses.concat(data.courses),
                     currentPage: data.page,
                     totalPage: Math.ceil(data.total / data.perPage),
                 })
-            }, () => {
+            })
+            .handle(() => {
                 this.setState({
                     loadMore: false,
                 })
+            })
+            .fail((error: Error) => {
+                notification.notice({
+                    content: error.message || "请求机构课程数据失败",
+                });
             })
     }
 
@@ -84,15 +91,20 @@ export default class StudioCourseList extends React.Component<StudioCourseListPr
                     let data: ReceiveCourseListPost = res;
 
                     this.setState({
-                        loading: false,
                         courses: data.courses,
                         currentPage: data.page,
                         totalPage: Math.ceil(data.total / data.perPage),
                     })
-                }, () => {
+                })
+                .handle(() => {
                     this.setState({
                         loading: false,
                     })
+                })
+                .fail((error: Error) => {
+                    notification.notice({
+                        content: error.message || "请求机构课程数据失败",
+                    });
                 })
         }
     }

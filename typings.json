@@ -5,6 +5,7 @@
     "isomorphic-fetch": "registry:dt/isomorphic-fetch#0.0.0+20160830175641",
     "jquery": "registry:dt/jquery#1.10.0+20160704162008",
     "node-fetch": "registry:dt/node-fetch#0.0.0+20160711094047",
+    "query-string": "registry:dt/query-string#3.0.0+20161130005133",
     "react-addons-css-transition-group": "registry:dt/react-addons-css-transition-group#0.14.0+20160316155526",
     "react-addons-transition-group": "registry:dt/react-addons-transition-group#0.14.0+20160701001352",
     "react-modal": "registry:dt/react-modal#1.3.0+20161019124716",

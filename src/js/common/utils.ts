@@ -1,5 +1,6 @@
 import * as fetch from "isomorphic-fetch";
 import { Promise } from "thenfail";
+import * as qs from "query-string";
 
 interface Dictionary<T> {
     [key: string]: T
@@ -28,6 +29,13 @@ function request({
         url: string;
         data: DataType;
     }) {
+    if (method == "GET") {
+        let query = data && qs.stringify(data);
+        if (query) {
+            url = url + (url.indexOf('?') > -1 ? `&${query}` : `?${query}`);
+        }
+    }
+
     return Promise
         .resolve(fetch(url, {
             method: method.toLowerCase(),
@@ -37,10 +45,24 @@ function request({
                 "Content-Type": "application/json",
             }
         }))
-        .then(response => response.json())
-        .then((res): Response => {
+        .then(response => {
+            if (response.status > 400) {
+                console.log("Bad response from server, the response status code is " + response.status);
+
+                throw new Error("服务器错误");
+            } else {
+                return response.json();
+            }
+        })
+        .then((res): any => {
             if (res.meta && res.meta.code != 0) {
-                throw new ResponseError(res.meta.code, res.meta.msg);
+                console.log(res.meta.msg + ' error code is ' + res.meta.code);
+
+                throw new Error(res.meta.msg);
+            }
+
+            if (res.meta && res.meta.redirect) {
+                window.location.href = res.meta.redirect;
             }
 
             return res;
@@ -63,3 +85,17 @@ export const api = {
         })
     }
 }
+
+// function errorModal(message: string) {
+//     return new Promise((resolve, reject) => {
+//         notification.notice({
+//             content: message,
+//             onClose: () => {
+//                 resolve();
+//             }
+//         });
+//     })
+//         .then(() => {
+//             throw new Error(message);
+//         })
+// }

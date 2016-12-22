@@ -5,6 +5,9 @@ import { render } from "react-dom";
 import LoadingToast from "../../../components/toast/index";
 import { getTeacherIntro } from "../../../js/store/index";
 
+import * as Notification from "rc-notification";
+const notification = Notification.newInstance();
+
 interface teacherBasicInfo {
     name: string,
     selfIntro: string,
@@ -79,7 +82,6 @@ export default class TeacherIntro extends React.Component<TeacherIntroProps, Tea
         getTeacherIntro(Number(this.props.params.tid))
             .then(res => {
                 this.setState({
-                    loading: false,
                     seniority: res.seniority,
                     graduatedSchool: res.graduatedSchool,
                     role: res.role,
@@ -87,10 +89,16 @@ export default class TeacherIntro extends React.Component<TeacherIntroProps, Tea
                     intro: res.intro,
                     teachingCases: res.teachingCases,
                 })
-            }, () => {
+            })
+            .handle(() => {
                 this.setState({
                     loading: false,
                 })
+            })
+            .fail((error: Error) => {
+                notification.notice({
+                    content: error.message || "请求数据失败",
+                });
             })
     }
 
