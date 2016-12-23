@@ -6,12 +6,10 @@ import { render } from "react-dom";
 import LoadingToast from "../../../components/toast/index";
 import EmptyList from "../../../components/empty-list/index";
 import ProfileCard from "../../../components/profile-card/index";
+import Notification from "../../../components/notification";
 
 import { getRecommendList } from "../../../js/store/index";
 import { RecommendListBasic } from '../../../js/interface/common';
-
-import * as Notification from "rc-notification";
-const notification = Notification.newInstance();
 
 interface RecommendPannelState {
     loading?: boolean;
@@ -55,7 +53,7 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
                 })
             })
             .fail((error: Error) => {
-                notification.notice({
+                Notification.info({
                     content: error.message || "请求数据失败",
                 });
             })
@@ -81,7 +79,7 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
                 })
             })
             .fail((error: Error) => {
-                notification.notice({
+                Notification.info({
                     content: error.message || "请求数据失败",
                 });
             })

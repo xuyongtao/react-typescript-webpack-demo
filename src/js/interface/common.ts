@@ -163,6 +163,17 @@ export interface ReceiveBookingPost {
 
 }
 
+export interface RequestLookingPost {
+    mark: string;
+    name: string;
+    mobile: string;
+    location: string;
+    age: number;
+}
+export interface ReceiveLookingPost {
+
+}
+
 export interface RequestSuggestionPost {
     keyword: string;
 }

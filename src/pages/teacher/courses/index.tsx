@@ -5,8 +5,7 @@ import { render } from "react-dom";
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { Link } from "react-router";
-import * as Notification from "rc-notification";
-const notification = Notification.newInstance();
+import Notification from "../../../components/notification";
 
 import CourseList from "../../../components/course-list/index";
 import LoadingToast from "../../../components/toast/index";
@@ -69,7 +68,7 @@ export default class TeacherCourseList extends React.Component<TeacherCourseList
                 })
             })
             .fail((error: Error) => {
-                notification.notice({
+                Notification.info({
                     content: error.message || "请求课程数据失败",
                 });
             })
@@ -101,7 +100,7 @@ export default class TeacherCourseList extends React.Component<TeacherCourseList
                     })
                 })
                 .fail((error: Error) => {
-                    notification.notice({
+                    Notification.info({
                         content: error.message || "请求课程数据失败",
                     });
                 })

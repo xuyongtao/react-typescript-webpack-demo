@@ -6,22 +6,8 @@ import { render } from "react-dom";
 import { Link } from "react-router";
 
 import TabsBar from "../../components/tabs-bar";
+import Banner from "../../components/banner";
 import { catEntrances, indexRouters } from "../../js/common/config";
-
-class Banner extends React.Component<any, any> {
-    render() {
-        return (
-            <div id="banner">
-                <header>
-                    <Link to="/">
-                        <img src={ require("../../img/logo.png") } alt="全民教育网" className="logo"/>
-                    </Link>
-                </header>
-                <img src={ require("../../img/banner.png") } alt="找老师上全民教育" className="banner"/>
-            </div>
-        )
-    }
-}
 
 interface SearchBarProps {
     keyword?: string;
@@ -74,6 +60,18 @@ class CatEntrances extends React.Component<CatEntrancesProps, any> {
     }
 }
 
+class LookingEntrance extends React.Component<any, any> {
+    render() {
+        return (
+            <div id="looking-entrance">
+                <Link to="/looking">
+                    <p><b>帮我找老师</b><br/>课程顾问老师精心推荐，随时随地找好老师</p>
+                </Link>
+            </div>
+        )
+    }
+}
+
 interface AppIndxState {
     keyword?: string;
 }
@@ -110,6 +108,7 @@ export default class AppIndx extends React.Component<any, AppIndxState> {
                 <Banner />
                 <SearchBar { ...searchBarProps } />
                 <CatEntrances { ...catEntrancesProps } />
+                <LookingEntrance />
                 <TabsBar { ...tabsBarProps } />
                 { this.props.children }
             </div>

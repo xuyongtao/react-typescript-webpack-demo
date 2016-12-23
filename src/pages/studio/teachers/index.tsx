@@ -6,8 +6,7 @@ import { render } from "react-dom";
 import BasicInfo from "../../../components/basic-info/index";
 import LoadingToast from "../../../components/toast/index";
 import EmptyList from "../../../components/empty-list/index";
-import * as Notification from "rc-notification";
-const notification = Notification.newInstance();
+import Notification from "../../../components/notification";
 
 import { Role } from "../../../js/common/config";
 import { getStudioTeacherList } from "../../../js/store/index";
@@ -70,7 +69,7 @@ export default class StudioTeacherList extends React.Component<StudioTeacherList
                 })
             })
             .fail((error: Error) => {
-                notification.notice({
+                Notification.info({
                     content: error.message || "请求机构老师数据失败",
                 });
             })
@@ -105,7 +104,7 @@ export default class StudioTeacherList extends React.Component<StudioTeacherList
                     })
                 })
                 .fail((error: Error) => {
-                    notification.notice({
+                    Notification.info({
                         content: error.message || "请求机构老师数据失败",
                     });
                 })

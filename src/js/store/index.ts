@@ -52,6 +52,7 @@ import {
     fetchCourseDetail,
     postBooking,
     postSuggestion,
+    postLooking,
 } from "../actions/common";
 
 import {
@@ -230,4 +231,25 @@ export function getSuggestion(keyword: string): Promise<ReceiveSuggestionPost> {
             data: { keyword }
         }))
         .then(() => (store.getState() as stateBasic).suggestionResult);
+}
+
+export function looking({
+    mark,
+    name,
+    mobile,
+    location,
+    age,
+}: {
+        mark: string;
+        name: string;
+        mobile: string;
+        location: string;
+        age: number;
+    }): Promise<ReceiveBookingPost> {
+    return store
+        .dispatch(postLooking({
+            url: apis.booking,
+            data: { mark, name, mobile, location, age }
+        }))
+        .then(() => (store.getState() as stateBasic).bookingResult);
 }

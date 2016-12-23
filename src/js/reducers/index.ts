@@ -22,6 +22,8 @@ import {
     ReceiveBookingPost,
     RequestSuggestionPost,
     ReceiveSuggestionPost,
+    RequestLookingPost,
+    ReceiveLookingPost,
 } from "../interface/common";
 
 import {
@@ -43,6 +45,8 @@ import {
     RECEIVE_BOOKING_POST,
     REQUEST_SUGGESTION_POST,
     RECEIVE_SUGGESTION_POST,
+    REQUEST_LOOKING_POST,
+    RECEIVE_LOOKING_POST,
 } from "../actions/common";
 
 import {
@@ -422,6 +426,32 @@ function postBooking(state = {
     }
 }
 
+function postLooking(state = {
+    isFetching: false,
+}, action: {
+    type: string;
+    requestData?: RequestLookingPost;
+    responseData?: ReceiveLookingPost;
+}) {
+    switch (action.type) {
+        case REQUEST_LOOKING_POST:
+            return Lodash.assign({}, state, {
+                isFetching: true,
+                mark: action.requestData.mark,
+                name: action.requestData.name,
+                mobile: action.requestData.mobile,
+                location: action.requestData.location,
+                age: action.requestData.age,
+            })
+        case RECEIVE_LOOKING_POST:
+            return Lodash.assign({}, state, {
+                isFetching: false,
+            })
+        default:
+            return state;
+    }
+}
+
 function postSuggestion(state = {
     isFetching: false,
 }, action: {
@@ -460,6 +490,7 @@ const reducers = combineReducers({
     bookingResult: postBooking,
     teacherIntro: postTeacherIntro,
     suggestionResult: postSuggestion,
+    lookingResult: postLooking,
 })
 
 export default reducers;  

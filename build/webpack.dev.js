@@ -600,6 +600,15 @@ app.use('/apis/mobile/getKeyWordInputList', function (req, res) {
     })
 })
 
+app.use('/apis/mobile/looking', function (req, res) {
+    return res.send({
+        "meta": {
+            "code": 0,
+            "msg": "成功"
+        }
+    })
+})
+
 app.listen(PORT, HOST, function () {
     console.log(localPublicPath);
 });

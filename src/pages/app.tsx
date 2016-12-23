@@ -23,6 +23,7 @@ import StudioCourses from "./studio/courses/index";
 import StudioTeachers from "./studio/teachers/index";
 import StudioPhotos from "./studio/photos/index";
 import CourseDetail from "./common/course-detail/index";
+import BookingForm from "./booking-form/index";
 import NotFound from "./common/404/index";
 import Test from "./common/test/index";
 
@@ -49,6 +50,7 @@ render((
             <Route path="/course/:cid" component={ CourseDetail }></Route>
 
             <Route path="/test" component={ Test }></Route>
+            <Route path="/looking" component={ BookingForm }></Route>
             <Route path="*" component={ NotFound }></Route>
         </Router>
     </Provider>

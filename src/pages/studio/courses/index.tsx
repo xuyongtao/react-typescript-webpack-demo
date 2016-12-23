@@ -9,8 +9,7 @@ import { Link } from "react-router";
 import CourseList from "../../../components/course-list/index";
 import LoadingToast from "../../../components/toast/index";
 import EmptyList from "../../../components/empty-list/index";
-import * as Notification from "rc-notification";
-const notification = Notification.newInstance();
+import Notification from "../../../components/notification";
 // store
 import { getCourseList } from "../../../js/store/index";
 // interface
@@ -69,7 +68,7 @@ export default class StudioCourseList extends React.Component<StudioCourseListPr
                 })
             })
             .fail((error: Error) => {
-                notification.notice({
+                Notification.info({
                     content: error.message || "请求机构课程数据失败",
                 });
             })
@@ -102,7 +101,7 @@ export default class StudioCourseList extends React.Component<StudioCourseListPr
                     })
                 })
                 .fail((error: Error) => {
-                    notification.notice({
+                    Notification.info({
                         content: error.message || "请求机构课程数据失败",
                     });
                 })

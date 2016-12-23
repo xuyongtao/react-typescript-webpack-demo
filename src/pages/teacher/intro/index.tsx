@@ -4,9 +4,7 @@ import { render } from "react-dom";
 
 import LoadingToast from "../../../components/toast/index";
 import { getTeacherIntro } from "../../../js/store/index";
-
-import * as Notification from "rc-notification";
-const notification = Notification.newInstance();
+import Notification from "../../../components/notification";
 
 interface teacherBasicInfo {
     name: string,
@@ -96,7 +94,7 @@ export default class TeacherIntro extends React.Component<TeacherIntroProps, Tea
                 })
             })
             .fail((error: Error) => {
-                notification.notice({
+                Notification.info({
                     content: error.message || "请求数据失败",
                 });
             })

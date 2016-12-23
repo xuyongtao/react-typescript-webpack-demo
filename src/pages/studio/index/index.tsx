@@ -10,8 +10,7 @@ import Carousel from "../../../components/carousel/index";
 import EmptyList from "../../../components/empty-list/index";
 import LoadingToast from "../../../components/toast/index";
 import IntroPanel from "../intro/index";
-import * as Notification from "rc-notification";
-const notification = Notification.newInstance();
+import Notification from "../../../components/notification";
 
 import { Role } from "../../../js/common/config";
 
@@ -66,7 +65,7 @@ export default class IndexPage extends React.Component<IndexPageProps, IndexPage
                 })
             })
             .fail((error: Error) => {
-                notification.notice({
+                Notification.info({
                     content: error.message || "请求机构数据失败",
                 });
             })

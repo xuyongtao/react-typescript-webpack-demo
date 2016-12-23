@@ -12,8 +12,7 @@ import FilterMask from "../../components/filter-mask/index";
 import ProfileCard from "../../components/profile-card/index";
 import LoadingToast from "../../components/toast/index";
 import EmptyList from "../../components/empty-list/index";
-import * as Notification from "rc-notification";
-const notification = Notification.newInstance();
+import Notification from "../../components/notification";
 
 import { CatBasic, RecommendListBasic } from '../../js/interface/common';
 import { search } from "../../js/store/index";
@@ -390,7 +389,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
                     })
                 }
 
-                notification.notice({
+                Notification.info({
                     content: error.message || "请求数据失败",
                 });
             })
