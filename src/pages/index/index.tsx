@@ -108,7 +108,6 @@ export default class AppIndx extends React.Component<any, AppIndxState> {
                 <Banner />
                 <SearchBar { ...searchBarProps } />
                 <CatEntrances { ...catEntrancesProps } />
-                <LookingEntrance />
                 <TabsBar { ...tabsBarProps } />
                 { this.props.children }
             </div>

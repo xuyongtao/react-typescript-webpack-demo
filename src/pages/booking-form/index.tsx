@@ -118,7 +118,7 @@ export default class BookingForm extends React.Component<any, BookingFormState> 
             <div id="booking-form-page">
                 <Banner />
                 <form id="booking-form">
-                    <p>马上填写您的找老师需求<br/>为您推荐的机构或者老师在<b>24小时</b>内联系你</p>
+                    <p>马上填写您的找老师需求 为您推荐的机构或者老师在<b>24小时</b>内联系你</p>
 
                     <input className={ classnames({ "error": !this.state.courseAvailable }) } ref="course" type="text" placeholder="您想学什么（例如：初二物理、钢琴等）"/>
                     <input className={ classnames({ "error": !this.state.nameAvailable }) } ref="name" type="text" placeholder="您的姓名"/>
