@@ -88,7 +88,7 @@ export default class BookingForm extends React.Component<any, BookingFormState> 
                     name: nameNode.value.trim(),
                     mobile: mobileNode.value.trim(),
                     location: addressNode.value.trim(),
-                    age: ageNode.value.trim(),
+                    age: parseInt(ageNode.value.trim()),
                 })
                     .then(() => {
                         Notification.info({
