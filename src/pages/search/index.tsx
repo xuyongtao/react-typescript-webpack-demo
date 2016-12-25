@@ -4,6 +4,7 @@ import * as React from "react";
 import { render } from "react-dom";
 import { Promise } from "thenfail";
 import * as Swipeable from "react-swipeable";
+import * as ClassNames from "classnames";
 
 import NavBarWithSearch from "../../components/search-bar/index";
 import FilterBar from "../../components/filter-bar/index";
@@ -49,6 +50,8 @@ interface NameListProps {
     currentPage: number;
     totalPage: number;
     handlerLoadMore?(options: any): Promise<void>;
+    handlerSwipedUp?(): void;
+    handlerSwipedDown?(): void;
 }
 interface NameListState {
     loadMore: boolean;
@@ -59,6 +62,8 @@ class NameList extends React.Component<NameListProps, NameListState> {
         currentPage: React.PropTypes.number.isRequired,
         totalPage: React.PropTypes.number.isRequired,
         handlerLoadMore: React.PropTypes.func.isRequired,
+        handlerSwipedUp: React.PropTypes.func,
+        handlerSwipedDown: React.PropTypes.func,
     }
 
     constructor(props: NameListProps, context: NameListState) {
@@ -87,17 +92,16 @@ class NameList extends React.Component<NameListProps, NameListState> {
     }
 
     handlerSwipedUp(e: TouchEvent, delta: number) {
+        this.props.handlerSwipedUp && this.props.handlerSwipedUp();
         if (this.props.currentPage >= this.props.totalPage) return;
 
         if (this.state.loadMore) return;
         if (document.body.scrollTop < document.body.clientHeight - window.screen.height * 2) return;
-        console.log("scrollTop: ", document.body.scrollTop);
-        console.log("dealHeight: ", document.body.clientHeight - window.screen.height * 2);
         this.loadMore();
     }
 
     handlerSwipedDown(e: TouchEvent, delta: number) {
-
+        this.props.handlerSwipedDown && this.props.handlerSwipedDown();
     }
 
     render() {
@@ -154,6 +158,7 @@ interface SearchState {
     totalPage?: number;
     loading?: boolean;
     keyword?: string;
+    fixed?: boolean;
 }
 
 export default class Search extends React.Component<SearchProps, SearchState> {
@@ -198,6 +203,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             totalPage: 0,
             loading: false,
             keyword,
+            fixed: false,
         }
     }
 
@@ -335,6 +341,18 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         this.onCloseAllFilter();
     }
 
+    handlerSwipedUp() {
+        this.setState({
+            fixed: false,
+        })
+    }
+
+    handlerSwipedDown() {
+        this.setState({
+            fixed: true,
+        })
+    }
+
     getNameList({
         page = this.state.currentPage + 1,
         totalPage = this.state.totalPage,
@@ -450,6 +468,8 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             totalPage: this.state.totalPage,
             handlerLoadMore: this.getNameList.bind(this),
             loading: this.state.loading,
+            handlerSwipedUp: this.handlerSwipedUp.bind(this),
+            handlerSwipedDown: this.handlerSwipedDown.bind(this),
         };
         const catsFilterProps = {
             visible: this.state.showCatsFilter,
@@ -465,7 +485,9 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         };
 
         return (
-            <div>
+            <div id="search-page" className={ClassNames({
+                fixed: this.state.fixed,
+            }) }>
                 <NavBarWithSearch { ...navBarProps } />
                 <FilterBar { ...filterBarProps } />
                 <SyntheticalFilter { ...filterProps } />

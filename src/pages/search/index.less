@@ -5,6 +5,41 @@
 @NAV_SEARCH_BAR_ZINDEX : @FILTER_BAR_ZINDEX + 1;
 @SYNTHETICAL_FILTER_WRAPPER_ZINDEX : @NAV_SEARCH_BAR_ZINDEX + 1; 
 
+
+@-webkit-keyframes slidedown {
+    0% {
+        -webkit-transform: translateY(-84px)
+    }
+
+    100% {
+        -webkit-transform: translateY(0)
+    }
+}
+
+#search-page {
+    &.fixed {
+        margin-top: @NAV_BAR_HEIGHT + @FILTE_RBAR_HEIGHT;
+        .nav-search-bar,
+        .filter-bar,
+        .cats-filter-wrapper {
+            position: fixed;
+        }
+        .nav-search-bar {
+            top: 0;
+            -webkit-animation-name: slidedown;
+            -webkit-animation-duration: 0.3s
+        }
+        .filter-bar {
+            top: @NAV_BAR_HEIGHT;
+            -webkit-animation-name: slidedown;
+            -webkit-animation-duration: 0.3s
+        }
+        .cats-filter-wrapper {
+            top: @NAV_BAR_HEIGHT + @FILTE_RBAR_HEIGHT;
+        }
+    }
+}
+
 .name-list {
     margin-top: -1px; 
     .end-line {
