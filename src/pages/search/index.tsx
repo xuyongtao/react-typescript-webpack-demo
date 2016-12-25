@@ -69,9 +69,6 @@ class NameList extends React.Component<NameListProps, NameListState> {
         }
     }
 
-    private delta = 0;
-    private screenHeight = window.screen.height;
-
     loadMore() {
         this.setState({
             loadMore: true,
@@ -92,34 +89,22 @@ class NameList extends React.Component<NameListProps, NameListState> {
     handlerSwipedUp(e: TouchEvent, delta: number) {
         if (this.props.currentPage >= this.props.totalPage) return;
 
-        this.delta += delta;
-        console.log("swipedUp: ", this.delta);
-
         if (this.state.loadMore) return;
-        if (this.delta < document.body.clientHeight - this.screenHeight * (this.props.currentPage + 1)) return;
+        if (document.body.scrollTop < document.body.clientHeight - window.screen.height * 2) return;
+        console.log("scrollTop: ", document.body.scrollTop);
+        console.log("dealHeight: ", document.body.clientHeight - window.screen.height * 2);
         this.loadMore();
     }
 
     handlerSwipedDown(e: TouchEvent, delta: number) {
-        if (this.delta <= 0 || (this.delta + delta <= 0)) {
-            this.delta = 0;
-        } else {
-            this.delta += delta;
-        }
-        console.log("swipedDown: ", this.delta);
+
     }
 
     render() {
         const { teachers, currentPage, totalPage } = this.props;
         const { loadMore } = this.state;
-        const loadingToastProps = {
-            tip: "加载中...",
-            iconClassName: "icon-loading",
-            isOpen: loadMore,
-        };
 
         return (
-
             <Swipeable
                 onSwipedUp={ this.handlerSwipedUp.bind(this) }
                 onSwipedDown={ this.handlerSwipedDown.bind(this) }
@@ -127,7 +112,6 @@ class NameList extends React.Component<NameListProps, NameListState> {
                 stopPropagation={ true }
                 delta={ 1 }
                 >
-                <LoadingToast { ...loadingToastProps }/>
 
                 {
                     teachers.length ?
@@ -137,7 +121,7 @@ class NameList extends React.Component<NameListProps, NameListState> {
                                     <ProfileCard { ...teacher } key={ index } />
                                 )
                             }) }
-                            { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loadMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.loadMore.bind(this) }>点击加载更多</div>) }
+                            { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loadMore || true ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : null) }
                         </div> :
                         <EmptyList tip="暂无匹配的机构和老师" />
                 }
