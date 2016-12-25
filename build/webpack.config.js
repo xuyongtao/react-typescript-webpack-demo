@@ -35,6 +35,7 @@ var config = {
         path: DIST_PATH,// 绝对路径
         filename: "[name].js"
     },
+    devtool: "source-map",
     resolve: {
         extensions: ["", ".jsx", ".ts", ".tsx", ".js", ".less"],
         alias: {
@@ -68,6 +69,12 @@ var config = {
                     "file?name=images/[name].[ext]",
                     // "image-webpack?{optimizationLevel: 7, interlaced: false, pngquant:{quality: '65-90', speed: 4}, mozjpeg: {quality: 65}}"
                 ]
+            }
+        ],
+        preloaders: [
+            {
+                test: /\.js$/,
+                loaders: ["source-map"]
             }
         ]
     },

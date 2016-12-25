@@ -3,6 +3,7 @@ import "./index.less";
 import * as React from "react";
 import { render } from "react-dom";
 import { Promise } from "thenfail";
+import * as Swipeable from "react-swipeable";
 
 import NavBarWithSearch from "../../components/search-bar/index";
 import FilterBar from "../../components/filter-bar/index";
@@ -68,6 +69,9 @@ class NameList extends React.Component<NameListProps, NameListState> {
         }
     }
 
+    private delta = 0;
+    private screenHeight = window.screen.height;
+
     loadMore() {
         this.setState({
             loadMore: true,
@@ -85,6 +89,26 @@ class NameList extends React.Component<NameListProps, NameListState> {
             })
     }
 
+    handlerSwipedUp(e: TouchEvent, delta: number) {
+        if (this.props.currentPage >= this.props.totalPage) return;
+
+        this.delta += delta;
+        console.log("swipedUp: ", this.delta);
+
+        if (this.state.loadMore) return;
+        if (this.delta < document.body.clientHeight - this.screenHeight * (this.props.currentPage + 1)) return;
+        this.loadMore();
+    }
+
+    handlerSwipedDown(e: TouchEvent, delta: number) {
+        if (this.delta <= 0 || (this.delta + delta <= 0)) {
+            this.delta = 0;
+        } else {
+            this.delta += delta;
+        }
+        console.log("swipedDown: ", this.delta);
+    }
+
     render() {
         const { teachers, currentPage, totalPage } = this.props;
         const { loadMore } = this.state;
@@ -95,7 +119,14 @@ class NameList extends React.Component<NameListProps, NameListState> {
         };
 
         return (
-            <div>
+
+            <Swipeable
+                onSwipedUp={ this.handlerSwipedUp.bind(this) }
+                onSwipedDown={ this.handlerSwipedDown.bind(this) }
+                preventDefaultTouchmoveEvent={ false }
+                stopPropagation={ true }
+                delta={ 1 }
+                >
                 <LoadingToast { ...loadingToastProps }/>
 
                 {
@@ -110,7 +141,7 @@ class NameList extends React.Component<NameListProps, NameListState> {
                         </div> :
                         <EmptyList tip="暂无匹配的机构和老师" />
                 }
-            </div>
+            </Swipeable>
         )
     }
 }
