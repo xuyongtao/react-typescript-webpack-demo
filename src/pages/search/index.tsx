@@ -50,8 +50,7 @@ interface NameListProps {
     currentPage: number;
     totalPage: number;
     handlerLoadMore?(options: any): Promise<void>;
-    handlerSwipedUp?(): void;
-    handlerSwipedDown?(): void;
+    handlerChangeFixedState?(fixed: boolean): void;
 }
 interface NameListState {
     loadMore: boolean;
@@ -62,8 +61,7 @@ class NameList extends React.Component<NameListProps, NameListState> {
         currentPage: React.PropTypes.number.isRequired,
         totalPage: React.PropTypes.number.isRequired,
         handlerLoadMore: React.PropTypes.func.isRequired,
-        handlerSwipedUp: React.PropTypes.func,
-        handlerSwipedDown: React.PropTypes.func,
+        handlerChangeFixedState: React.PropTypes.func,
     }
 
     constructor(props: NameListProps, context: NameListState) {
@@ -92,7 +90,7 @@ class NameList extends React.Component<NameListProps, NameListState> {
     }
 
     handlerSwipedUp(e: TouchEvent, delta: number) {
-        this.props.handlerSwipedUp && this.props.handlerSwipedUp();
+        this.props.handlerChangeFixedState && this.props.handlerChangeFixedState(false);
         if (this.props.currentPage >= this.props.totalPage) return;
 
         if (this.state.loadMore) return;
@@ -101,7 +99,13 @@ class NameList extends React.Component<NameListProps, NameListState> {
     }
 
     handlerSwipedDown(e: TouchEvent, delta: number) {
-        this.props.handlerSwipedDown && this.props.handlerSwipedDown();
+        if (this.props.handlerChangeFixedState) {
+            if (document.body.scrollTop > window.screen.height) {
+                this.props.handlerChangeFixedState(true);
+            } else {
+                this.props.handlerChangeFixedState(false);
+            }
+        }
     }
 
     render() {
@@ -341,15 +345,9 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         this.onCloseAllFilter();
     }
 
-    handlerSwipedUp() {
+    handlerChangeFixedState(fixed: boolean) {
         this.setState({
-            fixed: false,
-        })
-    }
-
-    handlerSwipedDown() {
-        this.setState({
-            fixed: true,
+            fixed,
         })
     }
 
@@ -468,8 +466,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             totalPage: this.state.totalPage,
             handlerLoadMore: this.getNameList.bind(this),
             loading: this.state.loading,
-            handlerSwipedUp: this.handlerSwipedUp.bind(this),
-            handlerSwipedDown: this.handlerSwipedDown.bind(this),
+            handlerChangeFixedState: this.handlerChangeFixedState.bind(this),
         };
         const catsFilterProps = {
             visible: this.state.showCatsFilter,
