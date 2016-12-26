@@ -87,6 +87,11 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
     handlerActivityModalGo(link: string) {
         store.set("nasi-activity-vote", true);
 
+        let hmt = (window as any)._hmt;
+        if (hmt) {
+            hmt.push(["_trackEvent", "入口", "点击", "移动端纳斯投票活动入口"]);
+        }
+
         location.href = link;
     }
 
