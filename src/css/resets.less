@@ -18,6 +18,10 @@ html {
   box-sizing: border-box;
 }
 
+* {
+  -webkit-tap-highlight-color:rgba(0,0,0,0)
+}
+
 html {
   // `rem` based on the `font-size` of html
   //   font-size: @rem-base;
@@ -272,6 +276,11 @@ html [type=button],
   display: none;
 }
 
-input[type="text"],textarea {
+input[type="text"],
+textarea {
   -webkit-appearance: none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-appearance: none;
+  border: 0;
+  border-radius: 0;
 }

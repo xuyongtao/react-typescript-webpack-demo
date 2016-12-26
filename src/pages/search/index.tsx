@@ -118,7 +118,6 @@ class NameList extends React.Component<NameListProps, NameListState> {
                 onSwipedDown={ this.handlerSwipedDown.bind(this) }
                 preventDefaultTouchmoveEvent={ false }
                 stopPropagation={ true }
-                delta={ 1 }
                 >
 
                 {
@@ -129,7 +128,7 @@ class NameList extends React.Component<NameListProps, NameListState> {
                                     <ProfileCard { ...teacher } key={ index } />
                                 )
                             }) }
-                            { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loadMore || true ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : null) }
+                            { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loadMore ? <div className="load-more"><i className="iconfont iconloading"></i>正在加载</div> : null) }
                         </div> :
                         <EmptyList tip="暂无匹配的机构和老师" />
                 }

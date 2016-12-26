@@ -2,6 +2,7 @@ import "./index.less";
 
 import * as React from "react";
 import { render } from "react-dom";
+import * as Swipeable from "react-swipeable";
 
 import LoadingToast from "../../../components/toast/index";
 import EmptyList from "../../../components/empty-list/index";
@@ -59,6 +60,14 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
             })
     }
 
+    handlerSwipedUp() {
+        if (this.state.currentPage >= this.state.totalPage) return;
+        if (this.state.loadingMore) return;
+        if (document.body.scrollTop < document.body.clientHeight - window.screen.height * 2) return;
+
+        this.loadMore();
+    }
+
     componentDidMount() {
         this.setState({
             loading: true,
@@ -90,7 +99,7 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
         const loadingToastProps = {
             tip: "加载中...",
             iconClassName: "icon-loading",
-            isOpen: this.state.loading || this.state.loadingMore,
+            isOpen: this.state.loading,
         };
 
         if (loading) {
@@ -99,9 +108,11 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
             )
         } else {
             return (
-                <div>
-                    <LoadingToast { ...loadingToastProps }/>
-
+                <Swipeable
+                    onSwipedUp={ this.handlerSwipedUp.bind(this) }
+                    preventDefaultTouchmoveEvent={ false }
+                    stopPropagation={ true }
+                    >
                     {
                         list.length ?
                             <div className="recommend-list">
@@ -111,11 +122,11 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
                                         <ProfileCard { ...teacher } key={ index } />
                                     )
                                 }) }
-                                { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loadingMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.loadMore.bind(this) }>点击加载更多</div>) }
+                                { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loadingMore ? <div className="load-more"><i className="iconfont iconloading"></i>正在加载</div> : null) }
                             </div> :
                             <EmptyList tip="暂无推荐的机构和老师" />
                     }
-                </div>
+                </Swipeable>
             )
         }
     }
