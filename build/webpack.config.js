@@ -35,7 +35,7 @@ var config = {
         path: DIST_PATH,// 绝对路径
         filename: "[name].js"
     },
-    devtool: "source-map",
+    // devtool: "source-map",
     resolve: {
         extensions: ["", ".jsx", ".ts", ".tsx", ".js", ".less"],
         alias: {
@@ -71,12 +71,12 @@ var config = {
                 ]
             }
         ],
-        preloaders: [
-            {
-                test: /\.js$/,
-                loaders: ["source-map"]
-            }
-        ]
+        // preloaders: [
+        //     {
+        //         test: /\.js$/,
+        //         loaders: ["source-map"]
+        //     }
+        // ]
     },
     plugins: [
         new webpack.optimize.CommonsChunkPlugin("lib", "lib.bundle.js"),
