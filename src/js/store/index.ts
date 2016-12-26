@@ -248,7 +248,7 @@ export function looking({
     }): Promise<ReceiveBookingPost> {
     return store
         .dispatch(postLooking({
-            url: apis.booking,
+            url: apis.looking,
             data: { mark, name, mobile, location, age }
         }))
         .then(() => (store.getState() as stateBasic).bookingResult);
