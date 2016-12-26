@@ -122,7 +122,7 @@ export default class HotPannel extends React.Component<any, HotPannelState> {
                                         <ProfileCard { ...teacher } key={ index } />
                                     )
                                 }) }
-                                { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loadingMore ? <div className="load-more"><i className="iconfont iconloading"></i>正在加载</div> : null) }
+                                { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loadingMore ? <div className="load-more"><i className="iconfont iconloading"></i>正在加载...</div> : null) }
                             </div> :
                             <EmptyList tip="暂无热门的机构和老师" />
                     }

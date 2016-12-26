@@ -7,7 +7,7 @@ import { Link } from "react-router";
 
 import TabsBar from "../../components/tabs-bar";
 import Banner from "../../components/banner";
-import { catEntrances, indexRouters } from "../../js/common/config";
+import { catEntrances, indexRouters, ModalOverlayBackgroundColor } from "../../js/common/config";
 
 interface SearchBarProps {
     keyword?: string;
@@ -97,10 +97,11 @@ export default class AppIndx extends React.Component<any, AppIndxState> {
         let searchBarProps = {
             keyword: this.state.keyword,
             onInput: this.onInput.bind(this),
-        }
+        };
         let tabsBarProps = {
             tabs: indexRouters,
-        }
+        };
+
         let catEntrancesProps = { catEntrances }
 
         return (

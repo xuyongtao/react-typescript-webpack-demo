@@ -128,4 +128,3 @@ export default class ProfileCard extends React.Component<ProfileCardProps, any> 
         )
     }
 }
-

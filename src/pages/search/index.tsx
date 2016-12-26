@@ -128,7 +128,7 @@ class NameList extends React.Component<NameListProps, NameListState> {
                                     <ProfileCard { ...teacher } key={ index } />
                                 )
                             }) }
-                            { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loadMore ? <div className="load-more"><i className="iconfont iconloading"></i>正在加载</div> : null) }
+                            { currentPage == totalPage ? <div className="end-line">贤师都被你一览无余了</div> : (loadMore ? <div className="load-more"><i className="iconfont iconloading"></i>正在加载...</div> : null) }
                         </div> :
                         <EmptyList tip="暂无匹配的机构和老师" />
                 }
@@ -498,6 +498,3 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         )
     }
 }
-
-
-

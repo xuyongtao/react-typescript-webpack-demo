@@ -11,6 +11,7 @@
 /// <reference path="globals/react-swipeable/index.d.ts" />
 /// <reference path="globals/react/index.d.ts" />
 /// <reference path="globals/require/index.d.ts" />
+/// <reference path="globals/storejs/index.d.ts" />
 /// <reference path="globals/swiper/index.d.ts" />
 /// <reference path="modules/lodash/index.d.ts" />
 /// <reference path="modules/nuka-carousel/index.d.ts" />

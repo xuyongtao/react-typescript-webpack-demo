@@ -13,6 +13,7 @@
     "react-swipeable": "registry:dt/react-swipeable#3.3.1+20161121205806",
     "react-swipeable-views": "registry:dt/react-swipeable-views#0.0.0+20160314195531",
     "require": "registry:dt/require#2.1.20+20160919185614",
+    "storejs": "registry:dt/storejs#1.3.0+20161215021256",
     "swiper": "registry:dt/swiper#2.0.0+20160906134205",
     "zepto": "registry:dt/zepto#1.0.0+20160316155526"
   },

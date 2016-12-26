@@ -1,0 +1,56 @@
+@import '../../css/variable.less';
+
+#activity-modal {
+    @btn-close-size: 40/@REM;
+    @i-size: @btn-close-size*1.5;
+    @img-width: 640/@REM*0.9;
+    @img-height: 475/@REM*0.9;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    div.content {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        margin-top: -@img-height/2;
+        margin-left: -@img-width/2;
+    }
+    div.mask {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+    i {
+        position: absolute;
+        left: -@i-size/2;
+        top: -@i-size/2;
+        font-family: "iconfont";
+        font-size: @i-size;
+        width: @i-size;
+        height: @i-size;
+        line-height: @i-size;
+        text-align: center;
+        color: #fff;
+        font-style: normal;
+    }
+    img {
+        display: block;
+        width: @img-width;
+        height: @img-height;
+    }
+    p {
+        margin-top: -60/@REM;
+        color: #fff;
+        font-size: 30/@REM;
+        text-align: center;
+        line-height: 40/@REM;
+        
+    }
+}
