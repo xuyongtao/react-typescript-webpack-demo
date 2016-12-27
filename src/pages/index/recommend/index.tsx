@@ -4,7 +4,6 @@ import * as React from "react";
 import { render } from "react-dom";
 import { Link } from "react-router";
 import * as Swipeable from "react-swipeable";
-import * as QueueAnim from "rc-queue-anim";
 import * as store from "store";
 
 import LoadingToast from "../../../components/toast/index";
@@ -12,6 +11,7 @@ import EmptyList from "../../../components/empty-list/index";
 import ProfileCard from "../../../components/profile-card/index";
 import Notification from "../../../components/notification";
 import ActivityModal from "../../../components/index-activity-modal";
+import BackToTop from "../../../components/back-to-top";
 
 import { getRecommendList } from "../../../js/store/index";
 import { RecommendListBasic } from '../../../js/interface/common';
@@ -23,6 +23,7 @@ interface RecommendPannelState {
     currentPage?: number;
     totalPage?: number;
     showActivityModal?: boolean;
+    showBackToTop?: boolean;
 }
 export default class RecommendPannel extends React.Component<any, RecommendPannelState> {
     constructor(props: any, context: any) {
@@ -35,6 +36,7 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
             currentPage: 0,
             totalPage: 1,
             showActivityModal: false,
+            showBackToTop: false,
         }
 
     }
@@ -69,6 +71,12 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
     }
 
     handlerSwipedUp() {
+        if (document.body.scrollTop > window.screen.height) {
+            this.setState({
+                showBackToTop: true,
+            })
+        }
+
         if (this.state.currentPage >= this.state.totalPage) return;
         if (this.state.loadingMore) return;
         if (document.body.scrollTop < document.body.clientHeight - window.screen.height * 2) return;
@@ -76,7 +84,20 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
         this.loadMore();
     }
 
+    handlerSwipedDown() {
+        if (document.body.scrollTop < window.screen.height) {
+            this.setState({
+                showBackToTop: false,
+            })
+        }
+    }
+
     handlerCloseActivityModal() {
+        let hmt = (window as any)._hmt;
+        if (hmt) {
+            hmt.push(["_trackEvent", "入口", "点击关闭", "移动端纳斯投票活动入口"]);
+        }
+
         this.setState({
             showActivityModal: false,
         }, () => {
@@ -131,20 +152,28 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
     }
 
     render() {
-        const { loading, loadingMore, list, currentPage, totalPage } = this.state;
+        const { loading, loadingMore, list, currentPage, totalPage, showActivityModal, showBackToTop } = this.state;
         const loadingToastProps = {
             tip: "加载中...",
             iconClassName: "icon-loading",
-            isOpen: this.state.loading,
+            isOpen: loading,
         };
         const activityModalProps = {
-            visible: this.state.showActivityModal,
+            visible: showActivityModal,
             handlerClose: this.handlerCloseActivityModal.bind(this),
             handlerActivityModalGo: this.handlerActivityModalGo.bind(this, "http://qmin91.com/mobile/activities/vote/42"),
             image: {
                 ele: this.preloadActivityImage,
                 alt: "“纳斯杯”动漫日语配音大赛拉开序幕",
             },
+        };
+        const backToTopProps = {
+            showed: showBackToTop,
+            handlerBackToTop: () => {
+                this.setState({
+                    showBackToTop: false,
+                })
+            }
         };
 
         if (loading) {
@@ -157,6 +186,7 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
                     <ActivityModal { ...activityModalProps }/>
                     <Swipeable
                         onSwipedUp={ this.handlerSwipedUp.bind(this) }
+                        onSwipedDown={ this.handlerSwipedDown.bind(this) }
                         preventDefaultTouchmoveEvent={ false }
                         stopPropagation={ true }
                         >
@@ -174,6 +204,7 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
                                 <EmptyList tip="暂无推荐的机构和老师" />
                         }
                     </Swipeable>
+                    <BackToTop { ...backToTopProps } />
                 </div>
             )
         }

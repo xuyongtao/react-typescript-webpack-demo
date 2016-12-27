@@ -15,6 +15,31 @@
         "node_modules"
     ],
     "files": [
-        "./typings/index.d.ts"
+        "./typings/index.d.ts",
+        "./typings/globals/classnames/index.d.ts",
+        "./typings/globals/es6-promise/index.d.ts",
+        "./typings/globals/isomorphic-fetch/index.d.ts",
+        "./typings/globals/node-fetch/index.d.ts",
+        "./typings/globals/query-string/index.d.ts",
+        "./typings/globals/react/index.d.ts",
+        "./typings/globals/react-addons-css-transition-group/index.d.ts",
+        "./typings/globals/react-addons-transition-group/index.d.ts",
+        "./typings/globals/react-dom/index.d.ts",
+        "./typings/globals/react-modal/index.d.ts",
+        "./typings/globals/react-swipeable/index.d.ts",
+        "./typings/globals/react-swipeable-views/index.d.ts",
+        "./typings/globals/react/index.d.ts",
+        "./typings/globals/require/index.d.ts",
+        "./typings/globals/storejs/index.d.ts",
+        "./typings/globals/swiper/index.d.ts",
+        "./typings/modules/lodash/index.d.ts",
+        "./typings/modules/nuka-carousel/index.d.ts",
+        "./typings/modules/rc-queue-anim/index.d.ts",
+        "./typings/modules/react-lazyload/index.d.ts",
+        "./typings/modules/react-notification/index.d.ts",
+        "./typings/modules/react-redux/index.d.ts",
+        "./typings/modules/react-router/index.d.ts",
+        "./typings/modules/react-swipeable-views-auto-play/index.d.ts",
+        "./typings/modules/redux-thunk/index.d.ts"
     ]
 }

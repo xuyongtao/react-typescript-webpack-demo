@@ -1,6 +1,7 @@
 import "./index.less";
 
 import * as React from "react";
+import { render } from "react-dom";
 import { Link } from "react-router";
 
 export default class Banner extends React.Component<any, any> {
