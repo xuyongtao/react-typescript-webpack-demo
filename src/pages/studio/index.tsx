@@ -16,16 +16,24 @@ import { BasicInfo as StudioBasicInfo } from "../../js/interface/common";
 
 interface StudioIndexProps {
     params: {
-        sid: number;
+        sid: string;
     }
 }
 
-export default class StudioIndex extends React.Component<StudioIndexProps, any> {
-    constructor(props: StudioIndexProps, context: any) {
+interface StudioIndexState {
+    id?: number;
+    role?: number;
+    name?: string;
+    avatar?: string;
+    selfIntro?: string;
+}
+
+export default class StudioIndex extends React.Component<StudioIndexProps, StudioIndexState> {
+    constructor(props: StudioIndexProps, context: StudioIndexState) {
         super(props, context);
 
         this.state = {
-            id: 0,
+            id: Number(this.props.params.sid),
             role: Role.studio,
             name: "未设置机构名称",
             avatar: defaultAvatar,
@@ -38,7 +46,7 @@ export default class StudioIndex extends React.Component<StudioIndexProps, any> 
     componentDidMount() {
         // 获取机构基本信息请求
 
-        getBasicInfo(this.props.params.sid, Role.studio)
+        getBasicInfo(Number(this.props.params.sid), Role.studio)
             .then(res => {
                 this.setState({
                     id: res.id,
@@ -51,7 +59,7 @@ export default class StudioIndex extends React.Component<StudioIndexProps, any> 
     }
 
     render() {
-        const sid: number = this.props.params.sid;
+        const sid: number = Number(this.props.params.sid);
         const navBarProps = {
             pageTitle: "机构主页",
             pathToJump: `/studio/${sid}`,
