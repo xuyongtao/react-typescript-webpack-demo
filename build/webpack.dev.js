@@ -519,7 +519,7 @@ app.use('/apis/mobile/getCourseInfo/detail', function (req, res) {
         "data": {
             id: 1,
             title: "钢琴一对一私教",
-            cover: "http://192.168.2.55:8080/images/default-course-cover.png",
+            cover: "http://127.0.0.1:8080/images/default-course-cover.png",
             cont: "钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教钢琴一对一私教",
             prices: {
                 unit: "学期",

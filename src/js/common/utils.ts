@@ -1,5 +1,5 @@
 import * as fetch from "isomorphic-fetch";
-import { Promise } from "thenfail";
+import { Promise as Promise1 } from "thenfail";
 import * as qs from "query-string";
 
 interface Dictionary<T> {
@@ -28,7 +28,7 @@ function request({
         method?: string;
         url: string;
         data: DataType;
-    }) {
+    }): Promise<any> {
     if (method == "GET") {
         let query = data && qs.stringify(data);
         if (query) {
@@ -36,24 +36,15 @@ function request({
         }
     }
 
-    return Promise
-        .resolve(fetch(url, {
-            method: method.toLowerCase(),
-            body: JSON.stringify(data),
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-            }
-        }))
-        .then(response => {
-            if (response.status > 400) {
-                console.log("Bad response from server, the response status code is " + response.status);
-
-                throw new Error("服务器错误");
-            } else {
-                return response.json();
-            }
-        })
+    return fetch(url, {
+        method: method.toLowerCase(),
+        body: JSON.stringify(data),
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        }
+    })
+        .then(response => response.json())
         .then((res): any => {
             if (res.meta && res.meta.code != 0) {
                 console.log(res.meta.msg + ' error code is ' + res.meta.code);
@@ -67,35 +58,25 @@ function request({
 
             return res;
         })
+        .catch(() => {
+            throw new Error("网络或服务器错误");
+        })
 }
 
 export const api = {
     get: (url: string, data?: DataType) => {
-        return request({
+        return Promise1.resolve(request({
             method: "GET",
             url,
             data
-        });
+        }))
+
     },
     post: (url: string, data?: DataType) => {
-        return request({
+        return Promise1.resolve(request({
             method: "POST",
             url,
             data
-        })
+        }))
     }
 }
-
-// function errorModal(message: string) {
-//     return new Promise((resolve, reject) => {
-//         notification.notice({
-//             content: message,
-//             onClose: () => {
-//                 resolve();
-//             }
-//         });
-//     })
-//         .then(() => {
-//             throw new Error(message);
-//         })
-// }
