@@ -46,7 +46,14 @@ function request({
             "Content-Type": "application/json",
         }
     })
-        .then(response => response.json())
+        .then(response => {
+            return Promise
+                .resolve(response.json())
+                .catch(() => {
+                    throw new Error("网络或服务器错误");
+                }) as Promise<any>;
+            ;
+        })
         .then((res): any => {
             if (res.meta && res.meta.code != 0) {
                 console.log(res.meta.msg + ' error code is ' + res.meta.code);
@@ -72,10 +79,6 @@ export const api = {
                 data
             }))
             .fail((error: Error) => {
-                if (error.name === "SyntaxError" && error.message === "Unexpected end of JSON input") {
-                    error.message = "网络或服务器错误";
-                }
-
                 Notification.info({
                     content: error.message || "请求数据失败",
                 });
@@ -90,10 +93,6 @@ export const api = {
                 data
             }))
             .fail((error: Error) => {
-                if (error.name === "SyntaxError" && error.message === "Unexpected end of JSON input") {
-                    error.message = "网络或服务器错误";
-                }
-
                 Notification.info({
                     content: error.message || "请求数据失败",
                 });
