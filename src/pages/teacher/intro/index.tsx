@@ -4,7 +4,6 @@ import { render } from "react-dom";
 
 import LoadingToast from "../../../components/toast/index";
 import { getTeacherIntro } from "../../../js/store/index";
-import Notification from "../../../components/notification";
 
 interface teacherBasicInfo {
     name: string,
@@ -92,11 +91,6 @@ export default class TeacherIntro extends React.Component<TeacherIntroProps, Tea
                 this.setState({
                     loading: false,
                 })
-            })
-            .fail((error: Error) => {
-                Notification.info({
-                    content: error.message || "请求数据失败",
-                });
             })
     }
 

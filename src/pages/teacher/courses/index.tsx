@@ -5,7 +5,6 @@ import { render } from "react-dom";
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { Link } from "react-router";
-import Notification from "../../../components/notification";
 
 import CourseList from "../../../components/course-list/index";
 import LoadingToast from "../../../components/toast/index";
@@ -67,11 +66,6 @@ export default class TeacherCourseList extends React.Component<TeacherCourseList
                     loadMore: false,
                 })
             })
-            .fail((error: Error) => {
-                Notification.info({
-                    content: error.message || "请求课程数据失败",
-                });
-            })
     }
 
     componentDidMount() {
@@ -98,11 +92,6 @@ export default class TeacherCourseList extends React.Component<TeacherCourseList
                     this.setState({
                         loading: false,
                     })
-                })
-                .fail((error: Error) => {
-                    Notification.info({
-                        content: error.message || "请求课程数据失败",
-                    });
                 })
         }
     }

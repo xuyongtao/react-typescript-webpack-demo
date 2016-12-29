@@ -2,6 +2,8 @@ import * as fetch from "isomorphic-fetch";
 import { Promise as Promise1 } from "thenfail";
 import * as qs from "query-string";
 
+import Notification from "../../components/notification";
+
 interface Dictionary<T> {
     [key: string]: T
 }
@@ -58,25 +60,43 @@ function request({
 
             return res;
         })
-        .catch(() => {
-            throw new Error("网络或服务器错误");
-        })
 }
 
 export const api = {
     get: (url: string, data?: DataType) => {
-        return Promise1.resolve(request({
-            method: "GET",
-            url,
-            data
-        }))
 
+        return Promise1
+            .resolve(request({
+                method: "GET",
+                url,
+                data
+            }))
+            .fail((error: Error) => {
+                if (error.name === "SyntaxError" && error.message === "Unexpected end of JSON input") {
+                    error.message = "网络或服务器错误";
+                }
+
+                Notification.info({
+                    content: error.message || "请求数据失败",
+                });
+            })
     },
     post: (url: string, data?: DataType) => {
-        return Promise1.resolve(request({
-            method: "POST",
-            url,
-            data
-        }))
+
+        return Promise1
+            .resolve(request({
+                method: "POST",
+                url,
+                data
+            }))
+            .fail((error: Error) => {
+                if (error.name === "SyntaxError" && error.message === "Unexpected end of JSON input") {
+                    error.message = "网络或服务器错误";
+                }
+
+                Notification.info({
+                    content: error.message || "请求数据失败",
+                });
+            })
     }
 }

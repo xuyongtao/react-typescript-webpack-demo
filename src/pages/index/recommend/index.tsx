@@ -9,7 +9,6 @@ import * as store from "store";
 import LoadingToast from "../../../components/toast/index";
 import EmptyList from "../../../components/empty-list/index";
 import ProfileCard from "../../../components/profile-card/index";
-import Notification from "../../../components/notification";
 import ActivityModal from "../../../components/index-activity-modal";
 import BackToTop from "../../../components/back-to-top";
 
@@ -62,11 +61,6 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
                 this.setState({
                     loadingMore: false,
                 })
-            })
-            .fail((error: Error) => {
-                Notification.info({
-                    content: error.message || "请求数据失败",
-                });
             })
     }
 
@@ -143,11 +137,6 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
                     loading: false,
                     showActivityModal: !activityModalHadShowed,
                 })
-            })
-            .fail((error: Error) => {
-                Notification.info({
-                    content: error.message || "请求数据失败",
-                });
             })
     }
 

@@ -7,7 +7,6 @@ import * as Swipeable from "react-swipeable";
 import LoadingToast from "../../../components/toast/index";
 import EmptyList from "../../../components/empty-list/index";
 import ProfileCard from "../../../components/profile-card/index";
-import Notification from "../../../components/notification";
 import BackToTop from "../../../components/back-to-top";
 
 import { getHotList } from "../../../js/store/index";
@@ -56,11 +55,6 @@ export default class HotPannel extends React.Component<any, HotPannelState> {
                     loadingMore: false
                 })
             })
-            .fail((error: Error) => {
-                Notification.info({
-                    content: error.message || "请求数据失败",
-                });
-            })
     }
 
     handlerSwipedUp() {
@@ -103,11 +97,6 @@ export default class HotPannel extends React.Component<any, HotPannelState> {
                 this.setState({
                     loading: false,
                 })
-            })
-            .fail((error: Error) => {
-                Notification.info({
-                    content: error.message || "请求数据失败",
-                });
             })
     }
 

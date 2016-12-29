@@ -9,7 +9,6 @@ import { Link } from "react-router";
 import CourseList from "../../../components/course-list/index";
 import LoadingToast from "../../../components/toast/index";
 import EmptyList from "../../../components/empty-list/index";
-import Notification from "../../../components/notification";
 // store
 import { getCourseList } from "../../../js/store/index";
 // interface
@@ -67,11 +66,6 @@ export default class StudioCourseList extends React.Component<StudioCourseListPr
                     loadMore: false,
                 })
             })
-            .fail((error: Error) => {
-                Notification.info({
-                    content: error.message || "请求机构课程数据失败",
-                });
-            })
     }
 
     componentDidMount() {
@@ -99,11 +93,6 @@ export default class StudioCourseList extends React.Component<StudioCourseListPr
                     this.setState({
                         loading: false,
                     })
-                })
-                .fail((error: Error) => {
-                    Notification.info({
-                        content: error.message || "请求机构课程数据失败",
-                    });
                 })
         }
     }

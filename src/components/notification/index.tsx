@@ -56,6 +56,7 @@ function notice({
             instance.removeNotice(target);
         };
     } ();
+
 }
 
 interface Message {
@@ -78,6 +79,14 @@ export default {
             content,
             duration,
             type: "success",
+            onClose,
+        })
+    },
+    loading: function loading({ content, duration, onClose }: Message) {
+        return notice({
+            content,
+            duration,
+            type: "loading",
             onClose,
         })
     },

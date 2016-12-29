@@ -8,7 +8,6 @@ import * as Carousel from "nuka-carousel";
 import PhotosCarousel from "../../../components/photos-carousel/index";
 import LoadingToast from "../../../components/toast/index";
 import EmptyList from "../../../components/empty-list/index";
-import Notification from "../../../components/notification";
 
 import { getPhotoList } from "../../../js/store/index";
 import { Role } from "../../../js/common/config";
@@ -137,11 +136,6 @@ export default class TeacherPhotos extends React.Component<TeacherPhotosProps, T
                 this.setState({
                     loading: false,
                 })
-            })
-            .fail((error: Error) => {
-                Notification.info({
-                    content: error.message || "请求相册数据失败",
-                });
             })
     }
 

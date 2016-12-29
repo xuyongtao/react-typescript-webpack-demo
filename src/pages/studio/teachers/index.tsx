@@ -6,7 +6,6 @@ import { render } from "react-dom";
 import BasicInfo from "../../../components/basic-info/index";
 import LoadingToast from "../../../components/toast/index";
 import EmptyList from "../../../components/empty-list/index";
-import Notification from "../../../components/notification";
 
 import { Role } from "../../../js/common/config";
 import { getStudioTeacherList } from "../../../js/store/index";
@@ -68,11 +67,6 @@ export default class StudioTeacherList extends React.Component<StudioTeacherList
                     loadMore: false,
                 })
             })
-            .fail((error: Error) => {
-                Notification.info({
-                    content: error.message || "请求机构老师数据失败",
-                });
-            })
     }
 
     componentDidMount() {
@@ -102,11 +96,6 @@ export default class StudioTeacherList extends React.Component<StudioTeacherList
                     this.setState({
                         loading: false,
                     })
-                })
-                .fail((error: Error) => {
-                    Notification.info({
-                        content: error.message || "请求机构老师数据失败",
-                    });
                 })
         }
     }
