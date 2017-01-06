@@ -5,6 +5,8 @@ import { render } from "react-dom";
 import { Promise } from "thenfail";
 import * as Swipeable from "react-swipeable";
 import * as ClassNames from "classnames";
+import * as Store from "store";
+import * as Lodash from "lodash";
 
 import NavBarWithSearch from "../../components/search-bar/index";
 import FilterBar from "../../components/filter-bar/index";
@@ -171,8 +173,12 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         let catIds = this.props.params.cids;
         let keyword = this.props.location.query.keyword || "";
         let currentCat = new Array<CatBasic>(3);
+        let currentSyntheticalFilterOptions = new Array<number>(3);
+        let orderByFavAscActive = false;
+        let orderByViewAscActive = false;
         let floorCat: CatSingleDataBasic;
         let searchCat: CatBasic;
+        let m91search: any = {};
 
         catIds && catIds.split("-").map((catId, index) => {
             if (!index) {
@@ -193,14 +199,43 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             searchCat = currentCat[index];
         })
 
+        if (!keyword && !searchCat) {
+            try {
+                m91search = JSON.parse(Store.get("m91search"));
+            } catch (err) { }
+
+            if (Lodash.every(currentCat, (cat) => {
+                return !cat;
+            }) && Lodash.some(m91search.cat, (cat) => {
+                return !!cat;
+            })) {
+                currentCat = m91search.cat;
+            }
+
+            if (!keyword && m91search.keyword) {
+                keyword = m91search.keyword;
+            }
+
+            if (Lodash.every(currentSyntheticalFilterOptions, (option) => {
+                return !option;
+            }) && Lodash.some(m91search.syntheticalFilterOptions, (option) => {
+                return !!option;
+            })) {
+                currentSyntheticalFilterOptions = m91search.syntheticalFilterOptions;
+            }
+
+            orderByFavAscActive = !!m91search.orderByFavAscActive;
+            orderByViewAscActive = !!m91search.orderByViewAscActive;
+        }
+
         this.state = {
             teachers: [],
             showSyntheticalFilter: false,
             showCatsFilter: false,
             currentCat,
-            currentSyntheticalFilterOptions: new Array<number>(3),
-            orderByFavAscActive: false,
-            orderByViewAscActive: false,
+            currentSyntheticalFilterOptions,
+            orderByFavAscActive,
+            orderByViewAscActive,
             currentPage: 0,
             totalPage: 0,
             loading: false,
@@ -370,7 +405,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         }) {
         let catId = 0;
         cat.map(c => {
-            if (c.id) {
+            if (c && c.id) {
                 catId = Number(c.id);
             }
         })
@@ -424,6 +459,16 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         this.getNameList({
             page: 1,
         })
+    }
+
+    componentWillUnmount() {
+        Store.set("m91search", JSON.stringify({
+            cat: this.state.currentCat,
+            syntheticalFilterOptions: this.state.currentSyntheticalFilterOptions,
+            keyword: this.state.keyword,
+            orderByFavAscActive: this.state.orderByFavAscActive,
+            orderByViewAscActive: this.state.orderByViewAscActive,
+        }))
     }
 
     render() {

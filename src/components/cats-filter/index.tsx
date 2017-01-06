@@ -143,7 +143,7 @@ interface CatsFilterProps {
 }
 interface CatsFilterState {
     maskVisible?: boolean;
-    currentLevel1Cat?: {
+    currentFirstLevelCat?: {
         id: number;
         label: string;
     };
@@ -164,11 +164,13 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
     constructor(props: CatsFilterProps, context: CatsFilterState) {
         super(props, context);
 
+        let [firstLevelCat] = this.props.initCat;
+
         this.state = {
             maskVisible: this.props.visible || false,
-            currentLevel1Cat: {
-                id: this.props.initCat[0] ? this.props.initCat[0].id : 1,
-                label: this.props.initCat[0] ? this.props.initCat[0].label : "艺术",
+            currentFirstLevelCat: {
+                id: firstLevelCat ? firstLevelCat.id : 1,
+                label: firstLevelCat ? firstLevelCat.label : "艺术",
             },
         }
     }
@@ -179,14 +181,14 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
 
     onClickHandler(id: number, label: string) {
         this.setState({
-            currentLevel1Cat: { id, label },
+            currentFirstLevelCat: { id, label },
         })
     }
 
     handlerAnimEnd({ key, type }: { key: string; type: string }) {
         this.setState({
             maskVisible: type === "enter",
-            currentLevel1Cat: this.props.initCat[0],
+            currentFirstLevelCat: this.props.initCat[0],
         })
         if (type === "leave" && this.props.handlerLeaveAnimEnd) {
             this.props.handlerLeaveAnimEnd();
@@ -198,11 +200,12 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
             classNames: ["cats-filter-mask"],
             handlerClose: this.props.onCloseCatFilter,
         };
-        let currentLevel1CatId = this.state.currentLevel1Cat ? this.state.currentLevel1Cat.id : (this.props.initCat[0] ? this.props.initCat[0].id : 1);
+        let [firstLevelCat] = this.props.initCat;
+        let currentFirstLevelCatId = this.state.currentFirstLevelCat ? this.state.currentFirstLevelCat.id : (firstLevelCat ? firstLevelCat.id : 1);
 
         let catPannelsProps = {
-            level1Cat: this.state.currentLevel1Cat || this.props.initCat[0] || { id: currentLevel1CatId, label: catsData[currentLevel1CatId].label },
-            cats: catsData[currentLevel1CatId].cats,
+            level1Cat: this.state.currentFirstLevelCat || firstLevelCat || { id: currentFirstLevelCatId, label: catsData[currentFirstLevelCatId].label },
+            cats: catsData[currentFirstLevelCatId].cats,
             initCat: this.props.initCat,
             onChooseCat: this.props.onChooseCat,
         };
@@ -228,7 +231,7 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
                                     { Lodash.map(catsData, (cat, key) => {
                                         return (
                                             <li key={ key } onClick={ this.onClickHandler.bind(this, key, cat.label) } className={classNames({
-                                                active: key == currentLevel1CatId
+                                                active: key == currentFirstLevelCatId
                                             }) }>{ cat.label }</li>
                                         )
                                     }) }

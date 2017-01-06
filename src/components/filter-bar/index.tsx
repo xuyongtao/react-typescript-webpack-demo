@@ -114,7 +114,7 @@ export default class FilterBar extends React.Component<FilterBarProps, FilterBar
         };
 
         this.props.currentCat.map((cat, index) => {
-            if (cat.id) {
+            if (cat && cat.id) {
                 displayCat = cat;
             }
         })
