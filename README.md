@@ -62,3 +62,17 @@ $ ./release -d ./m.qmin91.com
 │      └─app.tsx                     # 项目入口页
 └─typings
 ```
+
+## 发布相关
+
+```text
+1. 使用 progress-bar-webpack-plugin 来查看webpack的进度
+2. 本地调试使用webpack-dev-server的inline模式进行自动刷新
+3. 本地调试使用webpac-dev-server的Hot Module Replacement（即：模块热替换），在前端代码变动的时候无需整个刷新页面，只把变化的部分替换掉。同时使用react-hot-loader实现组件级热更新。(该项目暂无使用该功能)
+```
+
+## 打包相关
+
+```text
+1. extract-text-webpack-plugin ： 用来从js文件中抽离出css，独立成css文件
+```

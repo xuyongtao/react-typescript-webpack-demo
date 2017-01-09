@@ -68,10 +68,16 @@ class FilterCondition extends React.Component<FilterConditionProps, FilterCondit
                 <div className="synthetical-filter-condition-options">
                     { this.props.options.map((option, index) => {
                         return (
-                            <span key={ index } className={classNames({
-                                "synthetical-filter-condition-option": true,
-                                "synthetical-filter-condition-option-choosed": this.state.choosedOid === option.oid
-                            }) } onClick={ this.onChoose.bind(this, option.oid) }>{ option.name }</span>
+                            <span
+                                key={ index }
+                                className={classNames({
+                                    "synthetical-filter-condition-option": true,
+                                    "synthetical-filter-condition-option-choosed": this.state.choosedOid === option.oid
+                                }) }
+                                onClick={ this.onChoose.bind(this, option.oid) }
+                                >
+                                { option.name }
+                            </span>
                         )
                     }) }
                 </div>

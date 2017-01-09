@@ -17,9 +17,10 @@ var __DEV__ = process.env.NODE_ENV !== "production";
 
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var HtmlwebpackPlugin = require("html-webpack-plugin");
+var ProgressBarPlugin = require('progress-bar-webpack-plugin');
 var autoprefixer = require("autoprefixer");
 
-var extractCSS = new ExtractTextPlugin("[name].css");
+var extractCSS = new ExtractTextPlugin("[name]_[hash:8].css");
 var config = {
     entry: {
         app: [
@@ -33,18 +34,18 @@ var config = {
     },
     output: {
         path: DIST_PATH,// 绝对路径
-        filename: "[name].js"
+        filename: "[name]_[hash:8].js"
     },
     // devtool: "source-map",
     resolve: {
         extensions: ["", ".jsx", ".ts", ".tsx", ".js", ".less"],
         alias: {
             "react-router": NODE_MODULES_PATH + "/react-router/lib/index.js",
-            "react-redux": NODE_MODULES_PATH + "/react-redux/lib/index.js",
-            "redux": NODE_MODULES_PATH + "/redux/lib/index.js",
-            "redux-thunk": NODE_MODULES_PATH + "/redux-thunk/lib/index.js",
+            "react-redux": NODE_MODULES_PATH + "/react-redux/dist/react-redux.min.js",
+            "redux": NODE_MODULES_PATH + "/redux/dist/redux.min.js",
+            "redux-thunk": NODE_MODULES_PATH + "/redux-thunk/dist/redux-thunk.min.js",
             "isomorphic-fetch": NODE_MODULES_PATH + "/isomorphic-fetch/fetch-npm-node.js",
-            "es6-promise": NODE_MODULES_PATH + "/es6-promise/lib/es6-promise.js",
+            "es6-promise": NODE_MODULES_PATH + "/es6-promise/dist/es6-promise.min.js",
             "base": SRC_PATH + "/js/base.js"
         }
     },
@@ -66,7 +67,7 @@ var config = {
             }, {
                 test: /\.png|jpeg|jpg|gif|ico$/,
                 loaders: [
-                    "file?name=images/[name].[ext]",
+                    "file?name=images/[name]_[hash:8].[ext]",
                     "image-webpack?{optimizationLevel: 7, interlaced: false, pngquant:{quality: '65-90', speed: 4}, mozjpeg: {quality: 65}}"
                 ]
             }
@@ -79,7 +80,7 @@ var config = {
         // ]
     },
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin("lib", "lib.bundle.js"),
+        new webpack.optimize.CommonsChunkPlugin("lib", "lib.bundle_[hash:8].js"),
         new webpack.DefinePlugin({
             // http://stackoverflow.com/questions/30030031/passing-environment-dependent-variables-in-webpack
             "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development")
@@ -98,6 +99,10 @@ var config = {
                 removeStyleLinkTypeAttributes: true,
                 removeComments: true
             }
+        }),
+        new ProgressBarPlugin({
+            format: '  build [:bar] ' + ':percent' + ' (:elapsed seconds)',
+            clear: false
         }),
         extractCSS,
     ],

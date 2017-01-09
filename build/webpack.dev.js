@@ -1,10 +1,9 @@
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
+// var openBrowserWebpackPlugin = require('open-browser-webpack-plugin');
 var config = require('./webpack.config');
-// var utils = require('./utils');
 
 var PORT = 8080;
-// var HOST = utils.getIP();
 var HOST = "127.0.0.1";
 var args = process.argv;
 var hot = args.indexOf('--hot') > -1;
@@ -14,18 +13,21 @@ var localPublicPath = 'http://' + HOST + ':' + PORT + '/';
 
 config.output.publicPath = localPublicPath;
 config.entry.app.unshift('webpack-dev-server/client?' + localPublicPath);
+// config.plugins.push(new openBrowserWebpackPlugin({ url: localPublicPath }));
 
 // 开启热替换相关设置
-if (hot === true) {
-    config.entry.app.unshift('webpack/hot/only-dev-server');
-    // 注意这里 loaders[0] 是处理 .js 文件的 loader
-    config.module.loaders[0].loaders.unshift('react-hot-loader/webpack');
-    config.plugins.push(new webpack.HotModuleReplacementPlugin());
-}
+
+// if (hot === true) {
+// config.entry.app.unshift('webpack/hot/only-dev-server');
+// 注意这里 loaders[0] 是处理 .js 文件的 loader
+// config.module.loaders[0].loaders.unshift('react-hot/webpack');
+// config.plugins.push(new webpack.HotModuleReplacementPlugin());
+// }
+
 
 var bodyParser = require('body-parser');
 var app = new WebpackDevServer(webpack(config), {
-    hot: hot,
+    // hot: hot,
     inline: true,
     compress: false,
     stats: {
