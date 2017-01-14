@@ -148,7 +148,7 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
             isOpen: loading,
         };
         const activityModalProps = {
-            visible: showActivityModal,
+            visible: false && showActivityModal,
             handlerClose: this.handlerCloseActivityModal.bind(this),
             handlerActivityModalGo: this.handlerActivityModalGo.bind(this, "http://qmin91.com/mobile/activities/vote/42"),
             image: {
