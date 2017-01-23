@@ -42,7 +42,7 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
 
     private preloadActivityImage: HTMLImageElement;
 
-    loadMore() {
+    handleLoadMore() {
         this.setState({
             loadingMore: true,
         })
@@ -64,8 +64,8 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
             })
     }
 
-    handlerSwipedUp() {
-        if (document.body.scrollTop > window.screen.height) {
+    handleSwipedUp() {
+        if (document.body.scrollTop > window.screen.height && !this.state.showBackToTop) {
             this.setState({
                 showBackToTop: true,
             })
@@ -75,18 +75,18 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
         if (this.state.loadingMore) return;
         if (document.body.scrollTop < document.body.clientHeight - window.screen.height * 2) return;
 
-        this.loadMore();
+        this.handleLoadMore();
     }
 
-    handlerSwipedDown() {
-        if (document.body.scrollTop < window.screen.height) {
+    handleSwipedDown() {
+        if (document.body.scrollTop < window.screen.height && this.state.showBackToTop) {
             this.setState({
                 showBackToTop: false,
             })
         }
     }
 
-    handlerCloseActivityModal() {
+    handleCloseActivityModal() {
         let hmt = (window as any)._hmt;
         if (hmt) {
             hmt.push(["_trackEvent", "入口", "点击关闭", "移动端纳斯投票活动入口"]);
@@ -99,7 +99,7 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
         })
     }
 
-    handlerActivityModalGo(link: string) {
+    handleActivityModalGo(link: string) {
         store.set("nasi-activity-vote", true);
 
         let hmt = (window as any)._hmt;
@@ -149,8 +149,8 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
         };
         const activityModalProps = {
             visible: false && showActivityModal,
-            handlerClose: this.handlerCloseActivityModal.bind(this),
-            handlerActivityModalGo: this.handlerActivityModalGo.bind(this, "http://qmin91.com/mobile/activities/vote/42"),
+            handlerClose: this.handleCloseActivityModal.bind(this),
+            handlerActivityModalGo: this.handleActivityModalGo.bind(this, "http://qmin91.com/mobile/activities/vote/42"),
             image: {
                 ele: this.preloadActivityImage,
                 alt: "“纳斯杯”动漫日语配音大赛拉开序幕",
@@ -158,7 +158,7 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
         };
         const backToTopProps = {
             showed: showBackToTop,
-            handlerBackToTop: () => {
+            onBackToTop: () => {
                 this.setState({
                     showBackToTop: false,
                 })
@@ -174,8 +174,8 @@ export default class RecommendPannel extends React.Component<any, RecommendPanne
                 <div>
                     <ActivityModal { ...activityModalProps }/>
                     <Swipeable
-                        onSwipedUp={ this.handlerSwipedUp.bind(this) }
-                        onSwipedDown={ this.handlerSwipedDown.bind(this) }
+                        onSwipedUp={ this.handleSwipedUp.bind(this) }
+                        onSwipedDown={ this.handleSwipedDown.bind(this) }
                         preventDefaultTouchmoveEvent={ false }
                         stopPropagation={ true }
                         >

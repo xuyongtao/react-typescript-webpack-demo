@@ -16,35 +16,35 @@ import { PhotoBasic, ReceivePhotoListPost } from "../../../js/interface/common";
 interface LazyLoadImageProps {
     src: string;
     alt?: string;
-    handlerLoaded?(): number;
-    handlerClick?(index: number): void;
+    onLoaded?(): number;
+    onClick?(index: number): void;
 }
 
 class LazyLoadImage extends React.Component<LazyLoadImageProps, any> {
     static propTypes = {
         src: React.PropTypes.string.isRequired,
         alt: React.PropTypes.string,
-        handlerLoaded: React.PropTypes.func,
-        handlerClick: React.PropTypes.func,
+        onLoaded: React.PropTypes.func,
+        onClick: React.PropTypes.func,
     }
 
     private index: number;
 
-    handlerClick() {
-        if (this.props.handlerClick) {
-            this.props.handlerClick(this.index);
+    handleClick() {
+        if (this.props.onClick) {
+            this.props.onClick(this.index);
         }
     }
 
     componentDidMount() {
-        if (this.props.handlerLoaded) {
-            this.index = this.props.handlerLoaded();
+        if (this.props.onLoaded) {
+            this.index = this.props.onLoaded();
         }
     }
 
     render() {
         return (
-            <img src={ this.props.src } alt={ this.props.alt } onClick={ this.handlerClick.bind(this) } />
+            <img src={ this.props.src } alt={ this.props.alt } onClick={ this.handleClick.bind(this) } />
         )
     }
 }
@@ -80,20 +80,20 @@ export default class StudioPhotos extends React.Component<StudioPhotosProps, Stu
         };
     }
 
-    handlerShowPhotosCarousel(index: number) {
+    handleShowPhotosCarousel(index: number) {
         this.setState({
             hiddenCarousel: false,
             slideIndex: index,
         })
     }
 
-    handlerHidePhotosCarousel() {
+    handleHidePhotosCarousel() {
         this.setState({
             hiddenCarousel: true,
         })
     }
 
-    handlerAddLoadedPics(src: string, index: number) {
+    handleAddLoadedPics(src: string, index: number) {
         let loadedPics = this.state.loadedPics;
 
         loadedPics[index] = src;
@@ -147,7 +147,7 @@ export default class StudioPhotos extends React.Component<StudioPhotosProps, Stu
         const carouselProps = {
             pics: loadedPics,
             slideIndex,
-            handlerClose: this.handlerHidePhotosCarousel.bind(this),
+            handlerClose: this.handleHidePhotosCarousel.bind(this),
             hidden: hiddenCarousel,
         };
         const loadingToastProps = {
@@ -175,8 +175,8 @@ export default class StudioPhotos extends React.Component<StudioPhotosProps, Stu
                                                 <LazyLoad { ...lazyloadProps }>
                                                     <LazyLoadImage
                                                         src={ pic.mediumSrc }
-                                                        handlerLoaded={ this.handlerAddLoadedPics.bind(this, pic.originalSrc, index * 2) }
-                                                        handlerClick={ this.handlerShowPhotosCarousel.bind(this) }
+                                                        onLoaded={ this.handleAddLoadedPics.bind(this, pic.originalSrc, index * 2) }
+                                                        onClick={ this.handleShowPhotosCarousel.bind(this) }
                                                         />
                                                 </LazyLoad>
                                             </div>
@@ -190,8 +190,8 @@ export default class StudioPhotos extends React.Component<StudioPhotosProps, Stu
                                                 <LazyLoad { ...lazyloadProps }>
                                                     <LazyLoadImage
                                                         src={ pic.mediumSrc }
-                                                        handlerLoaded={ this.handlerAddLoadedPics.bind(this, pic.originalSrc, index * 2 + 1) }
-                                                        handlerClick={ this.handlerShowPhotosCarousel.bind(this) }
+                                                        onLoaded={ this.handleAddLoadedPics.bind(this, pic.originalSrc, index * 2 + 1) }
+                                                        onClick={ this.handleShowPhotosCarousel.bind(this) }
                                                         />
                                                 </LazyLoad>
                                             </div>

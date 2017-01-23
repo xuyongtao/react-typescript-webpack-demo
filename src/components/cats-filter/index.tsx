@@ -96,7 +96,7 @@ class CatPannel extends React.Component<CatPannelProps, any> {
         super(props, context);
     }
 
-    onClickHandler(pcat: CatBasicInfo, cat: CatBasicInfo) {
+    handleClick(pcat: CatBasicInfo, cat: CatBasicInfo) {
         this.props.onChooseCat([this.props.level1Cat, pcat, cat]);
     }
 
@@ -121,7 +121,7 @@ class CatPannel extends React.Component<CatPannelProps, any> {
                                     let props = {
                                         id: Number(key),
                                         label: cat.label,
-                                        onClick: this.onClickHandler.bind(this, {
+                                        onClick: this.handleClick.bind(this, {
                                             id: Number(pkey),
                                             label: pcat.label,
                                         }, {
@@ -154,7 +154,7 @@ interface CatsFilterProps {
     initCat?: CatBasicInfo[];// 初始化最后一级的科目
     onChooseCat?(cats?: CatBasicInfo[]): void;
     onCloseCatFilter?(): void;
-    handlerLeaveAnimEnd?(): void;
+    onLeaveAnimEnd?(): void;
 }
 interface CatsFilterState {
     maskVisible?: boolean;
@@ -170,7 +170,7 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
         initCat: React.PropTypes.array,
         onChooseCat: React.PropTypes.func,
         onCloseCatFilter: React.PropTypes.func,
-        handlerLeaveAnimEnd: React.PropTypes.func,
+        onLeaveAnimEnd: React.PropTypes.func,
     }
     static defaultProps = {
 
@@ -204,13 +204,13 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
 
     }
 
-    onClickHandler(id: number, label: string) {
+    handleClick(id: number, label: string) {
         this.setState({
             currentFirstLevelCat: { id, label },
         })
     }
 
-    onTouchStart(event: React.TouchEvent, elScroll: any) {
+    handleTouchStart(event: React.TouchEvent, elScroll: any) {
         let touch = event.touches[0];
         let touchTarget: any = touch.target;
         let scrollHeight = elScroll.scrollHeight;
@@ -222,11 +222,11 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
         this.scrollData.maxScroll = scrollHeight - clientHeight;
     }
 
-    onToucheEnd(event: React.TouchEvent) {
+    handleToucheEnd(event: React.TouchEvent) {
         this.scrollData.maxScroll = 0;
     }
 
-    onTouchMove(event: React.TouchEvent) {
+    handleTouchMove(event: React.TouchEvent) {
         if (this.scrollData.maxScroll <= 0) {
             event.preventDefault();
             return;
@@ -246,13 +246,13 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
         }
     }
 
-    handlerAnimEnd({ key, type }: { key: string; type: string }) {
+    handleAnimEnd({ key, type }: { key: string; type: string }) {
         this.setState({
             maskVisible: type === "enter",
             currentFirstLevelCat: this.props.initCat[0],
         })
-        if (type === "leave" && this.props.handlerLeaveAnimEnd) {
-            this.props.handlerLeaveAnimEnd();
+        if (type === "leave" && this.props.onLeaveAnimEnd) {
+            this.props.onLeaveAnimEnd();
         }
     }
 
@@ -269,9 +269,9 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
             cats: catsData[currentFirstLevelCatId].cats,
             initCat: this.props.initCat,
             onChooseCat: this.props.onChooseCat,
-            onTouchStart: this.onTouchStart.bind(this),
-            onTouchMove: this.onTouchMove.bind(this),
-            onTouchEnd: this.onToucheEnd.bind(this),
+            onTouchStart: this.handleTouchStart.bind(this),
+            onTouchMove: this.handleTouchMove.bind(this),
+            onTouchEnd: this.handleToucheEnd.bind(this),
         };
 
         return (
@@ -285,7 +285,7 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
                         opacity: [1, 1],
                         translateY: [0, "-11rem"]
                     }}
-                    onEnd={ this.handlerAnimEnd.bind(this) }
+                    onEnd={ this.handleAnimEnd.bind(this) }
                     >
                     {
                         this.props.visible ?
@@ -293,15 +293,15 @@ export default class CatsFilter extends React.Component<CatsFilterProps, CatsFil
                                 <ul
                                     className="cats-filter-left"
                                     ref="filter-left"
-                                    onTouchStart={ (e) => { this.onTouchStart(e, this.refs['filter-left']) } }
-                                    onTouchMove={ this.onTouchMove.bind(this) }
-                                    onTouchEnd={ this.onToucheEnd.bind(this) }
+                                    onTouchStart={ (e) => { this.handleTouchStart(e, this.refs['filter-left']) } }
+                                    onTouchMove={ this.handleTouchMove.bind(this) }
+                                    onTouchEnd={ this.handleToucheEnd.bind(this) }
                                     >
                                     { Lodash.map(catsData, (cat, key) => {
                                         return (
                                             <li
                                                 key={ key }
-                                                onClick={ this.onClickHandler.bind(this, key, cat.label) }
+                                                onClick={ this.handleClick.bind(this, key, cat.label) }
                                                 className={classNames({
                                                     active: key == currentFirstLevelCatId
                                                 }) }

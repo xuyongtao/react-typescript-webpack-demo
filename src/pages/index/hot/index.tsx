@@ -35,7 +35,7 @@ export default class HotPannel extends React.Component<any, HotPannelState> {
 
     }
 
-    loadMore() {
+    handleLoadMore() {
         this.setState({
             loadingMore: true,
         })
@@ -57,8 +57,8 @@ export default class HotPannel extends React.Component<any, HotPannelState> {
             })
     }
 
-    handlerSwipedUp() {
-        if (document.body.scrollTop > window.screen.height) {
+    handleSwipedUp() {
+        if (document.body.scrollTop > window.screen.height && !this.state.showBackToTop) {
             this.setState({
                 showBackToTop: true,
             })
@@ -68,11 +68,11 @@ export default class HotPannel extends React.Component<any, HotPannelState> {
         if (this.state.loadingMore) return;
         if (document.body.scrollTop < document.body.clientHeight - window.screen.height * 2) return;
 
-        this.loadMore();
+        this.handleLoadMore();
     }
 
-    handlerSwipedDown() {
-        if (document.body.scrollTop < window.screen.height) {
+    handleSwipedDown() {
+        if (document.body.scrollTop < window.screen.height && this.state.showBackToTop) {
             this.setState({
                 showBackToTop: false,
             })
@@ -109,7 +109,7 @@ export default class HotPannel extends React.Component<any, HotPannelState> {
         };
         const backToTopProps = {
             showed: showBackToTop,
-            handlerBackToTop: () => {
+            onBackToTop: () => {
                 this.setState({
                     showBackToTop: false,
                 })
@@ -124,7 +124,7 @@ export default class HotPannel extends React.Component<any, HotPannelState> {
             return (
                 <div>
                     <Swipeable
-                        onSwipedUp={ this.handlerSwipedUp.bind(this) }
+                        onSwipedUp={ this.handleSwipedUp.bind(this) }
                         preventDefaultTouchmoveEvent={ false }
                         stopPropagation={ true }
                         >

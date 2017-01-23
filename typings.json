@@ -21,7 +21,7 @@
     "es6-promise": "registry:npm/es6-promise#3.0.0+20160723033700",
     "lodash": "registry:npm/lodash#4.0.0+20160723033700",
     "react-redux": "registry:npm/react-redux#4.4.0+20160614222153",
-    "react-router": "registry:npm/react-router#2.4.0+20160811060709",
+    "react-router": "registry:npm/react-router#2.4.0+20160915183637",
     "redux-thunk": "registry:npm/redux-thunk#2.0.0+20160525185520"
   }
 }

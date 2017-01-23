@@ -42,7 +42,7 @@ export default class TeacherCourseList extends React.Component<TeacherCourseList
         }
     }
 
-    handlerLoadMore() {
+    handleLoadMore() {
         this.setState({
             loadMore: true,
         })
@@ -103,7 +103,7 @@ export default class TeacherCourseList extends React.Component<TeacherCourseList
             currentPage,
             totalPage,
             loadMore,
-            handlerLoadMore: this.handlerLoadMore.bind(this),
+            handlerLoadMore: this.handleLoadMore.bind(this),
         };
         const loadingToastProps = {
             tip: "加载中...",

@@ -85,7 +85,7 @@ export default class AppIndx extends React.Component<any, AppIndxState> {
         }
     }
 
-    onInput(keyword: string) {
+    handleInput(keyword: string) {
         this.setState({ keyword });
     }
 
@@ -96,7 +96,7 @@ export default class AppIndx extends React.Component<any, AppIndxState> {
     render() {
         let searchBarProps = {
             keyword: this.state.keyword,
-            onInput: this.onInput.bind(this),
+            onInput: this.handleInput.bind(this),
         };
         let tabsBarProps = {
             tabs: indexRouters,

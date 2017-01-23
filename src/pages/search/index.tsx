@@ -50,8 +50,8 @@ interface NameListProps {
     teachers: RecommendListBasic[];
     currentPage: number;
     totalPage: number;
-    handlerLoadMore?(options: any): Promise<void>;
-    handlerChangeFixedState?(fixed: boolean): void;
+    onLoadMore?(options: any): Promise<void>;
+    onChangeFixedState?(fixed: boolean): void;
 }
 interface NameListState {
     loadMore: boolean;
@@ -61,8 +61,8 @@ class NameList extends React.Component<NameListProps, NameListState> {
         teachers: React.PropTypes.array.isRequired,
         currentPage: React.PropTypes.number.isRequired,
         totalPage: React.PropTypes.number.isRequired,
-        handlerLoadMore: React.PropTypes.func.isRequired,
-        handlerChangeFixedState: React.PropTypes.func,
+        onLoadMore: React.PropTypes.func.isRequired,
+        onChangeFixedState: React.PropTypes.func,
     }
 
     constructor(props: NameListProps, context: NameListState) {
@@ -73,14 +73,14 @@ class NameList extends React.Component<NameListProps, NameListState> {
         }
     }
 
-    loadMore() {
+    handleLoadMore() {
         this.setState({
             loadMore: true,
         })
 
         this
             .props
-            .handlerLoadMore({
+            .onLoadMore({
                 loadMore: true,
             })
             .handle(() => {
@@ -90,21 +90,21 @@ class NameList extends React.Component<NameListProps, NameListState> {
             })
     }
 
-    handlerSwipedUp(e: TouchEvent, delta: number) {
-        this.props.handlerChangeFixedState && this.props.handlerChangeFixedState(false);
+    handleSwipedUp(e: TouchEvent, delta: number) {
+        this.props.onChangeFixedState && this.props.onChangeFixedState(false);
         if (this.props.currentPage >= this.props.totalPage) return;
 
         if (this.state.loadMore) return;
         if (document.body.scrollTop < document.body.clientHeight - window.screen.height * 2) return;
-        this.loadMore();
+        this.handleLoadMore();
     }
 
-    handlerSwipedDown(e: TouchEvent, delta: number) {
-        if (this.props.handlerChangeFixedState) {
+    handleSwipedDown(e: TouchEvent, delta: number) {
+        if (this.props.onChangeFixedState) {
             if (document.body.scrollTop > window.screen.height) {
-                this.props.handlerChangeFixedState(true);
+                this.props.onChangeFixedState(true);
             } else {
-                this.props.handlerChangeFixedState(false);
+                this.props.onChangeFixedState(false);
             }
         }
     }
@@ -115,8 +115,8 @@ class NameList extends React.Component<NameListProps, NameListState> {
 
         return (
             <Swipeable
-                onSwipedUp={ this.handlerSwipedUp.bind(this) }
-                onSwipedDown={ this.handlerSwipedDown.bind(this) }
+                onSwipedUp={ this.handleSwipedUp.bind(this) }
+                onSwipedDown={ this.handleSwipedDown.bind(this) }
                 preventDefaultTouchmoveEvent={ false }
                 stopPropagation={ true }
                 >
@@ -246,40 +246,40 @@ export default class Search extends React.Component<SearchProps, SearchState> {
 
     private PageSize = 8;
 
-    onShowSyntheticalFilter(show: boolean) {
+    handleShowSyntheticalFilter(show: boolean) {
         this.setState({
             showSyntheticalFilter: show,
             showCatsFilter: false,
         })
     }
 
-    onCloseSyntheticalFilter() {
+    handleCloseSyntheticalFilter() {
         this.setState({
             showSyntheticalFilter: false,
         })
     }
 
-    onShowCatsFilter(show: boolean) {
+    handleShowCatsFilter(show: boolean) {
         this.setState({
             showSyntheticalFilter: false,
             showCatsFilter: show,
         })
     }
 
-    onCloseCatFilter() {
+    handleCloseCatFilter() {
         this.setState({
             showCatsFilter: false,
         })
     }
 
-    onCloseAllFilter() {
+    handleCloseAllFilter() {
         this.setState({
             showSyntheticalFilter: false,
             showCatsFilter: false,
         })
     }
 
-    onChooseCat(cat: CatBasic[]) {
+    handleChooseCat(cat: CatBasic[]) {
         this.setState({
             currentCat: cat,
             showCatsFilter: false,
@@ -289,7 +289,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
         })
     }
 
-    onSearchKeyword(keyword: string) {
+    handleSearchKeyword(keyword: string) {
         let showCatsFilter = this.state.showCatsFilter;
 
         this.setState({
@@ -304,14 +304,14 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             keyword,
         }, () => {
             if (!showCatsFilter) {// 如已打开科目筛选面板，直接会调用动画后的回调函数handlerCatFilterLeaveAnimEnd
-                this.getNameList({
+                this.handleGetNameList({
                     page: 1,
                 })
             }
         })
     }
 
-    onSearchCat(cat: CatBasic[], keyword: string) {
+    handleSearchCat(cat: CatBasic[], keyword: string) {
         this.setState({
             loading: true,
             currentCat: cat,
@@ -321,70 +321,72 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             orderByFavAscActive: false,
             orderByViewAscActive: false,
         }, () => {
-            this.getNameList({
+            this.handleGetNameList({
                 page: 1,
             })
         })
     }
 
-    onInput(keyword: string) {
+    handleInput(keyword: string) {
         this.setState({
             keyword,
         })
     }
 
-    handlerCatFilterLeaveAnimEnd() {
-        this.getNameList({
+    handleCatFilterLeaveAnimEnd() {
+        this.handleGetNameList({
             page: 1,
         });
     }
 
-    onConfirmSyntheticalFilterOptions(options: number[]) {
+    handleConfirmSyntheticalFilterOptions(options: number[]) {
         this.setState({
             showSyntheticalFilter: false,
             currentSyntheticalFilterOptions: options,
         })
     }
 
-    handlerSyntheticalFilterLeaveAnimEnd() {
-        this.getNameList({
+    handleSyntheticalFilterLeaveAnimEnd() {
+        this.handleGetNameList({
             page: 1,
         });
     }
 
-    onOrderByFavAscActive(active: boolean) {
+    handleOrderByFavAscActive(active: boolean) {
         this.setState({
             orderByFavAscActive: active,
             orderByViewAscActive: false,
         }, () => {
-            this.getNameList({
+            this.handleGetNameList({
                 page: 1,
             })
         })
     }
 
-    onOrderByViewAscActive(active: boolean) {
+    handleOrderByViewAscActive(active: boolean) {
         this.setState({
             orderByFavAscActive: false,
             orderByViewAscActive: active,
         }, () => {
-            this.getNameList({
+            this.handleGetNameList({
                 page: 1,
             })
         })
     }
 
-    handlerFocus() {
-        this.onCloseAllFilter();
+    handleFocus() {
+        this.handleCloseAllFilter();
     }
 
-    handlerChangeFixedState(fixed: boolean) {
-        this.setState({
-            fixed,
-        })
+    handleChangeFixedState(fixed: boolean) {
+        if (fixed !== this.state.fixed) {
+            this.setState({
+                fixed,
+            })
+        }
     }
 
-    getNameList({
+    handleGetNameList({
         page = this.state.currentPage + 1,
         totalPage = this.state.totalPage,
         cat = this.state.currentCat,
@@ -456,7 +458,7 @@ export default class Search extends React.Component<SearchProps, SearchState> {
     }
 
     componentDidMount() {
-        this.getNameList({
+        this.handleGetNameList({
             page: 1,
         })
     }
@@ -473,29 +475,29 @@ export default class Search extends React.Component<SearchProps, SearchState> {
 
     render() {
         const navBarProps = {
-            onFocus: this.handlerFocus.bind(this),
+            onFocus: this.handleFocus.bind(this),
             keyword: this.state.keyword || this.props.location.query.keyword,
-            onSearchKeyword: this.onSearchKeyword.bind(this),
-            onSearchCat: this.onSearchCat.bind(this),
-            onInput: this.onInput.bind(this),
+            onSearchKeyword: this.handleSearchKeyword.bind(this),
+            onSearchCat: this.handleSearchCat.bind(this),
+            onInput: this.handleInput.bind(this),
         };
         const filterProps = {
             visible: this.state.showSyntheticalFilter,
-            onClose: this.onCloseSyntheticalFilter.bind(this),
+            onClose: this.handleCloseSyntheticalFilter.bind(this),
             conditions: syntheticalFilterConditions,
             currentFilterOptions: this.state.currentSyntheticalFilterOptions,
-            onConfirmSyntheticalFilterOptions: this.onConfirmSyntheticalFilterOptions.bind(this),
-            handlerLeaveAnimEnd: this.handlerSyntheticalFilterLeaveAnimEnd.bind(this),
+            onConfirmSyntheticalFilterOptions: this.handleConfirmSyntheticalFilterOptions.bind(this),
+            handlerLeaveAnimEnd: this.handleSyntheticalFilterLeaveAnimEnd.bind(this),
         };
         const filterBarProps = {
             orderByFavAscActive: this.state.orderByFavAscActive,
             orderByViewAscActive: this.state.orderByViewAscActive,
-            onOrderByFavAscActive: this.onOrderByFavAscActive.bind(this),
-            onOrderByViewAscActive: this.onOrderByViewAscActive.bind(this),
+            onOrderByFavAscActive: this.handleOrderByFavAscActive.bind(this),
+            onOrderByViewAscActive: this.handleOrderByViewAscActive.bind(this),
             showCatsFilter: this.state.showCatsFilter,
-            onShowSyntheticalFilter: this.onShowSyntheticalFilter.bind(this),
-            onShowCatsFilter: this.onShowCatsFilter.bind(this),
-            onCloseAllFilter: this.onCloseAllFilter.bind(this),
+            onShowSyntheticalFilter: this.handleShowSyntheticalFilter.bind(this),
+            onShowCatsFilter: this.handleShowCatsFilter.bind(this),
+            onCloseAllFilter: this.handleCloseAllFilter.bind(this),
             currentCat: this.state.currentCat,
             currentFilterOptions: this.state.currentSyntheticalFilterOptions,
         };
@@ -503,16 +505,16 @@ export default class Search extends React.Component<SearchProps, SearchState> {
             teachers: this.state.teachers,
             currentPage: this.state.currentPage,
             totalPage: this.state.totalPage,
-            handlerLoadMore: this.getNameList.bind(this),
+            onLoadMore: this.handleGetNameList.bind(this),
             loading: this.state.loading,
-            handlerChangeFixedState: this.handlerChangeFixedState.bind(this),
+            onChangeFixedState: this.handleChangeFixedState.bind(this),
         };
         const catsFilterProps = {
             visible: this.state.showCatsFilter,
             initCat: this.state.currentCat,
-            onChooseCat: this.onChooseCat.bind(this),
-            onCloseCatFilter: this.onCloseCatFilter.bind(this),
-            handlerLeaveAnimEnd: this.handlerCatFilterLeaveAnimEnd.bind(this),
+            onChooseCat: this.handleChooseCat.bind(this),
+            onCloseCatFilter: this.handleCloseCatFilter.bind(this),
+            onLeaveAnimEnd: this.handleCatFilterLeaveAnimEnd.bind(this),
         };
         const loadingToastProps = {
             tip: "加载中...",

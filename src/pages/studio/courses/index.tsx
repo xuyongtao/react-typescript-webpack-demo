@@ -42,7 +42,7 @@ export default class StudioCourseList extends React.Component<StudioCourseListPr
         }
     }
 
-    handlerLoadMore() {
+    handleLoadMore() {
         this.setState({
             loadMore: true,
         })
@@ -104,7 +104,7 @@ export default class StudioCourseList extends React.Component<StudioCourseListPr
             currentPage,
             totalPage,
             loadMore,
-            handlerLoadMore: this.handlerLoadMore.bind(this),
+            handlerLoadMore: this.handleLoadMore.bind(this),
         };
         const loadingToastProps = {
             tip: "加载中...",

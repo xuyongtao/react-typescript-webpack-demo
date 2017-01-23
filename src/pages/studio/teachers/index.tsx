@@ -42,7 +42,7 @@ export default class StudioTeacherList extends React.Component<StudioTeacherList
 
     private perPage = 8;
 
-    handlerLoadMore() {
+    handleLoadMore() {
         this.setState({
             loadMore: true,
         })
@@ -107,7 +107,7 @@ export default class StudioTeacherList extends React.Component<StudioTeacherList
             currentPage,
             totalPage,
             loadMore,
-            handlerLoadMore: this.handlerLoadMore.bind(this),
+            handlerLoadMore: this.handleLoadMore.bind(this),
         };
         const loadingToastProps = {
             tip: "加载中...",
@@ -145,7 +145,7 @@ export default class StudioTeacherList extends React.Component<StudioTeacherList
                                         )
                                     }) }
                                 </ul>
-                                { currentPage == totalPage ? <div className="end-line">全部老师都在这里了</div> : (loadMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.handlerLoadMore.bind(this) }>点击加载更多</div>) }
+                                { currentPage == totalPage ? <div className="end-line">全部老师都在这里了</div> : (loadMore ? <div className="btn-load-more btn-loading"><i className="iconfont iconloading"></i>加载中...</div> : <div className="btn-load-more" onClick={ this.handleLoadMore.bind(this) }>点击加载更多</div>) }
                             </div> :
                             <EmptyList tip="该机构暂无老师" />
                     }

@@ -77,3 +77,9 @@ $ ./release -d ./m.qmin91.com
 ```text
 1. extract-text-webpack-plugin ： 用来从js文件中抽离出css，独立成css文件
 ```
+
+## 命名规范
+
+```text
+1. 所有的组件内部函数都以 handleXXX（handleClick, handleHover, handleMouseover 等）为命名模板；所有通过props传递的函数都以 onXXX（onChange、onSelect 等）为命名模板；
+```
