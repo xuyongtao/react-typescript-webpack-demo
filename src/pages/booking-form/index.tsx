@@ -36,11 +36,6 @@ export default class BookingForm extends React.Component<any, BookingFormState> 
     handlerSubmit() {
         if (this.state.submiting) return;
 
-        let hmt = (window as any)._hmt;
-        if (hmt) {
-            hmt.push(["_trackEvent", "帮我找老师表单", "点击提交", "填写信息不全"]);
-        }
-
         let courseNode: any = this.refs["course"];
         let nameNode: any = this.refs["name"];
         let mobileNode: any = this.refs["mobile"];
@@ -63,6 +58,9 @@ export default class BookingForm extends React.Component<any, BookingFormState> 
         if (!mobileNode.value) {
             if (!content) content = "请填写您的手机号码";
             this.state.mobileAvailable = false;
+        } else if (!/^1\d{10}$/.test(mobileNode.value)) {
+            if (!content) content = "请填写正确的手机号码";
+            this.state.mobileAvailable = false;
         } else {
             this.state.mobileAvailable = true;
         }
@@ -83,10 +81,6 @@ export default class BookingForm extends React.Component<any, BookingFormState> 
             if (content) {
                 Notification.info({ content });
                 return;
-            }
-
-            if (hmt) {
-                hmt.push(["_trackEvent", "帮我找老师表单", "点击提交", "填写需求完善"]);
             }
 
             this.setState({
