@@ -26,7 +26,7 @@ $ ./release -d ./a/b -p http://m.qmjy.dev/
 
 打开浏览器访问 [http://m.qmjy.dev/]
 -d 该参数指定前端项目发布到的本地地址，需为相对路径
--p 该参数指定后端跑改项目的服务器地址（如：http://m.qmjy.dev/）
+-p 该参数指定后端跑该项目的服务器地址（如：http://m.qmjy.dev/）
 
 ## 线上管理人员运行
 

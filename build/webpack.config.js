@@ -38,7 +38,7 @@ var config = {
     },
     // devtool: "source-map",
     resolve: {
-        extensions: ["", ".jsx", ".ts", ".tsx", ".js", ".less"],
+        extensions: ["", ".jsx", ".ts", ".tsx", ".js"],
         alias: {
             "react-router": NODE_MODULES_PATH + "/react-router/lib/index.js",
             "react-redux": NODE_MODULES_PATH + "/react-redux/dist/react-redux.min.js",
@@ -80,7 +80,10 @@ var config = {
         // ]
     },
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin("lib", "lib.bundle_[hash:8].js"),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "lib",
+            filename: "lib.bundle_[hash:8].js"
+        }),
         new webpack.DefinePlugin({
             // http://stackoverflow.com/questions/30030031/passing-environment-dependent-variables-in-webpack
             "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development")

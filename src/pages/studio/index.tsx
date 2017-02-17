@@ -2,17 +2,66 @@ import "./index.less";
 
 import * as React from "react";
 import { render } from "react-dom";
-import { browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 
 import Promise from "thenfail";
+import * as classNames from "classnames";
 
 import NavBar from "../../components/nav-bar";
-import TabsBar from "../../components/tabs-bar";
 import BasicInfo from "../../components/basic-info";
+import Index from "./index/index";
+import Intro from "./intro/index";
+import Courses from "./courses/index";
+import Teachers from "./teachers/index";
+import Photos from "./photos/index";
 
 import { getBasicInfo } from "../../js/store/index";
 import { Role, defaultAvatar } from "../../js/common/config";
 import { BasicInfo as StudioBasicInfo } from "../../js/interface/common";
+
+interface TabBasic {
+    isIndex?: boolean;
+    to?: string;
+    name: string;
+    tabStyle?: any;
+}
+
+interface TabsBarProps {
+    currentTabIndex: number;
+    tabs: TabBasic[];
+    onClick(index: number): void;
+}
+
+class TabsBar extends React.Component<TabsBarProps, any> {
+    constructor(props: TabsBarProps, context: any) {
+        super(props, context);
+    }
+
+    static PropTypes = {
+        tabs: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+        onClick: React.PropTypes.func,
+    }
+
+    render() {
+        return (
+            <div className={ `tabs tabs-${this.props.tabs.length}` }>
+                {
+                    this.props.tabs.map((tab: TabBasic, index: number) => {
+                        return (
+                            <Link
+                                key={ index }
+                                className={ classNames({
+                                    active: index === this.props.currentTabIndex
+                                }) }
+                                onClick={ this.props.onClick.bind(this, index) }
+                                >{ tab.name }</Link>
+                        )
+                    })
+                }
+            </div>
+        )
+    }
+}
 
 interface StudioIndexProps {
     params: {
@@ -21,11 +70,14 @@ interface StudioIndexProps {
 }
 
 interface StudioIndexState {
-    id?: number;
-    role?: number;
-    name?: string;
-    avatar?: string;
-    selfIntro?: string;
+    studio?: {
+        id?: number;
+        role?: number;
+        name?: string;
+        avatar?: string;
+        selfIntro?: string;
+    },
+    currentTabIndex?: number;
 }
 
 export default class StudioIndex extends React.Component<StudioIndexProps, StudioIndexState> {
@@ -33,11 +85,14 @@ export default class StudioIndex extends React.Component<StudioIndexProps, Studi
         super(props, context);
 
         this.state = {
-            id: Number(this.props.params.sid),
-            role: Role.studio,
-            name: "未设置机构名称",
-            avatar: defaultAvatar,
-            selfIntro: "未设置机构简介",
+            studio: {
+                id: Number(this.props.params.sid),
+                role: Role.studio,
+                name: "未设置机构名称",
+                avatar: defaultAvatar,
+                selfIntro: "未设置机构简介",
+            },
+            currentTabIndex: 0,
         }
     }
 
@@ -49,17 +104,24 @@ export default class StudioIndex extends React.Component<StudioIndexProps, Studi
         getBasicInfo(Number(this.props.params.sid), Role.studio)
             .then(res => {
                 this.setState({
-                    id: res.id,
-                    role: res.role,
-                    name: res.name,
-                    avatar: res.avatar,
-                    selfIntro: res.selfIntro,
+                    studio: {
+                        id: res.id,
+                        role: res.role,
+                        name: res.name,
+                        avatar: res.avatar,
+                        selfIntro: res.selfIntro,
+                    }
                 });
             })
     }
 
+    handleTabClick(currentTabIndex: number) {
+        this.setState({ currentTabIndex })
+    }
+
     render() {
-        const sid: number = Number(this.props.params.sid);
+        let { studio, currentTabIndex } = this.state;
+        const sid = this.props.params.sid;
         const navBarProps = {
             pageTitle: "机构主页",
             pathToJump: `/studio/${sid}`,
@@ -84,16 +146,22 @@ export default class StudioIndex extends React.Component<StudioIndexProps, Studi
                     to: `/studio/${sid}/intro`
                 },
             ],
+            onClick: this.handleTabClick.bind(this),
+            currentTabIndex,
         };
 
         return (
             <div>
                 <NavBar { ...navBarProps } />
                 <div className="studio-basic-info">
-                    <BasicInfo { ...this.state } />
+                    <BasicInfo { ...studio } />
                 </div>
                 <TabsBar { ...tabsBarProps } />
-                { this.props.children }
+                { currentTabIndex === 0 ? <Index params={ { sid } } /> : null }
+                { currentTabIndex === 1 ? <Courses params={ { sid } } /> : null }
+                { currentTabIndex === 2 ? <Teachers params={ { sid } } /> : null }
+                { currentTabIndex === 3 ? <Photos params={ { sid } } /> : null }
+                { currentTabIndex === 4 ? <Intro params={ { sid } } /> : null }
             </div>
         )
     }

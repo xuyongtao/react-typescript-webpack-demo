@@ -20,7 +20,7 @@ import { CourseBasic, BasicInfo as BasicInfoInterface } from "../../../js/interf
 
 interface IndexPageProps {
     params: {
-        sid: number;
+        sid: string;
     }
 }
 
@@ -50,7 +50,7 @@ export default class IndexPage extends React.Component<IndexPageProps, IndexPage
             loading: true,
         })
 
-        getStudioIndexPageInfo(this.props.params.sid)
+        getStudioIndexPageInfo(Number(this.props.params.sid))
             .then(res => {
                 this.setState({
                     banners: res.banners,

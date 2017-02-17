@@ -10,10 +10,10 @@ export default class Banner extends React.Component<any, any> {
             <div id="banner">
                 <header>
                     <Link to="/">
-                        <img src={ require("../../img/logo.png") } alt="全民教育网" className="logo"/>
+                        <img src={ require("./img/logo.png") } alt="全民教育网" className="logo"/>
                     </Link>
                 </header>
-                <img src={ require("../../img/banner.png") } alt="找老师上全民教育" className="banner"/>
+                <img src={ require("./img/banner.png") } alt="找老师上全民教育" className="banner"/>
             </div>
         )
     }

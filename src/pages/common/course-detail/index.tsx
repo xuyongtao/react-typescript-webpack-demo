@@ -323,7 +323,7 @@ class ConsultModal extends React.Component<ConsultModalProps, ConsultModalState>
                         </div>
                     </div>
                     <div className="qr-code">
-                        <img src={ require("../../../img/qmjy-qr-code.png") } alt="二维码"/>
+                        <img src={ require("./img/qmjy-qr-code.png") } alt="二维码"/>
                         <p>扫一扫上面的二维码图片，关注“全民教育网”获取更多教育资讯</p>
                     </div>
                 </SwipeableViews>
