@@ -39,15 +39,7 @@ class TeachingCase extends React.Component<TeachingCaseProps, any> {
     }
 }
 
-interface TeacherIntroProps {
-    params: {
-        tid: string;
-        [key: string]: any;
-    }
-}
-
-interface TeacherIntroState {
-    loading?: boolean;
+export interface TeacherIntroDataBasic {
     seniority?: string;
     graduatedSchool?: string;
     role?: string;
@@ -56,46 +48,73 @@ interface TeacherIntroState {
     teachingCases?: TeachingCaseProps[];
 }
 
+interface TeacherIntroProps {
+    params: {
+        tid: string;
+        [key: string]: any;
+    };
+    initData?: TeacherIntroDataBasic;
+    handleSaveTeacherIntroData?: (data: TeacherIntroDataBasic) => void;
+}
+
+interface TeacherIntroState {
+    loading?: boolean;
+    data?: TeacherIntroDataBasic;
+}
+
 export default class TeacherIntro extends React.Component<TeacherIntroProps, TeacherIntroState> {
     constructor(props: any, context: any) {
         super(props, context);
 
         this.state = {
             loading: false,
-            seniority: "",
-            graduatedSchool: "",
-            role: "",
-            studio: "",
-            intro: "",
-            teachingCases: [],
+            data: {
+                seniority: "",
+                graduatedSchool: "",
+                role: "",
+                studio: "",
+                intro: "",
+                teachingCases: [],
+            }
         }
     }
 
-    componentDidMount() {
-        this.setState({
-            loading: true,
-        })
+    static propTypes = {
+        initData: React.PropTypes.object,
+        handleSaveTeacherIntroData: React.PropTypes.func,
+    }
 
-        getTeacherIntro(Number(this.props.params.tid))
-            .then(res => {
-                this.setState({
-                    seniority: res.seniority,
-                    graduatedSchool: res.graduatedSchool,
-                    role: res.role,
-                    studio: res.studio,
-                    intro: res.intro,
-                    teachingCases: res.teachingCases,
-                })
+    componentDidMount() {
+        if (this.props.initData) {
+            this.setState({
+                data: this.props.initData,
             })
-            .handle(() => {
-                this.setState({
-                    loading: false,
-                })
+        } else {
+            this.setState({
+                loading: true,
             })
+
+            getTeacherIntro(Number(this.props.params.tid))
+                .then(res => {
+                    let { seniority, graduatedSchool, role, studio, intro, teachingCases } = res;
+
+                    this.setState({
+                        data: { seniority, graduatedSchool, role, studio, intro, teachingCases }
+                    });
+
+                    this.props.handleSaveTeacherIntroData && this.props.handleSaveTeacherIntroData({ seniority, graduatedSchool, role, studio, intro, teachingCases });
+                })
+                .handle(() => {
+                    this.setState({
+                        loading: false,
+                    })
+                })
+        }
     }
 
     render() {
-        const { loading, seniority, graduatedSchool, role, studio, intro, teachingCases } = this.state;
+        const { loading } = this.state;
+        const { seniority, graduatedSchool, role, studio, intro, teachingCases } = this.state.data;
 
         if (loading) {
             return (

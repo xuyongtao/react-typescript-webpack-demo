@@ -87,7 +87,7 @@ export default class ProfileCard extends React.Component<ProfileCardProps, any> 
         avatarUrl: defaultAvatar,
     }
 
-    static PropTypes = {
+    static propTypes = {
         id: React.PropTypes.number.isRequired,
         role: React.PropTypes.number.isRequired,
         avatarUrl: React.PropTypes.string,

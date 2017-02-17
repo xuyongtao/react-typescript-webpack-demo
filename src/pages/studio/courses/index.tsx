@@ -19,15 +19,21 @@ interface StudioCourseListProps {
     params: {
         sid: string;
         [key: string]: any;
-    }
+    },
+    initData?: StudioCoursesDataBasic;
+    handleSaveStudioCoursesData?: (data: StudioCoursesDataBasic) => void;
+}
+
+export interface StudioCoursesDataBasic {
+    courses?: CourseBasic[];
+    currentPage?: number;
+    totalPage?: number;
 }
 
 interface StudioCourseListState {
     loading?: boolean;
     loadMore?: boolean;
-    courses?: CourseBasic[];
-    currentPage?: number;
-    totalPage?: number;
+    data?: StudioCoursesDataBasic;
 }
 
 export default class StudioCourseList extends React.Component<StudioCourseListProps, StudioCourseListState> {
@@ -36,10 +42,37 @@ export default class StudioCourseList extends React.Component<StudioCourseListPr
         this.state = {
             loading: false,
             loadMore: false,
-            courses: [],
-            currentPage: 0,
-            totalPage: 1,
+            data: {
+                courses: [],
+                currentPage: 0,
+                totalPage: 1,
+            }
         }
+    }
+
+    static propTypes = {
+        initData: React.PropTypes.object,
+        handleSaveStudioCoursesData: React.PropTypes.func,
+    }
+
+    handleGetCourseList() {
+        return getCourseList({
+            id: Number(this.props.params.sid),
+            role: Role.studio,
+            page: this.state.data.currentPage + 1,
+        })
+            .then(res => {
+                let resData: ReceiveCourseListPost = res;
+                let data: StudioCoursesDataBasic = {
+                    courses: this.state.data.courses.concat(resData.courses),
+                    currentPage: resData.page,
+                    totalPage: Math.ceil(resData.total / resData.perPage),
+                };
+
+                this.setState({ data });
+
+                this.props.handleSaveStudioCoursesData && this.props.handleSaveStudioCoursesData(data);
+            })
     }
 
     handleLoadMore() {
@@ -47,20 +80,8 @@ export default class StudioCourseList extends React.Component<StudioCourseListPr
             loadMore: true,
         })
 
-        getCourseList({
-            id: Number(this.props.params.sid),
-            role: Role.studio,
-            page: this.state.currentPage + 1,
-        })
-            .then(res => {
-                let data: ReceiveCourseListPost = res;
-
-                this.setState({
-                    courses: this.state.courses.concat(data.courses),
-                    currentPage: data.page,
-                    totalPage: Math.ceil(data.total / data.perPage),
-                })
-            })
+        this
+            .handleGetCourseList()
             .handle(() => {
                 this.setState({
                     loadMore: false,
@@ -69,36 +90,30 @@ export default class StudioCourseList extends React.Component<StudioCourseListPr
     }
 
     componentDidMount() {
-
-        if (!this.state.courses.length) {
+        if (this.props.initData) {
             this.setState({
-                loading: true,
+                data: this.props.initData,
             })
-
-            getCourseList({
-                id: Number(this.props.params.sid),
-                role: Role.studio,
-                page: this.state.currentPage + 1,
-            })
-                .then(res => {
-                    let data: ReceiveCourseListPost = res;
-
-                    this.setState({
-                        courses: data.courses,
-                        currentPage: data.page,
-                        totalPage: Math.ceil(data.total / data.perPage),
-                    })
+        } else {
+            if (!this.state.data.courses.length) {
+                this.setState({
+                    loading: true,
                 })
-                .handle(() => {
-                    this.setState({
-                        loading: false,
+
+                this
+                    .handleGetCourseList()
+                    .handle(() => {
+                        this.setState({
+                            loading: false,
+                        })
                     })
-                })
+            }
         }
     }
 
     render() {
-        const { currentPage, totalPage, loading, loadMore, courses } = this.state;
+        const { loading, loadMore } = this.state;
+        const { currentPage, totalPage, courses } = this.state.data;
         const props = {
             courses,
             currentPage,

@@ -451,22 +451,22 @@ app.use('/apis/mobile/getPhotoList', function (req, res) {
                     "originalSrc": "http://st.qmin91.com/file/f2gbVVWW5769fdeac7ba7",
                 }, {
                     "mediumSrc": "http://st.qmin91.com/file/BjClyLiU576b919ecfb2b",
-                    "originalSrc": "http://st.qmin91.com/file/f2gbVVWW5769fdeac7ba7",
+                    "originalSrc": "http://st.qmin91.com/file/BjClyLiU576b919ecfb2b",
                 }, {
                     "mediumSrc": "http://st.qmin91.com/file/ncJWCPzR583bd174b124e",
-                    "originalSrc": "http://st.qmin91.com/file/f2gbVVWW5769fdeac7ba7",
+                    "originalSrc": "http://st.qmin91.com/file/ncJWCPzR583bd174b124e",
                 }, {
                     "mediumSrc": "http://st.qmin91.com/file/jcde8bsy577474d228a48",
-                    "originalSrc": "http://st.qmin91.com/file/f2gbVVWW5769fdeac7ba7",
+                    "originalSrc": "http://st.qmin91.com/file/jcde8bsy577474d228a48",
                 }, {
                     "mediumSrc": "http://st.qmin91.com/file/JbSIH4rJ577474d2704b6",
-                    "originalSrc": "http://st.qmin91.com/file/f2gbVVWW5769fdeac7ba7",
+                    "originalSrc": "http://st.qmin91.com/file/JbSIH4rJ577474d2704b6",
                 }, {
                     "mediumSrc": "http://st.qmin91.com/file/FQBdbvVM577481a480618",
-                    "originalSrc": "http://st.qmin91.com/file/f2gbVVWW5769fdeac7ba7",
+                    "originalSrc": "http://st.qmin91.com/file/FQBdbvVM577481a480618",
                 }, {
                     "mediumSrc": "http://st.qmin91.com/file/NgqZ8kyR5769fcbf0f59f",
-                    "originalSrc": "http://st.qmin91.com/file/f2gbVVWW5769fdeac7ba7"
+                    "originalSrc": "http://st.qmin91.com/file/NgqZ8kyR5769fcbf0f59f"
                 }
             ]
         }
@@ -486,8 +486,8 @@ app.use('/apis/mobile/getStudioInfo/introInfo', function (req, res) {
 app.use('/apis/mobile/getTeacherInfo/introInfo', function (req, res) {
     return res.send({
         "meta": {
-            "code": 100,
-            "msg": "测试错误"
+            "code": 0,
+            "msg": ""
         },
         "data": {
             "id": 1,

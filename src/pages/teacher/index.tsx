@@ -8,9 +8,9 @@ import * as classNames from "classnames";
 
 import NavBar from "../../components/nav-bar";
 import BasicInfo from "../../components/basic-info";
-import Intro from "./intro/index";
-import Courses from "./courses/index";
-import Photos from "./photos/index";
+import Intro, { TeacherIntroDataBasic } from "./intro/index";
+import Courses, { TeacherCoursesDataBasic } from "./courses/index";
+import Photos, { TeacherPhotosDataBasic } from "./photos/index";
 import { Role } from "../../js/common/config";
 
 import { getBasicInfo } from "../../js/store/index";
@@ -40,7 +40,7 @@ class TabsBar extends React.Component<TabsBarProps, any> {
         super(props, context);
     }
 
-    static PropTypes = {
+    static propTypes = {
         tabs: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
         onClick: React.PropTypes.func,
     }
@@ -76,7 +76,10 @@ interface TeacherIndexState {
         selfIntro: string,
         teachingAge: number,
         certified: boolean,
-    }
+    },
+    teacherIntroData?: TeacherIntroDataBasic,
+    teacherCoursesData?: TeacherCoursesDataBasic,
+    teacherPhotosData?: TeacherPhotosDataBasic,
 }
 
 export default class TeacherIndex extends React.Component<any, TeacherIndexState> {
@@ -93,7 +96,10 @@ export default class TeacherIndex extends React.Component<any, TeacherIndexState
                 selfIntro: "",
                 teachingAge: 1,
                 certified: false,
-            }
+            },
+            teacherIntroData: null,
+            teacherCoursesData: null,
+            teacherPhotosData: null,
         }
     }
 
@@ -118,11 +124,23 @@ export default class TeacherIndex extends React.Component<any, TeacherIndexState
         this.setState({ currentTabIndex });
     }
 
+    handleSaveTeacherIntroData(teacherIntroData: TeacherIntroDataBasic) {
+        this.setState({ teacherIntroData });
+    }
+
+    handleSaveTeacherCoursesData(teacherCoursesData: TeacherCoursesDataBasic) {
+        this.setState({ teacherCoursesData });
+    }
+
+    handleSaveTeacherPhotosData(teacherPhotosData: TeacherPhotosDataBasic) {
+        this.setState({ teacherPhotosData });
+    }
+
     render() {
         let tid = this.props.params.tid;
-        let { teacher, currentTabIndex } = this.state;
+        let { teacher, currentTabIndex, teacherIntroData, teacherCoursesData, teacherPhotosData } = this.state;
 
-        let tabsBarProps = {
+        let tabsComponentBarProps = {
             tabs: [
                 {
                     name: "简介",
@@ -138,17 +156,31 @@ export default class TeacherIndex extends React.Component<any, TeacherIndexState
             ],
             onClick: this.handleTabClick.bind(this),
             currentTabIndex,
-        }
-
+        };
+        let introComponentProps = {
+            params: { tid },
+            initData: teacherIntroData,
+            handleSaveTeacherIntroData: this.handleSaveTeacherIntroData.bind(this),
+        };
+        let coursesComponentProps = {
+            params: { tid },
+            initData: teacherCoursesData,
+            handleSaveTeacherCoursesData: this.handleSaveTeacherCoursesData.bind(this),
+        };
+        let photosComponentProps = {
+            params: { tid },
+            initData: teacherPhotosData,
+            handleSaveTeacherPhotosData: this.handleSaveTeacherPhotosData.bind(this),
+        };
 
         return (
             <div>
                 <NavBar pageTitle="老师主页" />
                 <BasicInfo { ...teacher } />
-                <TabsBar { ...tabsBarProps } />
-                { currentTabIndex === 0 ? <Intro params={ { tid } } /> : null }
-                { currentTabIndex === 1 ? <Courses params={ { tid } } /> : null }
-                { currentTabIndex === 2 ? <Photos params={ { tid } } /> : null }
+                <TabsBar { ...tabsComponentBarProps } />
+                { currentTabIndex === 0 ? <Intro { ...introComponentProps } /> : null }
+                { currentTabIndex === 1 ? <Courses { ...coursesComponentProps } /> : null }
+                { currentTabIndex === 2 ? <Photos { ...photosComponentProps } /> : null }
             </div>
         )
     }

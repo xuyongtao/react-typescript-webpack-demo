@@ -12,56 +12,78 @@ import { getStudioTeacherList } from "../../../js/store/index";
 
 import { BasicInfo as BasicInfoInterface } from "../../../js/interface/common";
 import { ReceiveTeacherListPost } from "../../../js/interface/studio";
-interface StudioTeacherListListProps {
+
+interface StudioTeacherListProps {
     params: {
         sid: string;
         [key: string]: any;
-    }
+    },
+    initData?: StudioTeachersDataBasic;
+    handleSaveStudioTeachersData?: (data: StudioTeachersDataBasic) => void;
 }
 
-interface StudioTeacherListState {
-    loading?: boolean;
-    loadMore?: boolean;
+export interface StudioTeachersDataBasic {
     teachers?: BasicInfoInterface[];
     currentPage?: number;
     totalPage?: number;
 }
 
-export default class StudioTeacherList extends React.Component<StudioTeacherListListProps, StudioTeacherListState> {
-    constructor(props: StudioTeacherListListProps, context: StudioTeacherListState) {
+interface StudioTeacherListState {
+    loading?: boolean;
+    loadMore?: boolean;
+    data?: StudioTeachersDataBasic;
+}
+
+export default class StudioTeacherList extends React.Component<StudioTeacherListProps, StudioTeacherListState> {
+    constructor(props: StudioTeacherListProps, context: StudioTeacherListState) {
         super(props, context);
 
         this.state = {
             loading: false,
             loadMore: false,
-            teachers: [],
-            currentPage: 0,
-            totalPage: 1,
+            data: {
+                teachers: [],
+                currentPage: 0,
+                totalPage: 1,
+            }
         }
     }
 
+    static propTypes = {
+        initData: React.PropTypes.object,
+        handleSaveStudioTeachersData: React.PropTypes.func,
+    }
+
     private perPage = 8;
+
+    handleGetStudioTeacherList() {
+        return getStudioTeacherList({
+            id: Number(this.props.params.sid),
+            role: Role.studio,
+            page: this.state.data.currentPage + 1,
+            perPage: this.perPage,
+        })
+            .then(res => {
+                let resData: ReceiveTeacherListPost = res;
+                let data: StudioTeachersDataBasic = {
+                    teachers: this.state.data.teachers.concat(resData.teachers),
+                    currentPage: resData.page,
+                    totalPage: Math.ceil(resData.total / resData.perPage),
+                };
+
+                this.setState({ data });
+
+                this.props.handleSaveStudioTeachersData && this.props.handleSaveStudioTeachersData(data);
+            })
+    }
 
     handleLoadMore() {
         this.setState({
             loadMore: true,
         })
 
-        getStudioTeacherList({
-            id: Number(this.props.params.sid),
-            role: Role.studio,
-            page: this.state.currentPage + 1,
-            perPage: this.perPage,
-        })
-            .then(res => {
-                let data: ReceiveTeacherListPost = res;
-
-                this.setState({
-                    teachers: this.state.teachers.concat(data.teachers),
-                    currentPage: data.page,
-                    totalPage: Math.ceil(data.total / data.perPage),
-                })
-            })
+        this
+            .handleGetStudioTeacherList()
             .handle(() => {
                 this.setState({
                     loadMore: false,
@@ -70,38 +92,30 @@ export default class StudioTeacherList extends React.Component<StudioTeacherList
     }
 
     componentDidMount() {
-
-        if (!this.state.teachers.length) {
+        if (this.props.initData) {
             this.setState({
-                loading: true,
-            })
-
-            getStudioTeacherList({
-                id: Number(this.props.params.sid),
-                role: Role.studio,
-                page: this.state.currentPage + 1,
-                perPage: this.perPage,
-            })
-                .then(res => {
-                    let data: ReceiveTeacherListPost = res;
-
-                    this.setState({
-                        loading: false,
-                        teachers: data.teachers,
-                        currentPage: data.page,
-                        totalPage: Math.ceil(data.total / data.perPage),
-                    })
+                data: this.props.initData,
+            });
+        } else {
+            if (!this.state.data.teachers.length) {
+                this.setState({
+                    loading: true,
                 })
-                .handle(() => {
-                    this.setState({
-                        loading: false,
+
+                this
+                    .handleGetStudioTeacherList()
+                    .handle(() => {
+                        this.setState({
+                            loading: false,
+                        })
                     })
-                })
+            }
         }
     }
 
     render() {
-        const { currentPage, totalPage, loading, loadMore, teachers } = this.state;
+        const { loading, loadMore } = this.state;
+        const { currentPage, totalPage, teachers } = this.state.data;
         const props = {
             teachers,
             currentPage,

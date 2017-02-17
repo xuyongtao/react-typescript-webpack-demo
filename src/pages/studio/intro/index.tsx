@@ -12,7 +12,8 @@ interface StudioIntroProps {
     params: {
         sid: string;
         [key: string]: any;
-    }
+    },
+    initIntro?: string;
 }
 
 interface StudioIntroState {
@@ -30,22 +31,32 @@ export default class StudioIntro extends React.Component<StudioIntroProps, Studi
         }
     }
 
-    componentDidMount() {
-        this.setState({
-            loading: true,
-        })
+    static propTypes = {
+        initIntro: React.PropTypes.string,
+    }
 
-        getStudioIntro(Number(this.props.params.sid))
-            .then(res => {
-                this.setState({
-                    intro: res.intro,
-                })
+    componentDidMount() {
+        if (this.props.initIntro) {
+            this.setState({
+                intro: this.props.initIntro,
+            });
+        } else {
+            this.setState({
+                loading: true,
             })
-            .handle(() => {
-                this.setState({
-                    loading: false,
+
+            getStudioIntro(Number(this.props.params.sid))
+                .then(res => {
+                    this.setState({
+                        intro: res.intro,
+                    })
                 })
-            })
+                .handle(() => {
+                    this.setState({
+                        loading: false,
+                    })
+                })
+        }
     }
 
     render() {

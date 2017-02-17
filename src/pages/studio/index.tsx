@@ -9,11 +9,11 @@ import * as classNames from "classnames";
 
 import NavBar from "../../components/nav-bar";
 import BasicInfo from "../../components/basic-info";
-import Index from "./index/index";
+import Index, { StudioIndexDataBasic } from "./index/index";
 import Intro from "./intro/index";
-import Courses from "./courses/index";
-import Teachers from "./teachers/index";
-import Photos from "./photos/index";
+import Courses, { StudioCoursesDataBasic } from "./courses/index";
+import Teachers, { StudioTeachersDataBasic } from "./teachers/index";
+import Photos, { StudioPhotosDataBasic } from "./photos/index";
 
 import { getBasicInfo } from "../../js/store/index";
 import { Role, defaultAvatar } from "../../js/common/config";
@@ -37,7 +37,7 @@ class TabsBar extends React.Component<TabsBarProps, any> {
         super(props, context);
     }
 
-    static PropTypes = {
+    static propTypes = {
         tabs: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
         onClick: React.PropTypes.func,
     }
@@ -78,6 +78,10 @@ interface StudioIndexState {
         selfIntro?: string;
     },
     currentTabIndex?: number;
+    studioIndexData?: StudioIndexDataBasic;
+    studioCoursesData?: StudioCoursesDataBasic;
+    studioTeachersData?: StudioTeachersDataBasic;
+    studioPhotosData?: StudioPhotosDataBasic;
 }
 
 export default class StudioIndex extends React.Component<StudioIndexProps, StudioIndexState> {
@@ -93,6 +97,9 @@ export default class StudioIndex extends React.Component<StudioIndexProps, Studi
                 selfIntro: "未设置机构简介",
             },
             currentTabIndex: 0,
+            studioCoursesData: null,
+            studioTeachersData: null,
+            studioPhotosData: null,
         }
     }
 
@@ -116,11 +123,27 @@ export default class StudioIndex extends React.Component<StudioIndexProps, Studi
     }
 
     handleTabClick(currentTabIndex: number) {
-        this.setState({ currentTabIndex })
+        this.setState({ currentTabIndex });
+    }
+
+    handleSaveStudioIndexData(studioIndexData: StudioIndexDataBasic) {
+        this.setState({ studioIndexData });
+    }
+
+    handleSaveStudioCoursesData(studioCoursesData: StudioCoursesDataBasic) {
+        this.setState({ studioCoursesData });
+    }
+
+    handleSaveStudioTeachersData(studioTeachersData: StudioTeachersDataBasic) {
+        this.setState({ studioTeachersData });
+    }
+
+    handleSaveStudioPhotosData(studioPhotosData: StudioPhotosDataBasic) {
+        this.setState({ studioPhotosData });
     }
 
     render() {
-        let { studio, currentTabIndex } = this.state;
+        let { studio, currentTabIndex, studioIndexData, studioCoursesData, studioTeachersData, studioPhotosData } = this.state;
         const sid = this.props.params.sid;
         const navBarProps = {
             pageTitle: "机构主页",
@@ -149,6 +172,30 @@ export default class StudioIndex extends React.Component<StudioIndexProps, Studi
             onClick: this.handleTabClick.bind(this),
             currentTabIndex,
         };
+        let indexComponentProps = {
+            params: { sid },
+            initData: studioIndexData,
+            handleSaveStudioIndexData: this.handleSaveStudioIndexData.bind(this),
+        };
+        let coursesComponentProps = {
+            params: { sid },
+            initData: studioCoursesData,
+            handleSaveStudioCoursesData: this.handleSaveStudioCoursesData.bind(this),
+        };
+        let teachersComponentProps = {
+            params: { sid },
+            initData: studioTeachersData,
+            handleSaveStudioTeachersData: this.handleSaveStudioTeachersData.bind(this),
+        };
+        let photosComponentProps = {
+            params: { sid },
+            initData: studioPhotosData,
+            handleSaveStudioPhotosData: this.handleSaveStudioPhotosData.bind(this),
+        };
+        let introComponentProps = {
+            params: { sid },
+            initIntro: studioIndexData ? studioIndexData.intro : '',
+        };
 
         return (
             <div>
@@ -157,11 +204,11 @@ export default class StudioIndex extends React.Component<StudioIndexProps, Studi
                     <BasicInfo { ...studio } />
                 </div>
                 <TabsBar { ...tabsBarProps } />
-                { currentTabIndex === 0 ? <Index params={ { sid } } /> : null }
-                { currentTabIndex === 1 ? <Courses params={ { sid } } /> : null }
-                { currentTabIndex === 2 ? <Teachers params={ { sid } } /> : null }
-                { currentTabIndex === 3 ? <Photos params={ { sid } } /> : null }
-                { currentTabIndex === 4 ? <Intro params={ { sid } } /> : null }
+                { currentTabIndex === 0 ? <Index { ...indexComponentProps } /> : null }
+                { currentTabIndex === 1 ? <Courses { ...coursesComponentProps } /> : null }
+                { currentTabIndex === 2 ? <Teachers { ...teachersComponentProps } /> : null }
+                { currentTabIndex === 3 ? <Photos { ...photosComponentProps } /> : null }
+                { currentTabIndex === 4 ? <Intro { ...introComponentProps } /> : null }
             </div>
         )
     }

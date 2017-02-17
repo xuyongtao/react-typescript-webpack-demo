@@ -19,15 +19,21 @@ interface TeacherCourseListProps {
     params: {
         tid: string;
         [key: string]: any;
-    }
+    };
+    initData?: TeacherCoursesDataBasic;
+    handleSaveTeacherCoursesData?: (data: TeacherCoursesDataBasic) => void;
+}
+
+export interface TeacherCoursesDataBasic {
+    courses?: CourseBasic[];
+    currentPage?: number;
+    totalPage?: number;
 }
 
 interface TeacherCourseListState {
     loading?: boolean;
     loadMore?: boolean;
-    courses?: CourseBasic[];
-    currentPage?: number;
-    totalPage?: number;
+    data?: TeacherCoursesDataBasic;
 }
 
 export default class TeacherCourseList extends React.Component<TeacherCourseListProps, TeacherCourseListState> {
@@ -36,10 +42,37 @@ export default class TeacherCourseList extends React.Component<TeacherCourseList
         this.state = {
             loading: false,
             loadMore: false,
-            courses: [],
-            currentPage: 0,
-            totalPage: 1,
+            data: {
+                courses: [],
+                currentPage: 0,
+                totalPage: 1,
+            }
         }
+    }
+
+    static propTypes = {
+        initData: React.PropTypes.object,
+        handleSaveTeacherCoursesData: React.PropTypes.func,
+    }
+
+    handleGetCourseList() {
+        return getCourseList({
+            id: Number(this.props.params.tid),
+            role: Role.teacher,
+            page: this.state.data.currentPage + 1,
+        })
+            .then(res => {
+                let resData: ReceiveCourseListPost = res;
+                let data = {
+                    courses: this.state.data.courses.concat(resData.courses),
+                    currentPage: resData.page,
+                    totalPage: Math.ceil(resData.total / resData.perPage),
+                };
+
+                this.setState({ data });
+
+                this.props.handleSaveTeacherCoursesData && this.props.handleSaveTeacherCoursesData(data);
+            })
     }
 
     handleLoadMore() {
@@ -47,20 +80,8 @@ export default class TeacherCourseList extends React.Component<TeacherCourseList
             loadMore: true,
         })
 
-        getCourseList({
-            id: Number(this.props.params.tid),
-            role: Role.teacher,
-            page: this.state.currentPage + 1,
-        })
-            .then(res => {
-                let data: ReceiveCourseListPost = res;
-
-                this.setState({
-                    courses: this.state.courses.concat(data.courses),
-                    currentPage: data.page,
-                    totalPage: Math.ceil(data.total / data.perPage),
-                })
-            })
+        this
+            .handleGetCourseList()
             .handle(() => {
                 this.setState({
                     loadMore: false,
@@ -69,35 +90,30 @@ export default class TeacherCourseList extends React.Component<TeacherCourseList
     }
 
     componentDidMount() {
-        if (!this.state.courses.length) {
+        if (this.props.initData) {
             this.setState({
-                loading: true,
-            })
-
-            getCourseList({
-                id: Number(this.props.params.tid),
-                role: Role.teacher,
-                page: this.state.currentPage + 1,
-            })
-                .then(res => {
-                    let data: ReceiveCourseListPost = res;
-
-                    this.setState({
-                        courses: data.courses,
-                        currentPage: data.page,
-                        totalPage: Math.ceil(data.total / data.perPage),
-                    })
+                data: this.props.initData,
+            });
+        } else {
+            if (!this.state.data.courses.length) {
+                this.setState({
+                    loading: true,
                 })
-                .handle(() => {
-                    this.setState({
-                        loading: false,
+
+                this
+                    .handleGetCourseList()
+                    .handle(() => {
+                        this.setState({
+                            loading: false,
+                        })
                     })
-                })
+            }
         }
     }
 
     render() {
-        const { currentPage, totalPage, loading, loadMore, courses } = this.state;
+        const { loading, loadMore } = this.state;
+        const { currentPage, totalPage, courses } = this.state.data;
         const props = {
             courses,
             currentPage,

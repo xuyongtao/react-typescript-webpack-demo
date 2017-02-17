@@ -4,6 +4,7 @@ import { render } from "react-dom";
 
 import LazyLoad from "react-lazyload";
 import * as Carousel from "nuka-carousel";
+import * as Lodash from "lodash";
 
 import PhotosCarousel from "../../../components/photos-carousel/index";
 import LoadingToast from "../../../components/toast/index";
@@ -53,15 +54,22 @@ interface TeacherPhotosProps {
     params: {
         tid: string;
         [key: string]: any
-    },
+    };
+    initData?: TeacherPhotosDataBasic;
+    handleSaveTeacherPhotosData?: (data: TeacherPhotosDataBasic) => void;
 }
-interface TeacherPhotosStates {
-    loading?: boolean;
-    hiddenCarousel?: boolean;
+
+export interface TeacherPhotosDataBasic {
     pics?: PhotoBasic[];
     picsOfLeftPart?: PhotoBasic[];
     picsOfRightPart?: PhotoBasic[];
     loadedPics?: string[];
+}
+
+interface TeacherPhotosStates {
+    loading?: boolean;
+    hiddenCarousel?: boolean;
+    data?: TeacherPhotosDataBasic;
     slideIndex?: number;
 }
 
@@ -72,12 +80,19 @@ export default class TeacherPhotos extends React.Component<TeacherPhotosProps, T
         this.state = {
             loading: false,
             hiddenCarousel: true,
-            pics: [],
-            picsOfLeftPart: [],
-            picsOfRightPart: [],
-            loadedPics: [],
+            data: {
+                pics: [],
+                picsOfLeftPart: [],
+                picsOfRightPart: [],
+                loadedPics: [],
+            },
             slideIndex: 0,
         };
+    }
+
+    static propTypes = {
+        initData: React.PropTypes.object,
+        handleSaveTeacherPhotosData: React.PropTypes.func,
     }
 
     handleShowPhotosCarousel(index: number) {
@@ -94,66 +109,87 @@ export default class TeacherPhotos extends React.Component<TeacherPhotosProps, T
     }
 
     handleAddLoadedPics(src: string, index: number) {
-        let loadedPics = this.state.loadedPics;
+        let loadedPics = this.state.data.loadedPics;
 
         loadedPics[index] = src;
-        this.setState({
+
+        let data = Lodash.assign({}, this.state.data, {
             loadedPics,
-        })
+        });
+
+        this.setState({ data });
+
+        this.props.handleSaveTeacherPhotosData && this.props.handleSaveTeacherPhotosData(data);
 
         return index;// 返回index
     }
 
     componentDidMount() {
-        this.setState({
-            loading: true,
-        })
-
-        getPhotoList({
-            id: Number(this.props.params.tid),
-            role: Role.teacher,
-        })
-            .then(res => {
-                let pics = res.photos;
-                let picsOfLeftPart: PhotoBasic[] = [];
-                let picsOfRightPart: PhotoBasic[] = [];
-
-                pics.forEach((pic, index) => {
-                    if (index % 2 === 0) {
-                        picsOfLeftPart.push(pic);
-                    } else {
-                        picsOfRightPart.push(pic);
-                    }
-                })
-
-                this.setState({
-                    pics,
-                    picsOfLeftPart,
-                    picsOfRightPart,
-                })
+        if (this.props.initData) {
+            this.setState({
+                data: this.props.initData
+            });
+        } else {
+            this.setState({
+                loading: true,
             })
-            .handle(() => {
-                this.setState({
-                    loading: false,
-                })
+
+            getPhotoList({
+                id: Number(this.props.params.tid),
+                role: Role.teacher,
             })
+                .then(res => {
+                    let pics = res.photos;
+                    let picsOfLeftPart: PhotoBasic[] = [];
+                    let picsOfRightPart: PhotoBasic[] = [];
+
+                    pics.forEach((pic, index) => {
+                        if (index % 2 === 0) {
+                            picsOfLeftPart.push(pic);
+                        } else {
+                            picsOfRightPart.push(pic);
+                        }
+                    })
+
+                    this.setState({
+                        data: Lodash.assign({}, this.state.data, {
+                            pics,
+                            picsOfLeftPart,
+                            picsOfRightPart,
+                        })
+                    })
+
+                    this.props.handleSaveTeacherPhotosData && this.props.handleSaveTeacherPhotosData({
+                        pics,
+                        picsOfLeftPart,
+                        picsOfRightPart,
+                    });
+                })
+                .handle(() => {
+                    this.setState({
+                        loading: false,
+                    })
+                })
+        }
+
     }
 
     render() {
-        const { pics, picsOfLeftPart, picsOfRightPart, loadedPics, slideIndex, hiddenCarousel, loading } = this.state;
+        const { slideIndex, hiddenCarousel, loading } = this.state;
+        const { pics, picsOfLeftPart, picsOfRightPart, loadedPics } = this.state.data;
         const lazyloadProps = {
             height: 200,
         };
         const carouselProps = {
-            pics: this.state.loadedPics,
-            slideIndex: this.state.slideIndex,
+            pics: loadedPics,
+            slideIndex,
             handlerClose: this.handleHidePhotosCarousel.bind(this),
-            hidden: this.state.hiddenCarousel,
+            hidden: hiddenCarousel,
         };
         const loadingToastProps = {
             tip: "加载中...",
             iconClassName: "icon-loading",
-            isOpen: this.state.loading,
+            isOpen: loading,
         };
 
         if (loading) {
@@ -166,7 +202,7 @@ export default class TeacherPhotos extends React.Component<TeacherPhotosProps, T
                     <LoadingToast { ...loadingToastProps } />
                     { hiddenCarousel ? null : <PhotosCarousel ref="carousel" { ...carouselProps } /> }
                     {
-                        pics.length ?
+                        pics && pics.length ?
                             <div id="gallery-wall">
                                 <div className="gallery-wall-left">
                                     { picsOfLeftPart.map((pic, index) => {

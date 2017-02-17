@@ -10,7 +10,6 @@ import Carousel from "../../../components/carousel/index";
 import EmptyList from "../../../components/empty-list/index";
 import LoadingToast from "../../../components/toast/index";
 import IntroPanel from "../intro/index";
-import Notification from "../../../components/notification";
 
 import { Role } from "../../../js/common/config";
 
@@ -21,15 +20,21 @@ import { CourseBasic, BasicInfo as BasicInfoInterface } from "../../../js/interf
 interface IndexPageProps {
     params: {
         sid: string;
-    }
+    },
+    initData?: StudioIndexDataBasic;
+    handleSaveStudioIndexData?: (data: StudioIndexDataBasic) => void;
 }
 
-interface IndexPageState {
-    loading?: boolean;
+export interface StudioIndexDataBasic {
     banners?: string[];
     courses?: CourseBasic[];
     teachers?: BasicInfoInterface[];
     intro?: string;
+}
+
+interface IndexPageState {
+    loading?: boolean;
+    data?: StudioIndexDataBasic;
 }
 
 export default class IndexPage extends React.Component<IndexPageProps, IndexPageState> {
@@ -38,41 +43,54 @@ export default class IndexPage extends React.Component<IndexPageProps, IndexPage
 
         this.state = {
             loading: false,
-            banners: [],
-            courses: [],
-            teachers: [],
-            intro: "",
+            data: {
+                banners: [],
+                courses: [],
+                teachers: [],
+                intro: "",
+            }
         }
     }
 
-    componentDidMount() {
-        this.setState({
-            loading: true,
-        })
+    static propTypes = {
+        initData: React.PropTypes.object,
+        handleSaveStudioIndexData: React.PropTypes.func,
+    }
 
-        getStudioIndexPageInfo(Number(this.props.params.sid))
-            .then(res => {
-                this.setState({
-                    banners: res.banners,
-                    courses: res.courses,
-                    teachers: res.teachers,
-                    intro: res.intro,
+    componentDidMount() {
+        if (this.props.initData) {
+            this.setState({
+                data: this.props.initData,
+            });
+        } else {
+            this.setState({
+                loading: true,
+            })
+
+            getStudioIndexPageInfo(Number(this.props.params.sid))
+                .then(res => {
+                    let data: StudioIndexDataBasic = {
+                        banners: res.banners,
+                        courses: res.courses,
+                        teachers: res.teachers,
+                        intro: res.intro,
+                    };
+
+                    this.setState({ data });
+
+                    this.props.handleSaveStudioIndexData && this.props.handleSaveStudioIndexData(data);
                 })
-            })
-            .handle(() => {
-                this.setState({
-                    loading: false,
+                .handle(() => {
+                    this.setState({
+                        loading: false,
+                    })
                 })
-            })
-            .fail((error: Error) => {
-                Notification.info({
-                    content: error.message || "请求机构数据失败",
-                });
-            })
+        }
     }
 
     render() {
-        const { loading, courses, teachers, intro, banners } = this.state;
+        const { loading } = this.state;
+        const { courses, teachers, intro, banners } = this.state.data;
 
         const CarouselProps = {
             pics: banners,

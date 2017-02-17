@@ -17,7 +17,7 @@ export default class TabsBar extends React.Component<any, any> {
         super(props, context);
     }
 
-    static PropTypes = {
+    static propTypes = {
         tabs: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
     }
 
